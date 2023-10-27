@@ -9,6 +9,11 @@ namespace InstallationsMonitor.Tests
 {
     internal class TestUtilities
     {
+        internal static async Task WaitForEventsRegistrationAsync()
+        {
+            await Task.Delay(100);
+        }
+
         internal static async Task WaitForEventsProsecutionAsync(
             StringWriter stringWriter,
             IEnumerable<string>? expectedChangedFiles = null,

@@ -31,8 +31,7 @@ namespace InstallationsMonitor.Tests.IntegrationTests
             // Act.
             Task task = Task.Run(() => Program.Main(args));
 
-            // Wait for the registrations to the events.
-            await Task.Delay(500);
+            await TestUtilities.WaitForEventsRegistrationAsync();
 
             string filePath1 = Path.Combine(testPath, Guid.NewGuid().ToString());
             string filePath2 = Path.Combine(Path.GetTempFileName());
@@ -70,8 +69,7 @@ namespace InstallationsMonitor.Tests.IntegrationTests
             // Act.
             Task task = Task.Run(() => Program.Main(args));
 
-            // Wait for the registrations to the events.
-            await Task.Delay(500);
+            await TestUtilities.WaitForEventsRegistrationAsync();
 
             string filePath1 = Path.Combine(testPath, Guid.NewGuid().ToString());
             string filePath2 = Path.Combine(Path.GetTempFileName());

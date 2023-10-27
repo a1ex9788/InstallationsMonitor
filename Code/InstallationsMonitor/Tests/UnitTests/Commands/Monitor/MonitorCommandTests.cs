@@ -27,8 +27,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             // Act.
             Task task = Task.Run(() => monitorCommand.Execute());
 
-            // Wait for the registrations to the events.
-            await Task.Delay(500);
+            await TestUtilities.WaitForEventsRegistrationAsync();
 
             string filePath = Path.Combine(testPath, Guid.NewGuid().ToString());
 
@@ -61,8 +60,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             // Act.
             Task task = Task.Run(() => monitorCommand.Execute());
 
-            // Wait for the registrations to the events.
-            await Task.Delay(500);
+            await TestUtilities.WaitForEventsRegistrationAsync();
 
             string filePath = Path.Combine(testPath, Guid.NewGuid().ToString());
 
@@ -97,8 +95,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             // Act.
             Task task = Task.Run(() => monitorCommand.Execute());
 
-            // Wait for the registrations to the events.
-            await Task.Delay(500);
+            await TestUtilities.WaitForEventsRegistrationAsync();
 
             string filePath = Path.Combine(testPath, Guid.NewGuid().ToString());
 
@@ -133,8 +130,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             // Act.
             Task task = Task.Run(() => monitorCommand.Execute());
 
-            // Wait for the registrations to the events.
-            await Task.Delay(500);
+            await TestUtilities.WaitForEventsRegistrationAsync();
 
             string filePath = Path.Combine(testPath, Guid.NewGuid().ToString());
             string newFilePath = Path.Combine(testPath, Guid.NewGuid().ToString());
