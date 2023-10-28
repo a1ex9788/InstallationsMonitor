@@ -14,7 +14,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
         public async Task ExecuteForAllDrives_SomeFilesCreatedInDifferentFolders_PrintsAllFiles()
         {
             // Arrange.
-            string testPath = TestUtilities.GetTempDirectory();
+            string testPath = TempPathUtilities.GetTempDirectory();
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
@@ -27,16 +27,16 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             // Act.
             Task task = Task.Run(() => monitorCommand.Execute());
 
-            await TestUtilities.WaitForEventsRegistrationAsync();
+            await EventsUtilities.WaitForEventsRegistrationAsync();
 
             string filePath1 = Path.Combine(testPath, Guid.NewGuid().ToString());
-            string filePath2 = TestUtilities.GetTempFile();
+            string filePath2 = TempPathUtilities.GetTempFile();
 
             await File.Create(filePath1).DisposeAsync();
             await File.Create(filePath2).DisposeAsync();
 
             // Assert.
-            await TestUtilities.WaitForEventsProsecutionAsync(
+            await EventsUtilities.WaitForEventsProsecutionAsync(
                 stringWriter,
                 expectedCreatedFiles: new string[] { filePath1, filePath2 });
 
@@ -49,7 +49,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
         public async Task ExecuteForConcretePath_SomeFilesCreatedInDifferentFolders_PrintsOnlySomeFiles()
         {
             // Arrange.
-            string testPath = TestUtilities.GetTempDirectory();
+            string testPath = TempPathUtilities.GetTempDirectory();
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
@@ -61,16 +61,16 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             // Act.
             Task task = Task.Run(() => monitorCommand.Execute());
 
-            await TestUtilities.WaitForEventsRegistrationAsync();
+            await EventsUtilities.WaitForEventsRegistrationAsync();
 
             string filePath1 = Path.Combine(testPath, Guid.NewGuid().ToString());
-            string filePath2 = TestUtilities.GetTempFile();
+            string filePath2 = TempPathUtilities.GetTempFile();
 
             await File.Create(filePath1).DisposeAsync();
             await File.Create(filePath2).DisposeAsync();
 
             // Assert.
-            await TestUtilities.WaitForEventsProsecutionAsync(
+            await EventsUtilities.WaitForEventsProsecutionAsync(
                 stringWriter,
                 expectedCreatedFiles: new string[] { filePath1 },
                 expectedNotCreatedFiles: new string[] { filePath2 });
