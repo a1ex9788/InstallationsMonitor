@@ -9,6 +9,20 @@ namespace InstallationsMonitor.Tests
 {
     internal class TestUtilities
     {
+        internal static string GetTempDirectory()
+        {
+            string tempDirectory = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+
+            Directory.CreateDirectory(tempDirectory);
+
+            return tempDirectory;
+        }
+
+        internal static string GetTempFile()
+        {
+            return Path.GetTempFileName();
+        }
+
         internal static async Task WaitForEventsRegistrationAsync()
         {
             await Task.Delay(100);

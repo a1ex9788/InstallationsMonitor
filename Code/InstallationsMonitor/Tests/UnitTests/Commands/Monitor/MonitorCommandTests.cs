@@ -14,8 +14,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
         public async Task Execute_FileCreated_PrintsFile()
         {
             // Arrange.
-            string testPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
-            Directory.CreateDirectory(testPath);
+            string testPath = TestUtilities.GetTempDirectory();
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
@@ -47,8 +46,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
         public async Task Execute_FileChanged_PrintsFile()
         {
             // Arrange.
-            string testPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
-            Directory.CreateDirectory(testPath);
+            string testPath = TestUtilities.GetTempDirectory();
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
@@ -82,8 +80,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
         public async Task Execute_FileDeleted_PrintsFile()
         {
             // Arrange.
-            string testPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
-            Directory.CreateDirectory(testPath);
+            string testPath = TestUtilities.GetTempDirectory();
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
@@ -117,8 +114,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
         public async Task Execute_FileRenamed_PrintsFile()
         {
             // Arrange.
-            string testPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
-            Directory.CreateDirectory(testPath);
+            string testPath = TestUtilities.GetTempDirectory();
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 

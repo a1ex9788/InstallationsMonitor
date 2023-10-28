@@ -15,9 +15,7 @@ namespace InstallationsMonitor.Tests.IntegrationTests
         public async Task MonitorCommandForAllDrives_SomeFilesCreated_PrintsExpectedResults()
         {
             // Arrange.
-            string testPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
-            Directory.CreateDirectory(testPath);
-
+            string testPath = TestUtilities.GetTempDirectory();
             string[] args = new string[] { "monitor" };
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
@@ -34,7 +32,7 @@ namespace InstallationsMonitor.Tests.IntegrationTests
             await TestUtilities.WaitForEventsRegistrationAsync();
 
             string filePath1 = Path.Combine(testPath, Guid.NewGuid().ToString());
-            string filePath2 = Path.Combine(Path.GetTempFileName());
+            string filePath2 = TestUtilities.GetTempFile();
 
             await File.Create(filePath1).DisposeAsync();
             await File.Create(filePath2).DisposeAsync();
@@ -53,9 +51,7 @@ namespace InstallationsMonitor.Tests.IntegrationTests
         public async Task MonitorCommandForConcretePath_SomeFilesCreated_PrintsExpectedResults()
         {
             // Arrange.
-            string testPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
-            Directory.CreateDirectory(testPath);
-
+            string testPath = TestUtilities.GetTempDirectory();
             string[] args = new string[] { "monitor", "-d", testPath };
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
@@ -72,7 +68,7 @@ namespace InstallationsMonitor.Tests.IntegrationTests
             await TestUtilities.WaitForEventsRegistrationAsync();
 
             string filePath1 = Path.Combine(testPath, Guid.NewGuid().ToString());
-            string filePath2 = Path.Combine(Path.GetTempFileName());
+            string filePath2 = TestUtilities.GetTempFile();
 
             await File.Create(filePath1).DisposeAsync();
             await File.Create(filePath2).DisposeAsync();

@@ -14,8 +14,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
         public async Task ExecuteForAllDrives_SomeFilesCreatedInDifferentFolders_PrintsAllFiles()
         {
             // Arrange.
-            string testPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
-            Directory.CreateDirectory(testPath);
+            string testPath = TestUtilities.GetTempDirectory();
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
@@ -31,7 +30,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             await TestUtilities.WaitForEventsRegistrationAsync();
 
             string filePath1 = Path.Combine(testPath, Guid.NewGuid().ToString());
-            string filePath2 = Path.Combine(Path.GetTempFileName());
+            string filePath2 = TestUtilities.GetTempFile();
 
             await File.Create(filePath1).DisposeAsync();
             await File.Create(filePath2).DisposeAsync();
@@ -50,8 +49,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
         public async Task ExecuteForConcretePath_SomeFilesCreatedInDifferentFolders_PrintsOnlySomeFiles()
         {
             // Arrange.
-            string testPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
-            Directory.CreateDirectory(testPath);
+            string testPath = TestUtilities.GetTempDirectory();
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
@@ -66,7 +64,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             await TestUtilities.WaitForEventsRegistrationAsync();
 
             string filePath1 = Path.Combine(testPath, Guid.NewGuid().ToString());
-            string filePath2 = Path.Combine(Path.GetTempFileName());
+            string filePath2 = TestUtilities.GetTempFile();
 
             await File.Create(filePath1).DisposeAsync();
             await File.Create(filePath2).DisposeAsync();
