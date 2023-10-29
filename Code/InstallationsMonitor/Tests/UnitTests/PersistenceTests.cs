@@ -16,7 +16,7 @@ namespace InstallationsMonitor.Tests.UnitTests
         public void SaveEveryTypeOfEntity_NewDatabase_PersistsEverything()
         {
             // Arrange.
-            Installation installation = new Installation("Program")
+            Installation installation = new Installation("Program", DateTime.MinValue)
             {
                 Id = 1,
                 FileOperationsNumber = 4,
