@@ -1,7 +1,6 @@
 ﻿using InstallationsMonitor.Commands;
 using InstallationsMonitor.Commands.Monitor;
 using McMaster.Extensions.CommandLineUtils;
-using System.Threading.Tasks;
 
 namespace InstallationsMonitor
 {
@@ -30,14 +29,13 @@ namespace InstallationsMonitor
                     CommandOption directoryCommandOption = command.Option(
                         "-d", "The directory to monitor.", CommandOptionType.SingleValue);
 
-                    command.OnExecuteAsync(ct => Task.Run(() =>
+                    command.OnExecuteAsync(async ct =>
                     {
                         MonitorCommand monitorCommand = CommandsCreator.CreateMonitorCommand(
                             directoryCommandOption.Value(), ct);
 
-                        monitorCommand.Execute();
-                    },
-                    ct));
+                        await monitorCommand.ExecuteAsync();
+                    });
                 });
         }
     }

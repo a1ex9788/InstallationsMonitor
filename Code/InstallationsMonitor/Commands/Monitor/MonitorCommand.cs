@@ -20,7 +20,7 @@ namespace InstallationsMonitor.Commands.Monitor
             this.cancellationToken = cancellationToken;
         }
 
-        protected override void Execute(IServiceProvider serviceProvider)
+        protected override async Task ExecuteAsync(IServiceProvider serviceProvider)
         {
             if (this.directory is null)
             {
@@ -30,16 +30,16 @@ namespace InstallationsMonitor.Commands.Monitor
 
                 foreach (string drive in drives)
                 {
-                    this.MonitorDirectory(drive);
+                    await this.MonitorDirectoryAsync(drive);
                 }
             }
             else
             {
-                this.MonitorDirectory(this.directory);
+                await this.MonitorDirectoryAsync(this.directory);
             }
         }
 
-        private void MonitorDirectory(string directoryToMonitor)
+        private async Task MonitorDirectoryAsync(string directoryToMonitor)
         {
             using var watcher = new FileSystemWatcher(directoryToMonitor);
 
@@ -52,9 +52,16 @@ namespace InstallationsMonitor.Commands.Monitor
             watcher.Renamed += OnRenamed;
             watcher.Error += OnError;
 
-            while (!this.cancellationToken.IsCancellationRequested)
+            try
             {
-                Task.Delay(TimeSpan.FromSeconds(1));
+                while (!this.cancellationToken.IsCancellationRequested)
+                {
+                    await Task.Delay(TimeSpan.FromSeconds(1), this.cancellationToken);
+                }
+            }
+            catch (TaskCanceledException)
+            {
+                // The command is cancelled this way.
             }
         }
 

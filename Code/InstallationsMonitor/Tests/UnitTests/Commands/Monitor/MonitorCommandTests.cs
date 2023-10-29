@@ -24,7 +24,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             Console.SetOut(stringWriter);
 
             // Act.
-            Task task = Task.Run(() => monitorCommand.Execute());
+            Task task = monitorCommand.ExecuteAsync();
 
             await EventsUtilities.WaitForEventsRegistrationAsync();
 
@@ -56,7 +56,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             Console.SetOut(stringWriter);
 
             // Act.
-            Task task = Task.Run(() => monitorCommand.Execute());
+            Task task = monitorCommand.ExecuteAsync();
 
             await EventsUtilities.WaitForEventsRegistrationAsync();
 
@@ -90,7 +90,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             Console.SetOut(stringWriter);
 
             // Act.
-            Task task = Task.Run(() => monitorCommand.Execute());
+            Task task = monitorCommand.ExecuteAsync();
 
             await EventsUtilities.WaitForEventsRegistrationAsync();
 
@@ -124,7 +124,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             Console.SetOut(stringWriter);
 
             // Act.
-            Task task = Task.Run(() => monitorCommand.Execute());
+            Task task = monitorCommand.ExecuteAsync();
 
             await EventsUtilities.WaitForEventsRegistrationAsync();
 

@@ -1,18 +1,19 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Threading.Tasks;
 
 namespace InstallationsMonitor.Commands
 {
     internal abstract class Command
     {
-        internal void Execute()
+        internal async Task ExecuteAsync()
         {
             IServiceProvider serviceProvider = this.BuildServices();
 
-            this.Execute(serviceProvider);
+            await this.ExecuteAsync(serviceProvider);
         }
 
-        protected abstract void Execute(IServiceProvider serviceProvider);
+        protected abstract Task ExecuteAsync(IServiceProvider serviceProvider);
 
         protected virtual void ConfigureSpecificServices(IServiceCollection services)
         {
