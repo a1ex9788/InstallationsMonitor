@@ -16,45 +16,17 @@ namespace InstallationsMonitor.Tests.UnitTests
         public void SaveEveryTypeOfEntity_NewDatabase_PersistsEverything()
         {
             // Arrange.
-            Installation installation = new Installation
+            Installation installation = new Installation("Program")
             {
                 Id = 1,
-                ProgramName = "Program",
                 FileOperationsNumber = 4,
             };
 
-            FileChange fileChange = new FileChange
-            {
-                Id = 1,
-                InstallationId = installation.Id,
-                FileName = "FileChanged",
-                DateTime = DateTime.MinValue,
-            };
-
-            FileCreation fileCreation = new FileCreation
-            {
-                Id = 2,
-                InstallationId = installation.Id,
-                FileName = "FileCreated",
-                DateTime = DateTime.MinValue,
-            };
-
-            FileDeletion fileDeletion = new FileDeletion
-            {
-                Id = 3,
-                InstallationId = installation.Id,
-                FileName = "FileDeleted",
-                DateTime = DateTime.MinValue,
-            };
-
-            FileRenaming fileRenaming = new FileRenaming
-            {
-                Id = 4,
-                InstallationId = installation.Id,
-                FileName = "FileRenamed",
-                OldName = "OldFile",
-                DateTime = DateTime.MinValue,
-            };
+            FileChange fileChange = new FileChange("FileChanged", DateTime.MinValue, installation.Id);
+            FileCreation fileCreation = new FileCreation("FileCreated", DateTime.MinValue, installation.Id);
+            FileDeletion fileDeletion = new FileDeletion("FileDeleted", DateTime.MinValue, installation.Id);
+            FileRenaming fileRenaming = new FileRenaming(
+                "FileRenamed", DateTime.MinValue, installation.Id, "OldFile");
 
             using AppDbContext appDbContext = DatabaseUtilities.GetTestAppDbContext();
             using DatabaseConnection databaseConnection = new DatabaseConnection(appDbContext);
