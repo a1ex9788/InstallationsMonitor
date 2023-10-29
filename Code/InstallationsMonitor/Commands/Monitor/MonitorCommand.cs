@@ -50,10 +50,10 @@ namespace InstallationsMonitor.Commands.Monitor
 
             do
             {
-                Console.WriteLine("Introduce the name of the program of the installation to monitor.");
+                Console.Write("Introduce the name of the program of the installation to monitor: ");
                 string? name = Console.ReadLine();
 
-                if (!string.IsNullOrEmpty(name))
+                if (!string.IsNullOrWhiteSpace(name))
                 {
                     programName = name;
                 }
