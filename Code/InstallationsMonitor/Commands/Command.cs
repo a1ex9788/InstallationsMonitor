@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 
 namespace InstallationsMonitor.Commands
 {
-    internal abstract class Command
+    internal abstract class Command : ICommand
     {
-        internal async Task ExecuteAsync()
+        public async Task ExecuteAsync()
         {
             IServiceProvider serviceProvider = this.BuildServices();
 

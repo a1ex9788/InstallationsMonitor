@@ -1,5 +1,4 @@
 ﻿using InstallationsMonitor.Commands;
-using InstallationsMonitor.Commands.Monitor;
 using McMaster.Extensions.CommandLineUtils;
 
 namespace InstallationsMonitor
@@ -31,7 +30,7 @@ namespace InstallationsMonitor
 
                     command.OnExecuteAsync(async ct =>
                     {
-                        MonitorCommand monitorCommand = CommandsCreator.CreateMonitorCommand(
+                        ICommand monitorCommand = CommandsCreator.CreateMonitorCommand(
                             directoryCommandOption.Value(), ct);
 
                         await monitorCommand.ExecuteAsync();

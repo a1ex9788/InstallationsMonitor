@@ -11,14 +11,15 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
     public class MonitorCommandTests
     {
         [TestMethod]
-        public async Task Execute_FileCreated_PrintsFile()
+        public async Task ExecuteAsync_ForAllDrives_PrintsAllFiles()
         {
             // Arrange.
             string testPath = TempPathUtilities.GetTempDirectory();
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-            MonitorCommand monitorCommand = new MonitorCommand(testPath, cancellationTokenSource.Token);
+            MonitorCommand monitorCommand = new MonitorCommand(
+                directory: null, cancellationTokenSource.Token);
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
@@ -28,14 +29,16 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
 
             await EventsUtilities.WaitForEventsRegistrationAsync();
 
-            string filePath = Path.Combine(testPath, Guid.NewGuid().ToString());
+            string filePath1 = Path.Combine(testPath, Guid.NewGuid().ToString());
+            string filePath2 = TempPathUtilities.GetTempFile();
 
-            await File.Create(filePath).DisposeAsync();
+            await File.Create(filePath1).DisposeAsync();
+            await File.Create(filePath2).DisposeAsync();
 
             // Assert.
             await EventsUtilities.WaitForEventsProsecutionAsync(
                 stringWriter,
-                expectedCreatedFiles: new string[] { filePath });
+                expectedCreatedFiles: new string[] { filePath1, filePath2 });
 
             cancellationTokenSource.Cancel();
 
@@ -43,7 +46,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
         }
 
         [TestMethod]
-        public async Task Execute_FileChanged_PrintsFile()
+        public async Task ExecuteAsync_ForConcretePath_PrintsOnlySomeFiles()
         {
             // Arrange.
             string testPath = TempPathUtilities.GetTempDirectory();
@@ -60,85 +63,17 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
 
             await EventsUtilities.WaitForEventsRegistrationAsync();
 
-            string filePath = Path.Combine(testPath, Guid.NewGuid().ToString());
+            string filePath1 = Path.Combine(testPath, Guid.NewGuid().ToString());
+            string filePath2 = TempPathUtilities.GetTempFile();
 
-            await File.Create(filePath).DisposeAsync();
-            File.WriteAllText(filePath, string.Empty);
-
-            // Assert.
-            await EventsUtilities.WaitForEventsProsecutionAsync(
-                stringWriter,
-                expectedChangedFiles: new string[] { filePath },
-                expectedCreatedFiles: new string[] { filePath });
-
-            cancellationTokenSource.Cancel();
-
-            await task;
-        }
-
-        [TestMethod]
-        public async Task Execute_FileDeleted_PrintsFile()
-        {
-            // Arrange.
-            string testPath = TempPathUtilities.GetTempDirectory();
-
-            using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-
-            MonitorCommand monitorCommand = new MonitorCommand(testPath, cancellationTokenSource.Token);
-
-            using StringWriter stringWriter = new StringWriter();
-            Console.SetOut(stringWriter);
-
-            // Act.
-            Task task = monitorCommand.ExecuteAsync();
-
-            await EventsUtilities.WaitForEventsRegistrationAsync();
-
-            string filePath = Path.Combine(testPath, Guid.NewGuid().ToString());
-
-            await File.Create(filePath).DisposeAsync();
-            File.Delete(filePath);
+            await File.Create(filePath1).DisposeAsync();
+            await File.Create(filePath2).DisposeAsync();
 
             // Assert.
             await EventsUtilities.WaitForEventsProsecutionAsync(
                 stringWriter,
-                expectedCreatedFiles: new string[] { filePath },
-                expectedDeletedFiles: new string[] { filePath });
-
-            cancellationTokenSource.Cancel();
-
-            await task;
-        }
-
-        [TestMethod]
-        public async Task Execute_FileRenamed_PrintsFile()
-        {
-            // Arrange.
-            string testPath = TempPathUtilities.GetTempDirectory();
-
-            using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-
-            MonitorCommand monitorCommand = new MonitorCommand(testPath, cancellationTokenSource.Token);
-
-            using StringWriter stringWriter = new StringWriter();
-            Console.SetOut(stringWriter);
-
-            // Act.
-            Task task = monitorCommand.ExecuteAsync();
-
-            await EventsUtilities.WaitForEventsRegistrationAsync();
-
-            string filePath = Path.Combine(testPath, Guid.NewGuid().ToString());
-            string newFilePath = Path.Combine(testPath, Guid.NewGuid().ToString());
-
-            await File.Create(filePath).DisposeAsync();
-            File.Move(filePath, newFilePath);
-
-            // Assert.
-            await EventsUtilities.WaitForEventsProsecutionAsync(
-                stringWriter,
-                expectedCreatedFiles: new string[] { filePath },
-                expectedRenamedFiles: new (string OldPath, string NewPath)[] { (filePath, newFilePath) });
+                expectedCreatedFiles: new string[] { filePath1 },
+                expectedNotCreatedFiles: new string[] { filePath2 });
 
             cancellationTokenSource.Cancel();
 
