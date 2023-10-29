@@ -38,6 +38,11 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             await File.Create(filePath2).DisposeAsync();
 
             // Assert.
+            foreach (string drive in DrivesObtainer.GetDrives())
+            {
+                stringWriter.ToString().Should().Contain($"Monitoring directory '{drive}'...");
+            }
+
             await EventsUtilities.WaitForEventsProsecutionAsync(
                 stringWriter,
                 expectedCreatedFiles: new string[] { filePath1, filePath2 });
@@ -73,6 +78,8 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             await File.Create(filePath2).DisposeAsync();
 
             // Assert.
+            stringWriter.ToString().Should().Contain($"Monitoring directory '{testPath}'...");
+
             await EventsUtilities.WaitForEventsProsecutionAsync(
                 stringWriter,
                 expectedCreatedFiles: new string[] { filePath1 },

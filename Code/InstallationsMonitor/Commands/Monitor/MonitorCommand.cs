@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -30,14 +29,14 @@ namespace InstallationsMonitor.Commands.Monitor
 
             if (this.directory is null)
             {
-                IEnumerable<string> drives = DriveInfo.GetDrives()
-                    .Where(di => di.DriveType == DriveType.Fixed)
-                    .Select(di => di.Name);
+                List<Task> tasks = new List<Task>();
 
-                foreach (string drive in drives)
+                foreach (string drive in DrivesObtainer.GetDrives())
                 {
-                    await DirectoriesMonitor.MonitorAsync(drive, this.cancellationToken);
+                    tasks.Add(DirectoriesMonitor.MonitorAsync(drive, this.cancellationToken));
                 }
+
+                await Task.WhenAll(tasks);
             }
             else
             {

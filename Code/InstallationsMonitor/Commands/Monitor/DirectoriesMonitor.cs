@@ -7,10 +7,11 @@ namespace InstallationsMonitor.Commands.Monitor
 {
     internal class DirectoriesMonitor
     {
-        internal static async Task MonitorAsync(
-            string directoryToMonitor, CancellationToken cancellationToken)
+        internal static async Task MonitorAsync(string directory, CancellationToken cancellationToken)
         {
-            using var watcher = new FileSystemWatcher(directoryToMonitor);
+            Console.WriteLine("Monitoring directory '{0}'...", directory);
+
+            using var watcher = new FileSystemWatcher(directory);
 
             watcher.EnableRaisingEvents = true;
             watcher.IncludeSubdirectories = true;
