@@ -18,12 +18,13 @@ namespace InstallationsMonitor.Tests.IntegrationTests
         {
             // Arrange.
             string testPath = TempPathUtilities.GetTempDirectory();
-            string[] args = new string[] { "monitor" };
+            string programName = "Program";
+            string[] args = new string[] { "monitor", "-p", programName };
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-            CommandsCreator.CreateMonitorCommandImplementation =
-                (directory, _) => new MonitorCommand(directory, cancellationTokenSource.Token);
+            CommandsCreator.CreateMonitorCommandImplementation = (directory, programName, _)
+                => new MonitorCommand(directory, programName, cancellationTokenSource.Token);
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
@@ -45,7 +46,6 @@ namespace InstallationsMonitor.Tests.IntegrationTests
                 expectedCreatedFiles: new string[] { filePath1, filePath2 });
 
             cancellationTokenSource.Cancel();
-
             await task;
         }
 
@@ -55,11 +55,11 @@ namespace InstallationsMonitor.Tests.IntegrationTests
             // Arrange.
             string[] args = new string[] { "monitor" };
 
-            string? directory = null;
+            string? directoryPassed = null;
 
-            CommandsCreator.CreateMonitorCommandImplementation = (d, _) =>
+            CommandsCreator.CreateMonitorCommandImplementation = (d, _, _) =>
             {
-                directory = d;
+                directoryPassed = d;
 
                 return new Mock<ICommand>().Object;
             };
@@ -68,7 +68,7 @@ namespace InstallationsMonitor.Tests.IntegrationTests
             Program.Main(args);
 
             // Assert.
-            directory.Should().Be(null);
+            directoryPassed.Should().Be(null);
         }
 
         [TestMethod]
@@ -78,11 +78,11 @@ namespace InstallationsMonitor.Tests.IntegrationTests
             string testPath = TempPathUtilities.GetTempDirectory();
             string[] args = new string[] { "monitor", "-d", testPath };
 
-            string? directory = null;
+            string? directoryPassed = null;
 
-            CommandsCreator.CreateMonitorCommandImplementation = (d, _) =>
+            CommandsCreator.CreateMonitorCommandImplementation = (d, _, _) =>
             {
-                directory = d;
+                directoryPassed = d;
 
                 return new Mock<ICommand>().Object;
             };
@@ -91,7 +91,52 @@ namespace InstallationsMonitor.Tests.IntegrationTests
             Program.Main(args);
 
             // Assert.
-            directory.Should().Be(testPath);
+            directoryPassed.Should().Be(testPath);
+        }
+
+        [TestMethod]
+        public void MonitorCommand_ProgramNameNotSpecified_NullStringPassed()
+        {
+            // Arrange.
+            string[] args = new string[] { "monitor" };
+
+            string? programNamePassed = null;
+
+            CommandsCreator.CreateMonitorCommandImplementation = (_, pn, _) =>
+            {
+                programNamePassed = pn;
+
+                return new Mock<ICommand>().Object;
+            };
+
+            // Act.
+            Program.Main(args);
+
+            // Assert.
+            programNamePassed.Should().Be(null);
+        }
+
+        [TestMethod]
+        public void MonitorCommand_ProgramNameSpecified_ProgramNamePassed()
+        {
+            // Arrange.
+            string programName = "Program";
+            string[] args = new string[] { "monitor", "-p", programName };
+
+            string? programNamePassed = null;
+
+            CommandsCreator.CreateMonitorCommandImplementation = (_, pn, _) =>
+            {
+                programNamePassed = pn;
+
+                return new Mock<ICommand>().Object;
+            };
+
+            // Act.
+            Program.Main(args);
+
+            // Assert.
+            programNamePassed.Should().Be(programName);
         }
     }
 }

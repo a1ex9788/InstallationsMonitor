@@ -1,4 +1,5 @@
-﻿using InstallationsMonitor.Commands.Monitor;
+﻿using FluentAssertions;
+using InstallationsMonitor.Commands.Monitor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
@@ -15,13 +16,15 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
         {
             // Arrange.
             string testPath = TempPathUtilities.GetTempDirectory();
+            string programName = "Program";
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
 
             // Act.
-            Task task = DirectoriesMonitor.MonitorAsync(testPath, cancellationTokenSource.Token);
+            Task task = DirectoriesMonitor.MonitorAsync(
+                testPath, programName, cancellationTokenSource.Token);
 
             await EventsUtilities.WaitForEventsRegistrationAsync();
 
@@ -30,12 +33,14 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             await File.Create(filePath).DisposeAsync();
 
             // Assert.
+            stringWriter.ToString().Should().Contain(
+                $"Monitoring installation of program '{programName}'...");
+
             await EventsUtilities.WaitForEventsProsecutionAsync(
                 stringWriter,
                 expectedCreatedFiles: new string[] { filePath });
 
             cancellationTokenSource.Cancel();
-
             await task;
         }
 
@@ -44,13 +49,15 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
         {
             // Arrange.
             string testPath = TempPathUtilities.GetTempDirectory();
+            string programName = "Program";
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
 
             // Act.
-            Task task = DirectoriesMonitor.MonitorAsync(testPath, cancellationTokenSource.Token);
+            Task task = DirectoriesMonitor.MonitorAsync(
+                testPath, programName, cancellationTokenSource.Token);
 
             await EventsUtilities.WaitForEventsRegistrationAsync();
 
@@ -60,13 +67,15 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             File.WriteAllText(filePath, string.Empty);
 
             // Assert.
+            stringWriter.ToString().Should().Contain(
+                $"Monitoring installation of program '{programName}'...");
+
             await EventsUtilities.WaitForEventsProsecutionAsync(
                 stringWriter,
                 expectedChangedFiles: new string[] { filePath },
                 expectedCreatedFiles: new string[] { filePath });
 
             cancellationTokenSource.Cancel();
-
             await task;
         }
 
@@ -75,13 +84,15 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
         {
             // Arrange.
             string testPath = TempPathUtilities.GetTempDirectory();
+            string programName = "Program";
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
 
             // Act.
-            Task task = DirectoriesMonitor.MonitorAsync(testPath, cancellationTokenSource.Token);
+            Task task = DirectoriesMonitor.MonitorAsync(
+                testPath, programName, cancellationTokenSource.Token);
 
             await EventsUtilities.WaitForEventsRegistrationAsync();
 
@@ -91,13 +102,15 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             File.Delete(filePath);
 
             // Assert.
+            stringWriter.ToString().Should().Contain(
+                $"Monitoring installation of program '{programName}'...");
+
             await EventsUtilities.WaitForEventsProsecutionAsync(
                 stringWriter,
                 expectedCreatedFiles: new string[] { filePath },
                 expectedDeletedFiles: new string[] { filePath });
 
             cancellationTokenSource.Cancel();
-
             await task;
         }
 
@@ -106,13 +119,15 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
         {
             // Arrange.
             string testPath = TempPathUtilities.GetTempDirectory();
+            string programName = "Program";
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
 
             // Act.
-            Task task = DirectoriesMonitor.MonitorAsync(testPath, cancellationTokenSource.Token);
+            Task task = DirectoriesMonitor.MonitorAsync(
+                testPath, programName, cancellationTokenSource.Token);
 
             await EventsUtilities.WaitForEventsRegistrationAsync();
 
@@ -123,13 +138,15 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             File.Move(filePath, newFilePath);
 
             // Assert.
+            stringWriter.ToString().Should().Contain(
+                $"Monitoring installation of program '{programName}'...");
+
             await EventsUtilities.WaitForEventsProsecutionAsync(
                 stringWriter,
                 expectedCreatedFiles: new string[] { filePath },
                 expectedRenamedFiles: new (string OldPath, string NewPath)[] { (filePath, newFilePath) });
 
             cancellationTokenSource.Cancel();
-
             await task;
         }
     }

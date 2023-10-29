@@ -26,12 +26,19 @@ namespace InstallationsMonitor
                 command =>
                 {
                     CommandOption directoryCommandOption = command.Option(
-                        "-d", "The directory to monitor.", CommandOptionType.SingleValue);
+                        "-d",
+                        "The directory to monitor.",
+                        CommandOptionType.SingleValue);
+
+                    CommandOption programNameCommandOption = command.Option(
+                        "-p",
+                        "The name of the program of the installation to monitor.",
+                        CommandOptionType.SingleValue);
 
                     command.OnExecuteAsync(async ct =>
                     {
                         ICommand monitorCommand = CommandsCreator.CreateMonitorCommand(
-                            directoryCommandOption.Value(), ct);
+                            directoryCommandOption.Value(), programNameCommandOption.Value(), ct);
 
                         await monitorCommand.ExecuteAsync();
                     });

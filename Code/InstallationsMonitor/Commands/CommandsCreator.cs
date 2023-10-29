@@ -7,13 +7,13 @@ namespace InstallationsMonitor.Commands
     // This class creates hooks to override at tests.
     internal static class CommandsCreator
     {
-        internal static Func<string?, CancellationToken, ICommand> CreateMonitorCommandImplementation =
-            (d, ct) => new MonitorCommand(d, ct);
+        internal static Func<string?, string?, CancellationToken, ICommand>
+            CreateMonitorCommandImplementation = (d, pn, ct) => new MonitorCommand(d, pn, ct);
 
         internal static ICommand CreateMonitorCommand(
-            string? directory, CancellationToken cancellationToken)
+            string? directory, string? programName, CancellationToken cancellationToken)
         {
-            return CreateMonitorCommandImplementation(directory, cancellationToken);
+            return CreateMonitorCommandImplementation(directory, programName, cancellationToken);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using InstallationsMonitor.Commands.Monitor;
+﻿using FluentAssertions;
+using InstallationsMonitor.Commands.Monitor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
@@ -15,11 +16,12 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
         {
             // Arrange.
             string testPath = TempPathUtilities.GetTempDirectory();
+            string programName = "Program";
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
             MonitorCommand monitorCommand = new MonitorCommand(
-                directory: null, cancellationTokenSource.Token);
+                directory: null, programName, cancellationTokenSource.Token);
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
@@ -41,7 +43,6 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
                 expectedCreatedFiles: new string[] { filePath1, filePath2 });
 
             cancellationTokenSource.Cancel();
-
             await task;
         }
 
@@ -50,10 +51,12 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
         {
             // Arrange.
             string testPath = TempPathUtilities.GetTempDirectory();
+            string programName = "Program";
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-            MonitorCommand monitorCommand = new MonitorCommand(testPath, cancellationTokenSource.Token);
+            MonitorCommand monitorCommand = new MonitorCommand(
+                testPath, programName, cancellationTokenSource.Token);
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
@@ -76,8 +79,62 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
                 expectedNotCreatedFiles: new string[] { filePath2 });
 
             cancellationTokenSource.Cancel();
-
             await task;
+        }
+
+        [TestMethod]
+        public async Task ExecuteAsync_ProgramNameNotSpecified_ProgramNameFromConsoleReadLine()
+        {
+            // Arrange.
+            string programName = "Program";
+            using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+
+            MonitorCommand monitorCommand = new MonitorCommand(
+                directory: null, programName: null, cancellationTokenSource.Token);
+
+            using StringReader stringReader = new StringReader(programName);
+            Console.SetIn(stringReader);
+
+            using StringWriter stringWriter = new StringWriter();
+            Console.SetOut(stringWriter);
+
+            // Act.
+            Task task = monitorCommand.ExecuteAsync();
+
+            await EventsUtilities.WaitForEventsRegistrationAsync();
+
+            cancellationTokenSource.Cancel();
+            await task;
+
+            // Assert.
+            stringWriter.ToString().Should().Contain(
+                $"Monitoring installation of program '{programName}'...");
+        }
+
+        [TestMethod]
+        public async Task ExecuteAsync_ProgramNameSpecified_ProgramNameFromArguments()
+        {
+            // Arrange.
+            string programName = "Program";
+            using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+
+            MonitorCommand monitorCommand = new MonitorCommand(
+                directory: null, programName: programName, cancellationTokenSource.Token);
+
+            using StringWriter stringWriter = new StringWriter();
+            Console.SetOut(stringWriter);
+
+            // Act.
+            Task task = monitorCommand.ExecuteAsync();
+
+            await EventsUtilities.WaitForEventsRegistrationAsync();
+
+            cancellationTokenSource.Cancel();
+            await task;
+
+            // Assert.
+            stringWriter.ToString().Should().Contain(
+                $"Monitoring installation of program '{programName}'...");
         }
     }
 }
