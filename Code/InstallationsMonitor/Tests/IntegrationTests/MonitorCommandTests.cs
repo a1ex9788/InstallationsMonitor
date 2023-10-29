@@ -20,7 +20,7 @@ namespace InstallationsMonitor.Tests.IntegrationTests
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-            CommandsCreator.CreateMonitorcommandImplementation =
+            CommandsCreator.CreateMonitorCommandImplementation =
                 (directory, _) => new MonitorCommand(directory, cancellationTokenSource.Token);
 
             using StringWriter stringWriter = new StringWriter();
@@ -56,7 +56,7 @@ namespace InstallationsMonitor.Tests.IntegrationTests
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-            CommandsCreator.CreateMonitorcommandImplementation =
+            CommandsCreator.CreateMonitorCommandImplementation =
                 (directory, _) => new MonitorCommand(directory, cancellationTokenSource.Token);
 
             using StringWriter stringWriter = new StringWriter();
