@@ -8,10 +8,8 @@ namespace InstallationsMonitor.Commands.Monitor
     internal class DirectoriesMonitor
     {
         internal static async Task MonitorAsync(
-            string directoryToMonitor, string programName, CancellationToken cancellationToken)
+            string directoryToMonitor, CancellationToken cancellationToken)
         {
-            Console.WriteLine("Monitoring installation of program '{0}'...", programName);
-
             using var watcher = new FileSystemWatcher(directoryToMonitor);
 
             watcher.EnableRaisingEvents = true;

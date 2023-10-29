@@ -24,7 +24,9 @@ namespace InstallationsMonitor.Commands.Monitor
 
         protected override async Task ExecuteAsync(IServiceProvider serviceProvider)
         {
-            string? programNameToUse = this.programName ?? AskForProgramName();
+            string programNameToUse = this.programName ?? AskForProgramName();
+
+            Console.WriteLine("Monitoring installation of program '{0}'...", programNameToUse);
 
             if (this.directory is null)
             {
@@ -34,13 +36,12 @@ namespace InstallationsMonitor.Commands.Monitor
 
                 foreach (string drive in drives)
                 {
-                    await DirectoriesMonitor.MonitorAsync(drive, programNameToUse, this.cancellationToken);
+                    await DirectoriesMonitor.MonitorAsync(drive, this.cancellationToken);
                 }
             }
             else
             {
-                await DirectoriesMonitor.MonitorAsync(
-                    this.directory, programNameToUse, this.cancellationToken);
+                await DirectoriesMonitor.MonitorAsync(this.directory, this.cancellationToken);
             }
         }
 
