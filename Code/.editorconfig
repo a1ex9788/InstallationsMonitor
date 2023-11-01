@@ -16,8 +16,14 @@ dotnet_diagnostic.CA1303.severity = none
 # CA2007: Consider calling ConfigureAwait on the awaited task
 dotnet_diagnostic.CA2007.severity = none
 
+# CS4014: Because this call is not awaited, execution of the current method continues before the call is completed
+dotnet_diagnostic.CS4014.severity = error
+
 # IDE0090: 'new' expression can be simplified
 dotnet_diagnostic.IDE0090.severity = none
+
+# VSTHRD110: Observe result of async calls
+dotnet_diagnostic.VSTHRD110.severity = error
 
 [*Tests.cs]
 # CA1707: Identifiers should not contain underscores
