@@ -12,34 +12,6 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
     public class DirectoriesMonitorTests
     {
         [TestMethod]
-        public async Task MonitorAsync_FileCreated_PrintsFile()
-        {
-            // Arrange.
-            string testPath = TempPathUtilities.GetTempDirectory();
-            using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-
-            using StringWriter stringWriter = new StringWriter();
-            Console.SetOut(stringWriter);
-
-            // Act.
-            Task task = DirectoriesMonitor.MonitorAsync(testPath, cancellationTokenSource.Token);
-
-            await EventsUtilities.WaitForEventsRegistrationAsync();
-
-            string filePath = Path.Combine(testPath, Guid.NewGuid().ToString());
-
-            await File.Create(filePath).DisposeAsync();
-
-            // Assert.
-            await EventsUtilities.WaitForEventsProsecutionAsync(
-                stringWriter,
-                expectedCreatedFiles: new string[] { filePath });
-
-            cancellationTokenSource.Cancel();
-            await task;
-        }
-
-        [TestMethod]
         public async Task MonitorAsync_FileChanged_PrintsFile()
         {
             // Arrange.
@@ -63,6 +35,34 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             await EventsUtilities.WaitForEventsProsecutionAsync(
                 stringWriter,
                 expectedChangedFiles: new string[] { filePath },
+                expectedCreatedFiles: new string[] { filePath });
+
+            cancellationTokenSource.Cancel();
+            await task;
+        }
+
+        [TestMethod]
+        public async Task MonitorAsync_FileCreated_PrintsFile()
+        {
+            // Arrange.
+            string testPath = TempPathUtilities.GetTempDirectory();
+            using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+
+            using StringWriter stringWriter = new StringWriter();
+            Console.SetOut(stringWriter);
+
+            // Act.
+            Task task = DirectoriesMonitor.MonitorAsync(testPath, cancellationTokenSource.Token);
+
+            await EventsUtilities.WaitForEventsRegistrationAsync();
+
+            string filePath = Path.Combine(testPath, Guid.NewGuid().ToString());
+
+            await File.Create(filePath).DisposeAsync();
+
+            // Assert.
+            await EventsUtilities.WaitForEventsProsecutionAsync(
+                stringWriter,
                 expectedCreatedFiles: new string[] { filePath });
 
             cancellationTokenSource.Cancel();

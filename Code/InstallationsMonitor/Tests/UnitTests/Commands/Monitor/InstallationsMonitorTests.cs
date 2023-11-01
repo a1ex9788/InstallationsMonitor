@@ -7,10 +7,12 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
+using InstallationsMonitorClass = InstallationsMonitor.Commands.Monitor.InstallationsMonitor;
+
 namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
 {
     [TestClass]
-    public class MonitorCommandTests
+    public class InstallationsMonitorTests
     {
         [TestMethod]
         public async Task ExecuteAsync_ForAllDrives_PrintsAllFiles()
@@ -21,14 +23,12 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-            MonitorCommand monitorCommand = new MonitorCommand(
-                directory: null, programName, cancellationTokenSource.Token);
-
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
 
             // Act.
-            Task task = monitorCommand.ExecuteAsync();
+            Task task = InstallationsMonitorClass.MonitorAsync(
+                directory: null, programName, cancellationTokenSource.Token);
 
             await EventsUtilities.WaitForEventsRegistrationAsync();
 
@@ -47,7 +47,6 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             await EventsUtilities.WaitForEventsProsecutionAsync(
                 stringWriter,
                 expectedCreatedFiles: new string[] { filePath1, filePath2 });
-
             cancellationTokenSource.Cancel();
             await task;
         }
@@ -61,14 +60,12 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-            MonitorCommand monitorCommand = new MonitorCommand(
-                testPath, programName, cancellationTokenSource.Token);
-
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
 
             // Act.
-            Task task = monitorCommand.ExecuteAsync();
+            Task task = InstallationsMonitorClass.MonitorAsync(
+                directory: testPath, programName, cancellationTokenSource.Token);
 
             await EventsUtilities.WaitForEventsRegistrationAsync();
 
@@ -97,9 +94,6 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             string programName = "Program";
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-            MonitorCommand monitorCommand = new MonitorCommand(
-                directory: null, programName: null, cancellationTokenSource.Token);
-
             using StringReader stringReader = new StringReader(programName);
             Console.SetIn(stringReader);
 
@@ -107,7 +101,8 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             Console.SetOut(stringWriter);
 
             // Act.
-            Task task = monitorCommand.ExecuteAsync();
+            Task task = InstallationsMonitorClass.MonitorAsync(
+                directory: null, programName, cancellationTokenSource.Token);
 
             await EventsUtilities.WaitForEventsRegistrationAsync();
 
@@ -126,14 +121,12 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             string programName = "Program";
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-            MonitorCommand monitorCommand = new MonitorCommand(
-                directory: null, programName: programName, cancellationTokenSource.Token);
-
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
 
             // Act.
-            Task task = monitorCommand.ExecuteAsync();
+            Task task = InstallationsMonitorClass.MonitorAsync(
+                directory: null, programName, cancellationTokenSource.Token);
 
             await EventsUtilities.WaitForEventsRegistrationAsync();
 
