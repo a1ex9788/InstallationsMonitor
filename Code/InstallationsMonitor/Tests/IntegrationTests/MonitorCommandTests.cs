@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using InstallationsMonitor.Commands;
 using InstallationsMonitor.Commands.Monitor;
+using InstallationsMonitor.Tests.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;

@@ -2,6 +2,7 @@
 using InstallationsMonitor.Entities;
 using InstallationsMonitor.Entities.Base;
 using InstallationsMonitor.Persistence;
+using InstallationsMonitor.Tests.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;

@@ -1,7 +1,7 @@
 ﻿using InstallationsMonitor.Persistence;
 using System.IO;
 
-namespace InstallationsMonitor.Tests
+namespace InstallationsMonitor.Tests.Utilities
 {
     internal static class DatabaseUtilities
     {

@@ -5,7 +5,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace InstallationsMonitor.Tests
+namespace InstallationsMonitor.Tests.Utilities
 {
     internal class EventsUtilities
     {

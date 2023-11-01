@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using InstallationsMonitor.Commands.Monitor;
+using InstallationsMonitor.Tests.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
