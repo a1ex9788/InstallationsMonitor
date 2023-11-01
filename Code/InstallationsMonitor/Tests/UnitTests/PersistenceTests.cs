@@ -29,8 +29,7 @@ namespace InstallationsMonitor.Tests.UnitTests
             FileRenaming fileRenaming = new FileRenaming(
                 "FileRenamed", DateTime.MinValue, installation.Id, "OldFile");
 
-            using AppDbContext appDbContext = DatabaseUtilities.GetTestAppDbContext();
-            using DatabaseConnection databaseConnection = new DatabaseConnection(appDbContext);
+            using DatabaseConnection databaseConnection = DatabaseUtilities.GetTestDatabaseConnection();
 
             // Act.
             databaseConnection.CreateInstallation(installation);
