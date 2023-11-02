@@ -1,4 +1,6 @@
-﻿using System;
+﻿using InstallationsMonitor.Entities;
+using InstallationsMonitor.Persistence;
+using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,20 +9,32 @@ namespace InstallationsMonitor.Commands.Monitor
 {
     internal class DirectoriesMonitor
     {
-        internal static async Task MonitorAsync(string directory, CancellationToken cancellationToken)
+        private readonly DatabaseConnection databaseConnection;
+
+        private int? installationId;
+
+        public DirectoriesMonitor(DatabaseConnection databaseConnection)
+        {
+            this.databaseConnection = databaseConnection;
+        }
+
+        internal async Task MonitorAsync(
+            string directory, int installationId, CancellationToken cancellationToken)
         {
             Console.WriteLine("Monitoring directory '{0}'...", directory);
 
-            using var watcher = new FileSystemWatcher(directory);
+            this.installationId = installationId;
 
-            watcher.EnableRaisingEvents = true;
-            watcher.IncludeSubdirectories = true;
+            using FileSystemWatcher fileSystemWatcher = new FileSystemWatcher(directory);
 
-            watcher.Changed += OnChanged;
-            watcher.Created += OnCreated;
-            watcher.Deleted += OnDeleted;
-            watcher.Renamed += OnRenamed;
-            watcher.Error += OnError;
+            fileSystemWatcher.EnableRaisingEvents = true;
+            fileSystemWatcher.IncludeSubdirectories = true;
+
+            fileSystemWatcher.Changed += this.OnChanged;
+            fileSystemWatcher.Created += this.OnCreated;
+            fileSystemWatcher.Deleted += this.OnDeleted;
+            fileSystemWatcher.Renamed += this.OnRenamed;
+            fileSystemWatcher.Error += OnError;
 
             try
             {
@@ -35,24 +49,36 @@ namespace InstallationsMonitor.Commands.Monitor
             }
         }
 
-        private static void OnChanged(object sender, FileSystemEventArgs e)
+        private void OnChanged(object sender, FileSystemEventArgs e)
         {
             Console.WriteLine($"Changed: {e.FullPath}");
+
+            this.databaseConnection.CreateFileOperation(
+                new FileChange(e.FullPath, DateTime.Now, this.installationId!.Value));
         }
 
-        private static void OnCreated(object sender, FileSystemEventArgs e)
+        private void OnCreated(object sender, FileSystemEventArgs e)
         {
             Console.WriteLine($"Created: {e.FullPath}");
+
+            this.databaseConnection.CreateFileOperation(
+                new FileCreation(e.FullPath, DateTime.Now, this.installationId!.Value));
         }
 
-        private static void OnDeleted(object sender, FileSystemEventArgs e)
+        private void OnDeleted(object sender, FileSystemEventArgs e)
         {
             Console.WriteLine($"Deleted: {e.FullPath}");
+
+            this.databaseConnection.CreateFileOperation(
+                new FileDeletion(e.FullPath, DateTime.Now, this.installationId!.Value));
         }
 
-        private static void OnRenamed(object sender, RenamedEventArgs e)
+        private void OnRenamed(object sender, RenamedEventArgs e)
         {
             Console.WriteLine($"Renamed: {e.OldFullPath} to {e.FullPath}");
+
+            this.databaseConnection.CreateFileOperation(
+                new FileRenaming(e.FullPath, DateTime.Now, this.installationId!.Value, e.OldFullPath));
         }
 
         private static void OnError(object sender, ErrorEventArgs e)

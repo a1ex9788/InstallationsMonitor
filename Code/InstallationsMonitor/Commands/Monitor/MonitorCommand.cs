@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,9 +18,18 @@ namespace InstallationsMonitor.Commands.Monitor
             this.cancellationToken = cancellationToken;
         }
 
+        protected override void ConfigureSpecificServices(IServiceCollection services)
+        {
+            services.AddScoped<InstallationsMonitor>();
+            services.AddScoped<DirectoriesMonitor>();
+        }
+
         protected override async Task ExecuteAsync(IServiceProvider serviceProvider)
         {
-            await InstallationsMonitor.MonitorAsync(
+            InstallationsMonitor installationsMonitor = serviceProvider
+                .GetRequiredService<InstallationsMonitor>();
+
+            await installationsMonitor.MonitorAsync(
                 this.directory, this.programName, this.cancellationToken);
         }
     }

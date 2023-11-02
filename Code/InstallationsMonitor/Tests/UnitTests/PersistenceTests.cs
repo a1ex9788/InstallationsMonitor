@@ -20,7 +20,6 @@ namespace InstallationsMonitor.Tests.UnitTests
             Installation installation = new Installation("Program", DateTime.MinValue)
             {
                 Id = 1,
-                FileOperationsNumber = 4,
             };
 
             FileChange fileChange = new FileChange("FileChanged", DateTime.MinValue, installation.Id);

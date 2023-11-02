@@ -23,6 +23,8 @@ namespace InstallationsMonitor.Commands
         {
             IServiceCollection services = new ServiceCollection();
 
+            services.AddPersistence();
+
             this.ConfigureSpecificServices(services);
 
             return services.BuildServiceProvider();

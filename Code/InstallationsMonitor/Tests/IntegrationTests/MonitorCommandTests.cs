@@ -1,6 +1,8 @@
 ﻿using FluentAssertions;
 using InstallationsMonitor.Commands;
 using InstallationsMonitor.Commands.Monitor;
+using InstallationsMonitor.Entities;
+using InstallationsMonitor.Persistence;
 using InstallationsMonitor.Tests.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -24,6 +26,8 @@ namespace InstallationsMonitor.Tests.IntegrationTests
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
+            using DatabaseConnection databaseConnection = DatabaseUtilities.ConfigureTestPersistence();
+
             CommandsCreator.CreateMonitorCommandImplementation = (directory, programName, _)
                 => new MonitorCommand(directory, programName, cancellationTokenSource.Token);
 
@@ -37,6 +41,7 @@ namespace InstallationsMonitor.Tests.IntegrationTests
 
             string filePath1 = Path.Combine(testPath, Guid.NewGuid().ToString());
             string filePath2 = TempPathUtilities.GetTempFile();
+            string[] filePaths = new string[] { filePath1, filePath2 };
 
             await File.Create(filePath1).DisposeAsync();
             await File.Create(filePath2).DisposeAsync();
@@ -44,10 +49,19 @@ namespace InstallationsMonitor.Tests.IntegrationTests
             // Assert.
             await EventsUtilities.WaitForEventsProsecutionAsync(
                 stringWriter,
-                expectedCreatedFiles: new string[] { filePath1, filePath2 });
+                expectedCreatedFiles: filePaths);
 
             cancellationTokenSource.Cancel();
             await task;
+
+            // Add checks.
+            Installation installation = DatabaseUtilities.CheckInstallation(
+                databaseConnection, programName);
+            DatabaseUtilities.CheckFileOperations<FileCreation>(
+                databaseConnection,
+                installation.Id,
+                filePaths,
+                checkFileOperationsNumber: false);
         }
 
         [TestMethod]

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using InstallationsMonitor.Entities;
+using InstallationsMonitor.Persistence;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,12 +9,25 @@ namespace InstallationsMonitor.Commands.Monitor
 {
     internal class InstallationsMonitor
     {
-        internal static async Task MonitorAsync(
+        private readonly DirectoriesMonitor directoriesMonitor;
+        private readonly DatabaseConnection databaseConnection;
+
+        public InstallationsMonitor(
+            DirectoriesMonitor directoriesMonitor, DatabaseConnection databaseConnection)
+        {
+            this.directoriesMonitor = directoriesMonitor;
+            this.databaseConnection = databaseConnection;
+        }
+
+        internal async Task MonitorAsync(
             string? directory, string? programName, CancellationToken cancellationToken)
         {
             string programNameToUse = programName ?? AskForProgramName();
 
             Console.WriteLine("Monitoring installation of program '{0}'...", programNameToUse);
+
+            int installationId = this.databaseConnection.CreateInstallation(
+                new Installation(programNameToUse, DateTime.Now));
 
             if (directory is null)
             {
@@ -20,14 +35,16 @@ namespace InstallationsMonitor.Commands.Monitor
 
                 foreach (string drive in DrivesObtainer.GetDrives())
                 {
-                    tasks.Add(DirectoriesMonitor.MonitorAsync(drive, cancellationToken));
+                    tasks.Add(this.directoriesMonitor.MonitorAsync(
+                        drive, installationId, cancellationToken));
                 }
 
                 await Task.WhenAll(tasks);
             }
             else
             {
-                await DirectoriesMonitor.MonitorAsync(directory, cancellationToken);
+                await this.directoriesMonitor.MonitorAsync(
+                    directory, installationId, cancellationToken);
             }
         }
 

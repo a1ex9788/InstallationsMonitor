@@ -11,7 +11,7 @@ namespace InstallationsMonitor.Tests.Utilities
     {
         internal static async Task WaitForEventsRegistrationAsync()
         {
-            await Task.Delay(100);
+            await Task.Delay(500);
         }
 
         internal static async Task WaitForEventsProsecutionAsync(
@@ -23,7 +23,7 @@ namespace InstallationsMonitor.Tests.Utilities
             IEnumerable<(string OldPath, string NewPath)>? expectedRenamedFiles = null)
         {
             using CancellationTokenSource cancellationTokenSource =
-                new CancellationTokenSource(TimeSpan.FromSeconds(5));
+                new CancellationTokenSource(TimeSpan.FromSeconds(2));
 
             bool expectedResultsPrinted = false;
 
@@ -31,7 +31,13 @@ namespace InstallationsMonitor.Tests.Utilities
             {
                 try
                 {
-                    TestOutput(stringWriter, expectedChangedFiles, expectedCreatedFiles, expectedNotCreatedFiles, expectedDeletedFiles, expectedRenamedFiles);
+                    TestOutput(
+                        stringWriter,
+                        expectedChangedFiles,
+                        expectedCreatedFiles,
+                        expectedNotCreatedFiles,
+                        expectedDeletedFiles,
+                        expectedRenamedFiles);
 
                     expectedResultsPrinted = true;
                 }
