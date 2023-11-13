@@ -25,17 +25,15 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-            using DatabaseConnection databaseConnection = DatabaseUtilities.GetTestDatabaseConnection();
-            InstallationsMonitorClass installationsMonitorClass = new InstallationsMonitorClass(
-                new DirectoriesMonitor(databaseConnection),
-                databaseConnection,
-                cancellationTokenSource.Token);
+            Get get = new Get(cancellationTokenSource.Token);
+            using DatabaseConnection databaseConnection = get.DatabaseConnection;
+            InstallationsMonitorClass installationsMonitor = get.InstallationsMonitor;
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
 
             // Act.
-            Task task = installationsMonitorClass.MonitorAsync(directory: null, programName);
+            Task task = installationsMonitor.MonitorAsync(directory: null, programName);
 
             await EventsUtilities.WaitForEventsRegistrationAsync(stringWriter);
 
@@ -75,17 +73,15 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-            using DatabaseConnection databaseConnection = DatabaseUtilities.GetTestDatabaseConnection();
-            InstallationsMonitorClass installationsMonitorClass = new InstallationsMonitorClass(
-                new DirectoriesMonitor(databaseConnection),
-                databaseConnection,
-                cancellationTokenSource.Token);
+            Get get = new Get(cancellationTokenSource.Token);
+            using DatabaseConnection databaseConnection = get.DatabaseConnection;
+            InstallationsMonitorClass installationsMonitor = get.InstallationsMonitor;
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
 
             // Act.
-            Task task = installationsMonitorClass.MonitorAsync(directory: testPath, programName);
+            Task task = installationsMonitor.MonitorAsync(directory: testPath, programName);
 
             await EventsUtilities.WaitForEventsRegistrationAsync(stringWriter);
 
@@ -119,11 +115,9 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             string programName = "Program";
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-            using DatabaseConnection databaseConnection = DatabaseUtilities.GetTestDatabaseConnection();
-            InstallationsMonitorClass installationsMonitorClass = new InstallationsMonitorClass(
-                new DirectoriesMonitor(databaseConnection),
-                databaseConnection,
-                cancellationTokenSource.Token);
+            Get get = new Get(cancellationTokenSource.Token);
+            using DatabaseConnection databaseConnection = get.DatabaseConnection;
+            InstallationsMonitorClass installationsMonitor = get.InstallationsMonitor;
 
             using StringReader stringReader = new StringReader(programName);
             Console.SetIn(stringReader);
@@ -132,7 +126,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             Console.SetOut(stringWriter);
 
             // Act.
-            Task task = installationsMonitorClass.MonitorAsync(directory: null, programName);
+            Task task = installationsMonitor.MonitorAsync(directory: null, programName);
 
             await EventsUtilities.WaitForEventsRegistrationAsync(stringWriter);
 
@@ -154,17 +148,15 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             string programName = "Program";
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-            using DatabaseConnection databaseConnection = DatabaseUtilities.GetTestDatabaseConnection();
-            InstallationsMonitorClass installationsMonitorClass = new InstallationsMonitorClass(
-                new DirectoriesMonitor(databaseConnection),
-                databaseConnection,
-                cancellationTokenSource.Token);
+            Get get = new Get(cancellationTokenSource.Token);
+            using DatabaseConnection databaseConnection = get.DatabaseConnection;
+            InstallationsMonitorClass installationsMonitor = get.InstallationsMonitor;
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
 
             // Act.
-            Task task = installationsMonitorClass.MonitorAsync(directory: null, programName);
+            Task task = installationsMonitor.MonitorAsync(directory: null, programName);
 
             await EventsUtilities.WaitForEventsRegistrationAsync(stringWriter);
 

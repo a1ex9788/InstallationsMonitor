@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace InstallationsMonitor.Tests.UnitTests
+namespace InstallationsMonitor.Tests.UnitTests.Persistence
 {
     [TestClass]
     public class PersistenceTests

@@ -10,13 +10,14 @@ namespace InstallationsMonitor.Tests.Utilities
 {
     internal static class DatabaseUtilities
     {
-        internal static DatabaseConnection GetTestDatabaseConnection()
-        {
-            string testDatabaseFullName = Path.Combine(
+        internal static readonly string TestDatabaseFullName = Path.Combine(
                 TempPathUtilities.GetTempDirectory(), "TestDatabase.db");
 
-            DatabaseOptions databaseOptions = new DatabaseOptions(testDatabaseFullName);
-            AppDbContext appDbContext = new AppDbContext(databaseOptions);
+        internal static DatabaseOptions DatabaseOptions = new DatabaseOptions(TestDatabaseFullName);
+
+        internal static DatabaseConnection GetTestDatabaseConnection()
+        {
+            AppDbContext appDbContext = new AppDbContext(DatabaseOptions);
             DatabaseConnection databaseConnection = new DatabaseConnection(appDbContext);
 
             appDbContext.Database.EnsureDeleted();

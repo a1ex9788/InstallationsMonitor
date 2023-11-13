@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using InstallationsMonitor.Persistence;
+using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 
 namespace InstallationsMonitor.Commands.Monitor
@@ -23,6 +24,7 @@ namespace InstallationsMonitor.Commands.Monitor
         {
             services.AddScoped<InstallationsMonitor>();
             services.AddScoped<DirectoriesMonitor>();
+            services.AddScoped<DatabaseFilesChecker>();
         }
 
         public async Task ExecuteAsync()

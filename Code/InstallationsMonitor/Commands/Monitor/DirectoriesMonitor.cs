@@ -10,12 +10,15 @@ namespace InstallationsMonitor.Commands.Monitor
     internal class DirectoriesMonitor
     {
         private readonly DatabaseConnection databaseConnection;
+        private readonly DatabaseFilesChecker databaseFilesChecker;
 
         private int? installationId;
 
-        public DirectoriesMonitor(DatabaseConnection databaseConnection)
+        public DirectoriesMonitor(
+            DatabaseConnection databaseConnection, DatabaseFilesChecker databaseFilesChecker)
         {
             this.databaseConnection = databaseConnection;
+            this.databaseFilesChecker = databaseFilesChecker;
         }
 
         internal async Task MonitorAsync(
@@ -51,6 +54,11 @@ namespace InstallationsMonitor.Commands.Monitor
 
         private void OnChanged(object sender, FileSystemEventArgs e)
         {
+            if (this.databaseFilesChecker.IsDatabaseFile(e.FullPath))
+            {
+                return;
+            }
+
             Console.WriteLine($"[{DateTime.Now.TimeOfDay}] Changed: {e.FullPath}");
 
             this.databaseConnection.CreateFileOperation(
@@ -59,6 +67,11 @@ namespace InstallationsMonitor.Commands.Monitor
 
         private void OnCreated(object sender, FileSystemEventArgs e)
         {
+            if (this.databaseFilesChecker.IsDatabaseFile(e.FullPath))
+            {
+                return;
+            }
+
             Console.WriteLine($"[{DateTime.Now.TimeOfDay}] Created: {e.FullPath}");
 
             this.databaseConnection.CreateFileOperation(
@@ -67,6 +80,11 @@ namespace InstallationsMonitor.Commands.Monitor
 
         private void OnDeleted(object sender, FileSystemEventArgs e)
         {
+            if (this.databaseFilesChecker.IsDatabaseFile(e.FullPath))
+            {
+                return;
+            }
+
             Console.WriteLine($"[{DateTime.Now.TimeOfDay}] Deleted: {e.FullPath}");
 
             this.databaseConnection.CreateFileOperation(
@@ -75,6 +93,11 @@ namespace InstallationsMonitor.Commands.Monitor
 
         private void OnRenamed(object sender, RenamedEventArgs e)
         {
+            if (this.databaseFilesChecker.IsDatabaseFile(e.FullPath))
+            {
+                return;
+            }
+
             Console.WriteLine($"[{DateTime.Now.TimeOfDay}] Renamed: {e.OldFullPath} to {e.FullPath}");
 
             this.databaseConnection.CreateFileOperation(
