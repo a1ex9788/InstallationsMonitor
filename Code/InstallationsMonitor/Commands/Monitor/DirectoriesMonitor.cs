@@ -51,7 +51,7 @@ namespace InstallationsMonitor.Commands.Monitor
 
         private void OnChanged(object sender, FileSystemEventArgs e)
         {
-            Console.WriteLine($"Changed: {e.FullPath}");
+            Console.WriteLine($"[{DateTime.Now.TimeOfDay}] Changed: {e.FullPath}");
 
             this.databaseConnection.CreateFileOperation(
                 new FileChange(e.FullPath, DateTime.Now, this.installationId!.Value));
@@ -59,7 +59,7 @@ namespace InstallationsMonitor.Commands.Monitor
 
         private void OnCreated(object sender, FileSystemEventArgs e)
         {
-            Console.WriteLine($"Created: {e.FullPath}");
+            Console.WriteLine($"[{DateTime.Now.TimeOfDay}] Created: {e.FullPath}");
 
             this.databaseConnection.CreateFileOperation(
                 new FileCreation(e.FullPath, DateTime.Now, this.installationId!.Value));
@@ -67,7 +67,7 @@ namespace InstallationsMonitor.Commands.Monitor
 
         private void OnDeleted(object sender, FileSystemEventArgs e)
         {
-            Console.WriteLine($"Deleted: {e.FullPath}");
+            Console.WriteLine($"[{DateTime.Now.TimeOfDay}] Deleted: {e.FullPath}");
 
             this.databaseConnection.CreateFileOperation(
                 new FileDeletion(e.FullPath, DateTime.Now, this.installationId!.Value));
@@ -75,7 +75,7 @@ namespace InstallationsMonitor.Commands.Monitor
 
         private void OnRenamed(object sender, RenamedEventArgs e)
         {
-            Console.WriteLine($"Renamed: {e.OldFullPath} to {e.FullPath}");
+            Console.WriteLine($"[{DateTime.Now.TimeOfDay}] Renamed: {e.OldFullPath} to {e.FullPath}");
 
             this.databaseConnection.CreateFileOperation(
                 new FileRenaming(e.FullPath, DateTime.Now, this.installationId!.Value, e.OldFullPath));
