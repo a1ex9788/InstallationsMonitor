@@ -54,7 +54,7 @@ namespace InstallationsMonitor.Tests.Utilities
             {
                 FileOperation? fileOperation = fileOperations.SingleOrDefault(
                     fo => fo.GetType() == typeof(T)
-                        && fo.FileName == filePathsList.ElementAt(i)
+                        && fo.FilePath == filePathsList.ElementAt(i)
                         && fo.InstallationId == installationId);
 
                 fileOperation.Should().NotBeNull();

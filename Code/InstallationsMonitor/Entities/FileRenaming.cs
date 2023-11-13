@@ -5,12 +5,12 @@ namespace InstallationsMonitor.Entities
 {
     public class FileRenaming : FileOperation
     {
-        public FileRenaming(string fileName, DateTime dateTime, int installationId, string oldName)
-            : base(fileName, dateTime, installationId)
+        public FileRenaming(string filePath, DateTime dateTime, int installationId, string oldPath)
+            : base(filePath, dateTime, installationId)
         {
-            this.OldName = oldName;
+            this.OldPath = oldPath;
         }
 
-        public string OldName { get; set; }
+        public string OldPath { get; set; }
     }
 }

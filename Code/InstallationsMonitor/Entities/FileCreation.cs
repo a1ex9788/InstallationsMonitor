@@ -5,8 +5,8 @@ namespace InstallationsMonitor.Entities
 {
     public class FileCreation : FileOperation
     {
-        public FileCreation(string fileName, DateTime dateTime, int installationId)
-            : base(fileName, dateTime, installationId)
+        public FileCreation(string filePath, DateTime dateTime, int installationId)
+            : base(filePath, dateTime, installationId)
         {
         }
     }

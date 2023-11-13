@@ -5,8 +5,8 @@ namespace InstallationsMonitor.Entities
 {
     public class FileDeletion : FileOperation
     {
-        public FileDeletion(string fileName, DateTime dateTime, int installationId)
-            : base(fileName, dateTime, installationId)
+        public FileDeletion(string filePath, DateTime dateTime, int installationId)
+            : base(filePath, dateTime, installationId)
         {
         }
     }

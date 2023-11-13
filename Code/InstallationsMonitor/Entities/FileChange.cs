@@ -5,8 +5,8 @@ namespace InstallationsMonitor.Entities
 {
     public class FileChange : FileOperation
     {
-        public FileChange(string fileName, DateTime dateTime, int installationId)
-            : base(fileName, dateTime, installationId)
+        public FileChange(string filePath, DateTime dateTime, int installationId)
+            : base(filePath, dateTime, installationId)
         {
         }
     }

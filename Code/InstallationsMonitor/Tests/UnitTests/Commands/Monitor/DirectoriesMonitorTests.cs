@@ -50,7 +50,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             await task;
 
             FileChange fileChange = (FileChange)databaseConnection.GetFileOperations().ElementAt(1);
-            fileChange.FileName.Should().Be(filePath);
+            fileChange.FilePath.Should().Be(filePath);
             fileChange.InstallationId.Should().Be(installationId);
         }
 
@@ -87,7 +87,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             await task;
 
             FileCreation fileCreation = (FileCreation)databaseConnection.GetFileOperations().Single();
-            fileCreation.FileName.Should().Be(filePath);
+            fileCreation.FilePath.Should().Be(filePath);
             fileCreation.InstallationId.Should().Be(installationId);
         }
 
@@ -127,7 +127,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             await task;
 
             FileDeletion fileDeletion = (FileDeletion)databaseConnection.GetFileOperations().ElementAt(1);
-            fileDeletion.FileName.Should().Be(filePath);
+            fileDeletion.FilePath.Should().Be(filePath);
             fileDeletion.InstallationId.Should().Be(installationId);
         }
 
@@ -167,9 +167,9 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             await task;
 
             FileRenaming fileRenaming = (FileRenaming)databaseConnection.GetFileOperations().ElementAt(1);
-            fileRenaming.FileName.Should().Be(newFilePath);
+            fileRenaming.FilePath.Should().Be(newFilePath);
             fileRenaming.InstallationId.Should().Be(installationId);
-            fileRenaming.OldName.Should().Be(filePath);
+            fileRenaming.OldPath.Should().Be(filePath);
         }
     }
 }
