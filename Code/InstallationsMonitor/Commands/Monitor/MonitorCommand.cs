@@ -1,36 +1,33 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace InstallationsMonitor.Commands.Monitor
 {
-    internal class MonitorCommand : Command
+    internal class MonitorCommand : ICommand
     {
+        private readonly InstallationsMonitor installationsMonitor;
+
         private readonly string? directory;
         private readonly string? programName;
-        public CancellationToken cancellationToken;
 
-        internal MonitorCommand(string? directory, string? programName, CancellationToken cancellationToken)
+        internal MonitorCommand(
+            InstallationsMonitor installationsMonitor, string? directory, string? programName)
         {
+            this.installationsMonitor = installationsMonitor;
+
             this.directory = directory;
             this.programName = programName;
-            this.cancellationToken = cancellationToken;
         }
 
-        protected override void ConfigureSpecificServices(IServiceCollection services)
+        internal static void ConfigureSpecificServices(IServiceCollection services)
         {
             services.AddScoped<InstallationsMonitor>();
             services.AddScoped<DirectoriesMonitor>();
         }
 
-        protected override async Task ExecuteAsync(IServiceProvider serviceProvider)
+        public async Task ExecuteAsync()
         {
-            InstallationsMonitor installationsMonitor = serviceProvider
-                .GetRequiredService<InstallationsMonitor>();
-
-            await installationsMonitor.MonitorAsync(
-                this.directory, this.programName, this.cancellationToken);
+            await this.installationsMonitor.MonitorAsync(this.directory, this.programName);
         }
     }
 }

@@ -1,9 +1,9 @@
 ﻿using FluentAssertions;
 using InstallationsMonitor.Commands;
-using InstallationsMonitor.Commands.Monitor;
 using InstallationsMonitor.Entities;
 using InstallationsMonitor.Persistence;
 using InstallationsMonitor.Tests.Utilities;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -16,6 +16,15 @@ namespace InstallationsMonitor.Tests.IntegrationTests
     [TestClass]
     public class MonitorCommandTests
     {
+        private readonly Func<IServiceProvider, string?, string?, ICommand>
+            CreateMonitorCommandFunction = CommandsCreator.CreateMonitorCommandFunction;
+
+        [TestCleanup]
+        public void TestCleanUp()
+        {
+            CommandsCreator.CreateMonitorCommandFunction = this.CreateMonitorCommandFunction;
+        }
+
         [TestMethod]
         public async Task MonitorCommand_SomeFilesCreated_PrintsExpectedResults()
         {
@@ -26,10 +35,14 @@ namespace InstallationsMonitor.Tests.IntegrationTests
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-            using DatabaseConnection databaseConnection = DatabaseUtilities.ConfigureTestPersistence();
+            using DatabaseConnection databaseConnection = DatabaseUtilities.GetTestDatabaseConnection();
 
-            CommandsCreator.CreateMonitorCommandImplementation = (directory, programName, _)
-                => new MonitorCommand(directory, programName, cancellationTokenSource.Token);
+            CommandsCreator.ExtraRegistrationsAction =
+                sc =>
+                {
+                    sc.AddSingleton(typeof(CancellationToken), cancellationTokenSource.Token);
+                    sc.AddSingleton(databaseConnection);
+                };
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
@@ -37,7 +50,7 @@ namespace InstallationsMonitor.Tests.IntegrationTests
             // Act.
             Task task = Task.Run(() => Program.Main(args));
 
-            await EventsUtilities.WaitForEventsRegistrationAsync();
+            await EventsUtilities.WaitForEventsRegistrationAsync(stringWriter);
 
             string filePath1 = Path.Combine(testPath, Guid.NewGuid().ToString());
             string filePath2 = TempPathUtilities.GetTempFile();
@@ -72,7 +85,7 @@ namespace InstallationsMonitor.Tests.IntegrationTests
 
             string? directoryPassed = null;
 
-            CommandsCreator.CreateMonitorCommandImplementation = (d, _, _) =>
+            CommandsCreator.CreateMonitorCommandFunction = (_, d, _) =>
             {
                 directoryPassed = d;
 
@@ -95,7 +108,7 @@ namespace InstallationsMonitor.Tests.IntegrationTests
 
             string? directoryPassed = null;
 
-            CommandsCreator.CreateMonitorCommandImplementation = (d, _, _) =>
+            CommandsCreator.CreateMonitorCommandFunction = (_, d, _) =>
             {
                 directoryPassed = d;
 
@@ -117,7 +130,7 @@ namespace InstallationsMonitor.Tests.IntegrationTests
 
             string? programNamePassed = null;
 
-            CommandsCreator.CreateMonitorCommandImplementation = (_, pn, _) =>
+            CommandsCreator.CreateMonitorCommandFunction = (_, _, pn) =>
             {
                 programNamePassed = pn;
 
@@ -140,7 +153,7 @@ namespace InstallationsMonitor.Tests.IntegrationTests
 
             string? programNamePassed = null;
 
-            CommandsCreator.CreateMonitorCommandImplementation = (_, pn, _) =>
+            CommandsCreator.CreateMonitorCommandFunction = (_, _, pn) =>
             {
                 programNamePassed = pn;
 

@@ -2,7 +2,6 @@
 using InstallationsMonitor.Entities;
 using InstallationsMonitor.Entities.Base;
 using InstallationsMonitor.Persistence;
-using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,20 +21,6 @@ namespace InstallationsMonitor.Tests.Utilities
 
             appDbContext.Database.EnsureDeleted();
             appDbContext.Database.EnsureCreated();
-
-            return databaseConnection;
-        }
-
-        internal static DatabaseConnection ConfigureTestPersistence()
-        {
-            DatabaseConnection databaseConnection = GetTestDatabaseConnection();
-
-            PersistenceServiceCollectionExtensions.AddPersistenceImplementation = services =>
-            {
-                services.AddSingleton(databaseConnection);
-
-                return services;
-            };
 
             return databaseConnection;
         }

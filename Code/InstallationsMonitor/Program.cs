@@ -37,10 +37,10 @@ namespace InstallationsMonitor
 
                     command.OnExecuteAsync(async ct =>
                     {
-                        ICommand monitorCommand = CommandsCreator.CreateMonitorCommand(
+                        ICommand command = CommandsCreator.CreateMonitorCommand(
                             directoryCommandOption.Value(), programNameCommandOption.Value(), ct);
 
-                        await monitorCommand.ExecuteAsync();
+                        await command.ExecuteAsync();
                     });
                 });
         }

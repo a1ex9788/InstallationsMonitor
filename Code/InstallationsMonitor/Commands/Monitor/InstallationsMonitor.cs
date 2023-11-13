@@ -11,16 +11,19 @@ namespace InstallationsMonitor.Commands.Monitor
     {
         private readonly DirectoriesMonitor directoriesMonitor;
         private readonly DatabaseConnection databaseConnection;
+        private readonly CancellationToken cancellationToken;
 
         public InstallationsMonitor(
-            DirectoriesMonitor directoriesMonitor, DatabaseConnection databaseConnection)
+            DirectoriesMonitor directoriesMonitor,
+            DatabaseConnection databaseConnection,
+            CancellationToken cancellationToken)
         {
             this.directoriesMonitor = directoriesMonitor;
             this.databaseConnection = databaseConnection;
+            this.cancellationToken = cancellationToken;
         }
 
-        internal async Task MonitorAsync(
-            string? directory, string? programName, CancellationToken cancellationToken)
+        internal async Task MonitorAsync(string? directory, string? programName)
         {
             string programNameToUse = programName ?? AskForProgramName();
 
@@ -36,7 +39,7 @@ namespace InstallationsMonitor.Commands.Monitor
                 foreach (string drive in DrivesObtainer.GetDrives())
                 {
                     tasks.Add(this.directoriesMonitor.MonitorAsync(
-                        drive, installationId, cancellationToken));
+                        drive, installationId, this.cancellationToken));
                 }
 
                 await Task.WhenAll(tasks);
@@ -44,7 +47,7 @@ namespace InstallationsMonitor.Commands.Monitor
             else
             {
                 await this.directoriesMonitor.MonitorAsync(
-                    directory, installationId, cancellationToken);
+                    directory, installationId, this.cancellationToken);
             }
         }
 

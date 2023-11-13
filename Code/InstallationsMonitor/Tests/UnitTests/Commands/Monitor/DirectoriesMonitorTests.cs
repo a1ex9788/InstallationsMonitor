@@ -33,7 +33,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             Task task = directoriesMonitor.MonitorAsync(
                 testPath, installationId, cancellationTokenSource.Token);
 
-            await EventsUtilities.WaitForEventsRegistrationAsync();
+            await EventsUtilities.WaitForEventsRegistrationAsync(stringWriter);
 
             string filePath = Path.Combine(testPath, Guid.NewGuid().ToString());
 
@@ -72,7 +72,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             Task task = directoriesMonitor.MonitorAsync(
                 testPath, installationId, cancellationTokenSource.Token);
 
-            await EventsUtilities.WaitForEventsRegistrationAsync();
+            await EventsUtilities.WaitForEventsRegistrationAsync(stringWriter);
 
             string filePath = Path.Combine(testPath, Guid.NewGuid().ToString());
 
@@ -109,7 +109,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             Task task = directoriesMonitor.MonitorAsync(
                 testPath, installationId, cancellationTokenSource.Token);
 
-            await EventsUtilities.WaitForEventsRegistrationAsync();
+            await EventsUtilities.WaitForEventsRegistrationAsync(stringWriter);
 
             string filePath = Path.Combine(testPath, Guid.NewGuid().ToString());
 
@@ -149,7 +149,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             Task task = directoriesMonitor.MonitorAsync(
                 testPath, installationId, cancellationTokenSource.Token);
 
-            await EventsUtilities.WaitForEventsRegistrationAsync();
+            await EventsUtilities.WaitForEventsRegistrationAsync(stringWriter);
 
             string filePath = Path.Combine(testPath, Guid.NewGuid().ToString());
             string newFilePath = Path.Combine(testPath, Guid.NewGuid().ToString());

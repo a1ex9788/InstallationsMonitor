@@ -9,9 +9,34 @@ namespace InstallationsMonitor.Tests.Utilities
 {
     internal class EventsUtilities
     {
-        internal static async Task WaitForEventsRegistrationAsync()
+        internal static async Task WaitForEventsRegistrationAsync(StringWriter stringWriter)
         {
-            await Task.Delay(500);
+            using CancellationTokenSource cancellationTokenSource =
+                new CancellationTokenSource(TimeSpan.FromSeconds(1));
+
+            bool expectedResultsPrinted = false;
+
+            do
+            {
+                try
+                {
+                    stringWriter.ToString().Should().Contain("Monitoring directory");
+
+                    expectedResultsPrinted = true;
+                }
+                catch
+                {
+                    if (cancellationTokenSource.IsCancellationRequested)
+                    {
+                        throw;
+                    }
+
+                    await Task.Delay(TimeSpan.FromMilliseconds(100));
+                }
+            } while (!expectedResultsPrinted);
+
+            // Extra waiting time just in case.
+            await Task.Delay(TimeSpan.FromMilliseconds(300));
         }
 
         internal static async Task WaitForEventsProsecutionAsync(
