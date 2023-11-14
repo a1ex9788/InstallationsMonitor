@@ -5,7 +5,7 @@ using InstallationsMonitor.Persistence;
 using InstallationsMonitor.Tests.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
+using NSubstitute;
 using System;
 using System.IO;
 using System.Threading;
@@ -89,7 +89,7 @@ namespace InstallationsMonitor.Tests.IntegrationTests
             {
                 directoryPassed = d;
 
-                return new Mock<ICommand>().Object;
+                return Substitute.For<ICommand>();
             };
 
             // Act.
@@ -112,7 +112,7 @@ namespace InstallationsMonitor.Tests.IntegrationTests
             {
                 directoryPassed = d;
 
-                return new Mock<ICommand>().Object;
+                return Substitute.For<ICommand>();
             };
 
             // Act.
@@ -134,7 +134,7 @@ namespace InstallationsMonitor.Tests.IntegrationTests
             {
                 programNamePassed = pn;
 
-                return new Mock<ICommand>().Object;
+                return Substitute.For<ICommand>();
             };
 
             // Act.
@@ -157,7 +157,7 @@ namespace InstallationsMonitor.Tests.IntegrationTests
             {
                 programNamePassed = pn;
 
-                return new Mock<ICommand>().Object;
+                return Substitute.For<ICommand>();
             };
 
             // Act.
