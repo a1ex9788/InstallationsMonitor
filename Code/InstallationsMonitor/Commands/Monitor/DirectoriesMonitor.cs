@@ -11,18 +11,21 @@ namespace InstallationsMonitor.Commands.Monitor
     {
         private readonly DatabaseConnection databaseConnection;
         private readonly DatabaseFilesChecker databaseFilesChecker;
+        private readonly CancellationToken cancellationToken;
 
         private int? installationId;
 
         public DirectoriesMonitor(
-            DatabaseConnection databaseConnection, DatabaseFilesChecker databaseFilesChecker)
+            DatabaseConnection databaseConnection,
+            DatabaseFilesChecker databaseFilesChecker,
+            CancellationToken cancellationToken)
         {
             this.databaseConnection = databaseConnection;
             this.databaseFilesChecker = databaseFilesChecker;
+            this.cancellationToken = cancellationToken;
         }
 
-        internal async Task MonitorAsync(
-            string directory, int installationId, CancellationToken cancellationToken)
+        internal async Task MonitorAsync(string directory, int installationId)
         {
             Console.WriteLine("Monitoring directory '{0}'...", directory);
 
@@ -41,9 +44,9 @@ namespace InstallationsMonitor.Commands.Monitor
 
             try
             {
-                while (!cancellationToken.IsCancellationRequested)
+                while (!this.cancellationToken.IsCancellationRequested)
                 {
-                    await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
+                    await Task.Delay(TimeSpan.FromSeconds(1), this.cancellationToken);
                 }
             }
             catch (TaskCanceledException)

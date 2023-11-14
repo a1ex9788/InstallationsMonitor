@@ -2,7 +2,6 @@
 using InstallationsMonitor.Persistence;
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace InstallationsMonitor.Commands.Monitor
@@ -11,16 +10,12 @@ namespace InstallationsMonitor.Commands.Monitor
     {
         private readonly DirectoriesMonitor directoriesMonitor;
         private readonly DatabaseConnection databaseConnection;
-        private readonly CancellationToken cancellationToken;
 
         public InstallationsMonitor(
-            DirectoriesMonitor directoriesMonitor,
-            DatabaseConnection databaseConnection,
-            CancellationToken cancellationToken)
+            DirectoriesMonitor directoriesMonitor, DatabaseConnection databaseConnection)
         {
             this.directoriesMonitor = directoriesMonitor;
             this.databaseConnection = databaseConnection;
-            this.cancellationToken = cancellationToken;
         }
 
         internal async Task MonitorAsync(string? directory, string? programName)
@@ -38,16 +33,14 @@ namespace InstallationsMonitor.Commands.Monitor
 
                 foreach (string drive in DrivesObtainer.GetDrives())
                 {
-                    tasks.Add(this.directoriesMonitor.MonitorAsync(
-                        drive, installationId, this.cancellationToken));
+                    tasks.Add(this.directoriesMonitor.MonitorAsync(drive, installationId));
                 }
 
                 await Task.WhenAll(tasks);
             }
             else
             {
-                await this.directoriesMonitor.MonitorAsync(
-                    directory, installationId, this.cancellationToken);
+                await this.directoriesMonitor.MonitorAsync(directory, installationId);
             }
         }
 

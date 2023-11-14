@@ -25,7 +25,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             int installationId = 1;
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-            Get get = new Get();
+            Get get = new Get(cancellationTokenSource.Token);
             using DatabaseConnection databaseConnection = get.DatabaseConnection;
             DirectoriesMonitor directoriesMonitor = get.DirectoriesMonitor;
 
@@ -33,8 +33,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             Console.SetOut(stringWriter);
 
             // Act.
-            Task task = directoriesMonitor.MonitorAsync(
-                testPath, installationId, cancellationTokenSource.Token);
+            Task task = directoriesMonitor.MonitorAsync(testPath, installationId);
 
             await EventsUtilities.WaitForEventsRegistrationAsync(stringWriter);
 
@@ -65,7 +64,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             int installationId = 1;
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-            Get get = new Get();
+            Get get = new Get(cancellationTokenSource.Token);
             using DatabaseConnection databaseConnection = get.DatabaseConnection;
             DirectoriesMonitor directoriesMonitor = get.DirectoriesMonitor;
 
@@ -73,8 +72,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             Console.SetOut(stringWriter);
 
             // Act.
-            Task task = directoriesMonitor.MonitorAsync(
-                testPath, installationId, cancellationTokenSource.Token);
+            Task task = directoriesMonitor.MonitorAsync(testPath, installationId);
 
             await EventsUtilities.WaitForEventsRegistrationAsync(stringWriter);
 
@@ -103,7 +101,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             int installationId = 1;
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-            Get get = new Get();
+            Get get = new Get(cancellationTokenSource.Token);
             using DatabaseConnection databaseConnection = get.DatabaseConnection;
             DirectoriesMonitor directoriesMonitor = get.DirectoriesMonitor;
 
@@ -111,8 +109,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             Console.SetOut(stringWriter);
 
             // Act.
-            Task task = directoriesMonitor.MonitorAsync(
-                testPath, installationId, cancellationTokenSource.Token);
+            Task task = directoriesMonitor.MonitorAsync(testPath, installationId);
 
             await EventsUtilities.WaitForEventsRegistrationAsync(stringWriter);
 
@@ -144,7 +141,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             int installationId = 1;
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-            Get get = new Get();
+            Get get = new Get(cancellationTokenSource.Token);
             using DatabaseConnection databaseConnection = get.DatabaseConnection;
             DirectoriesMonitor directoriesMonitor = get.DirectoriesMonitor;
 
@@ -152,8 +149,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             Console.SetOut(stringWriter);
 
             // Act.
-            Task task = directoriesMonitor.MonitorAsync(
-                testPath, installationId, cancellationTokenSource.Token);
+            Task task = directoriesMonitor.MonitorAsync(testPath, installationId);
 
             await EventsUtilities.WaitForEventsRegistrationAsync(stringWriter);
 
@@ -186,7 +182,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             int installationId = 1;
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-            Get get = new Get();
+            Get get = new Get(cancellationTokenSource.Token);
             using DatabaseConnection databaseConnection = get.DatabaseConnection;
             DirectoriesMonitor directoriesMonitor = get.DirectoriesMonitor;
 
@@ -194,8 +190,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             Console.SetOut(stringWriter);
 
             // Act.
-            Task task = directoriesMonitor.MonitorAsync(
-                testPath, installationId, cancellationTokenSource.Token);
+            Task task = directoriesMonitor.MonitorAsync(testPath, installationId);
 
             await EventsUtilities.WaitForEventsRegistrationAsync(stringWriter);
 

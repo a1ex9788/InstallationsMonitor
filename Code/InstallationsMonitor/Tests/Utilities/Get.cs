@@ -51,8 +51,14 @@ namespace InstallationsMonitor.Tests.Utilities
         {
             get
             {
+                if (this.CancellationToken is null)
+                {
+                    throw new InvalidOperationException(
+                        $"Property '{typeof(Get).Name}.{nameof(this.CancellationToken)}' must be set.");
+                }
+
                 this.directoriesMonitor ??= new DirectoriesMonitor(
-                    this.DatabaseConnection, this.DatabaseFilesChecker);
+                    this.DatabaseConnection, this.DatabaseFilesChecker, this.CancellationToken.Value);
 
                 return this.directoriesMonitor;
             }
@@ -62,14 +68,8 @@ namespace InstallationsMonitor.Tests.Utilities
         {
             get
             {
-                if (this.CancellationToken is null)
-                {
-                    throw new InvalidOperationException(
-                        $"Property '{typeof(Get).Name}.{nameof(this.CancellationToken)}' must be set.");
-                }
-
                 this.installationsMonitor ??= new InstallationsMonitorClass(
-                    this.DirectoriesMonitor, this.DatabaseConnection, this.CancellationToken.Value);
+                    this.DirectoriesMonitor, this.DatabaseConnection);
 
                 return this.installationsMonitor;
             }
