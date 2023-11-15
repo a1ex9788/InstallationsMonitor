@@ -11,7 +11,7 @@ namespace InstallationsMonitor.Commands
         internal static Action<IServiceCollection>? ExtraRegistrationsAction;
 
         internal static Func<IServiceProvider, string?, string?, ICommand> CreateMonitorCommandFunction =
-            (sp, d, pn) => new MonitorCommand(sp.GetRequiredService<Monitor.InstallationsMonitor>(), d, pn);
+            (sp, d, pn) => new MonitorCommand(sp.GetRequiredService<Monitor.Utilities.InstallationsMonitor>(), d, pn);
 
         internal static ICommand CreateMonitorCommand(
             string? directory, string? programName, CancellationToken cancellationToken)

@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace InstallationsMonitor.Commands.Monitor
+namespace InstallationsMonitor.Commands.Monitor.Utilities
 {
     internal class InstallationsMonitor
     {

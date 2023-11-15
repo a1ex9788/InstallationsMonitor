@@ -1,4 +1,5 @@
-﻿using InstallationsMonitor.Persistence;
+﻿using InstallationsMonitor.Commands.Monitor.Utilities;
+using InstallationsMonitor.Persistence;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 
@@ -6,13 +7,13 @@ namespace InstallationsMonitor.Commands.Monitor
 {
     internal class MonitorCommand : ICommand
     {
-        private readonly InstallationsMonitor installationsMonitor;
+        private readonly Utilities.InstallationsMonitor installationsMonitor;
 
         private readonly string? directory;
         private readonly string? programName;
 
         internal MonitorCommand(
-            InstallationsMonitor installationsMonitor, string? directory, string? programName)
+            Utilities.InstallationsMonitor installationsMonitor, string? directory, string? programName)
         {
             this.installationsMonitor = installationsMonitor;
 
@@ -22,7 +23,7 @@ namespace InstallationsMonitor.Commands.Monitor
 
         internal static void ConfigureSpecificServices(IServiceCollection services)
         {
-            services.AddScoped<InstallationsMonitor>();
+            services.AddScoped<Utilities.InstallationsMonitor>();
             services.AddScoped<DirectoriesMonitor>();
             services.AddScoped<DatabaseFilesChecker>();
         }

@@ -5,7 +5,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace InstallationsMonitor.Commands.Monitor
+namespace InstallationsMonitor.Commands.Monitor.Utilities
 {
     internal class DirectoriesMonitor
     {

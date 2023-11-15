@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using InstallationsMonitor.Commands.Monitor;
+using InstallationsMonitor.Commands.Monitor.Utilities;
 using InstallationsMonitor.Entities;
 using InstallationsMonitor.Persistence;
 using InstallationsMonitor.Tests.Utilities;
@@ -11,7 +11,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-using InstallationsMonitorClass = InstallationsMonitor.Commands.Monitor.InstallationsMonitor;
+using InstallationsMonitorClass = InstallationsMonitor.Commands.Monitor.Utilities.InstallationsMonitor;
 
 namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
 {

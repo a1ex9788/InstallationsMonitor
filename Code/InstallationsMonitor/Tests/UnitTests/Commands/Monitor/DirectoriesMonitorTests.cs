@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using InstallationsMonitor.Commands.Monitor;
+using InstallationsMonitor.Commands.Monitor.Utilities;
 using InstallationsMonitor.Entities;
 using InstallationsMonitor.Entities.Base;
 using InstallationsMonitor.Persistence;
