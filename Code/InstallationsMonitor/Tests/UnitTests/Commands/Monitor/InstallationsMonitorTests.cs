@@ -22,7 +22,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
         public async Task ExecuteAsync_ForAllDrives_CreatesInstallationWithAllFiles()
         {
             // Arrange.
-            string testPath = TempPathUtilities.GetTempDirectory();
+            string testPath = TempPathsObtainer.GetTempDirectory();
             string programName = "Program";
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
@@ -40,10 +40,10 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             // Act.
             Task task = installationsMonitor.MonitorAsync(directory: null, programName);
 
-            await EventsUtilities.WaitForEventsRegistrationAsync(stringWriter);
+            await EventsAwaiter.WaitForEventsRegistrationAsync(stringWriter);
 
             string filePath1 = Path.Combine(testPath, Guid.NewGuid().ToString());
-            string filePath2 = TempPathUtilities.GetTempFile();
+            string filePath2 = TempPathsObtainer.GetTempFile();
             string[] filePaths = new string[] { filePath1, filePath2 };
 
             await File.Create(filePath1).DisposeAsync();
@@ -55,14 +55,14 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
                 stringWriter.ToString().Should().Contain($"Monitoring directory '{drive}'...");
             }
 
-            await EventsUtilities.WaitForEventsProsecutionAsync(
+            await EventsAwaiter.WaitForEventsProsecutionAsync(
                 stringWriter, expectedCreatedFiles: filePaths);
             cancellationTokenSource.Cancel();
             await task;
 
-            Installation installation = DatabaseUtilities.CheckInstallation(
+            Installation installation = DatabaseChecker.CheckInstallation(
                 databaseConnection, programName);
-            DatabaseUtilities.CheckFileOperations<FileCreation>(
+            DatabaseChecker.CheckFileOperations<FileCreation>(
                 databaseConnection,
                 installation.Id,
                 filePaths,
@@ -73,7 +73,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
         public async Task ExecuteAsync_ForConcretePath_CreatesInstallationWithOnlySomeFiles()
         {
             // Arrange.
-            string testPath = TempPathUtilities.GetTempDirectory();
+            string testPath = TempPathsObtainer.GetTempDirectory();
             string programName = "Program";
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
@@ -91,10 +91,10 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             // Act.
             Task task = installationsMonitor.MonitorAsync(directory: testPath, programName);
 
-            await EventsUtilities.WaitForEventsRegistrationAsync(stringWriter);
+            await EventsAwaiter.WaitForEventsRegistrationAsync(stringWriter);
 
             string filePath1 = Path.Combine(testPath, Guid.NewGuid().ToString());
-            string filePath2 = TempPathUtilities.GetTempFile();
+            string filePath2 = TempPathsObtainer.GetTempFile();
 
             await File.Create(filePath1).DisposeAsync();
             await File.Create(filePath2).DisposeAsync();
@@ -102,7 +102,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             // Assert.
             stringWriter.ToString().Should().Contain($"Monitoring directory '{testPath}'...");
 
-            await EventsUtilities.WaitForEventsProsecutionAsync(
+            await EventsAwaiter.WaitForEventsProsecutionAsync(
                 stringWriter,
                 expectedCreatedFiles: new string[] { filePath1 },
                 expectedNotCreatedFiles: new string[] { filePath2 });
@@ -110,9 +110,9 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             cancellationTokenSource.Cancel();
             await task;
 
-            Installation installation = DatabaseUtilities.CheckInstallation(
+            Installation installation = DatabaseChecker.CheckInstallation(
                 databaseConnection, programName);
-            DatabaseUtilities.CheckFileOperations<FileCreation>(
+            DatabaseChecker.CheckFileOperations<FileCreation>(
                 databaseConnection, installation.Id, new string[] { filePath1 });
         }
 
@@ -139,7 +139,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             // Act.
             Task task = installationsMonitor.MonitorAsync(directory: null, programName);
 
-            await EventsUtilities.WaitForEventsRegistrationAsync(stringWriter);
+            await EventsAwaiter.WaitForEventsRegistrationAsync(stringWriter);
 
             cancellationTokenSource.Cancel();
             await task;
@@ -148,7 +148,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             stringWriter.ToString().Should().Contain(
                 $"Monitoring installation of program '{programName}'...");
 
-            Installation installation = DatabaseUtilities.CheckInstallation(
+            Installation installation = DatabaseChecker.CheckInstallation(
                 databaseConnection, programName);
         }
 
@@ -172,7 +172,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             // Act.
             Task task = installationsMonitor.MonitorAsync(directory: null, programName);
 
-            await EventsUtilities.WaitForEventsRegistrationAsync(stringWriter);
+            await EventsAwaiter.WaitForEventsRegistrationAsync(stringWriter);
 
             cancellationTokenSource.Cancel();
             await task;
@@ -181,7 +181,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             stringWriter.ToString().Should().Contain(
                 $"Monitoring installation of program '{programName}'...");
 
-            Installation installation = DatabaseUtilities.CheckInstallation(
+            Installation installation = DatabaseChecker.CheckInstallation(
                 databaseConnection, programName);
         }
     }

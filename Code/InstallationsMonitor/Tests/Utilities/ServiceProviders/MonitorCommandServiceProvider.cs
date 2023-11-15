@@ -43,7 +43,7 @@ namespace InstallationsMonitor.Tests.Utilities.ServiceProviders
         private static void ReplacePersistenceOptions(IServiceCollection services)
         {
             string testDatabaseFullName = Path.Combine(
-                TempPathUtilities.GetTempDirectory(), "TestDatabase.db");
+                TempPathsObtainer.GetTempDirectory(), "TestDatabase.db");
 
             services.AddSingleton(new DatabaseOptions(testDatabaseFullName));
         }

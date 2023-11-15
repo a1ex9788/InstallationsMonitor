@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace InstallationsMonitor.Tests.Utilities
 {
-    internal class EventsUtilities
+    internal class EventsAwaiter
     {
         internal static async Task WaitForEventsRegistrationAsync(StringWriter stringWriter)
         {

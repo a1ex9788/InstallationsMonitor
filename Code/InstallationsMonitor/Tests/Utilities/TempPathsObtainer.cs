@@ -3,7 +3,7 @@ using System.IO;
 
 namespace InstallationsMonitor.Tests.Utilities
 {
-    internal class TempPathUtilities
+    internal class TempPathsObtainer
     {
         internal static string GetTempDirectory()
         {

@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace InstallationsMonitor.Tests.Utilities
 {
-    internal static class DatabaseUtilities
+    internal static class DatabaseChecker
     {
         internal static Installation CheckInstallation(
             DatabaseConnection databaseConnection, string programName)

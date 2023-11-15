@@ -30,7 +30,7 @@ namespace InstallationsMonitor.Tests.IntegrationTests
         public async Task MonitorCommand_SomeFilesCreated_PrintsExpectedResults()
         {
             // Arrange.
-            string testPath = TempPathUtilities.GetTempDirectory();
+            string testPath = TempPathsObtainer.GetTempDirectory();
             string programName = "Program";
             string[] args = new string[] { "monitor", "-p", programName };
 
@@ -54,17 +54,17 @@ namespace InstallationsMonitor.Tests.IntegrationTests
             // Act.
             Task task = Task.Run(() => Program.Main(args));
 
-            await EventsUtilities.WaitForEventsRegistrationAsync(stringWriter);
+            await EventsAwaiter.WaitForEventsRegistrationAsync(stringWriter);
 
             string filePath1 = Path.Combine(testPath, Guid.NewGuid().ToString());
-            string filePath2 = TempPathUtilities.GetTempFile();
+            string filePath2 = TempPathsObtainer.GetTempFile();
             string[] filePaths = new string[] { filePath1, filePath2 };
 
             await File.Create(filePath1).DisposeAsync();
             await File.Create(filePath2).DisposeAsync();
 
             // Assert.
-            await EventsUtilities.WaitForEventsProsecutionAsync(
+            await EventsAwaiter.WaitForEventsProsecutionAsync(
                 stringWriter,
                 expectedCreatedFiles: filePaths);
 
@@ -72,9 +72,9 @@ namespace InstallationsMonitor.Tests.IntegrationTests
             await task;
 
             // Add checks.
-            Installation installation = DatabaseUtilities.CheckInstallation(
+            Installation installation = DatabaseChecker.CheckInstallation(
                 databaseConnection, programName);
-            DatabaseUtilities.CheckFileOperations<FileCreation>(
+            DatabaseChecker.CheckFileOperations<FileCreation>(
                 databaseConnection,
                 installation.Id,
                 filePaths,
@@ -107,7 +107,7 @@ namespace InstallationsMonitor.Tests.IntegrationTests
         public void MonitorCommand_DirectorySpecified_DirectoryPassed()
         {
             // Arrange.
-            string testPath = TempPathUtilities.GetTempDirectory();
+            string testPath = TempPathsObtainer.GetTempDirectory();
             string[] args = new string[] { "monitor", "-d", testPath };
 
             string? directoryPassed = null;
