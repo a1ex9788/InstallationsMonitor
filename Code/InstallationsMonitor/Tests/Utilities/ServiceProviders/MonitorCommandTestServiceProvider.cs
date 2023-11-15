@@ -11,10 +11,6 @@ namespace InstallationsMonitor.Tests.Utilities.ServiceProviders
     {
         private readonly MonitorCommandServiceProvider monitorCommandServiceProvider;
 
-        internal MonitorCommandTestServiceProvider() : this(new CancellationTokenSource().Token)
-        {
-        }
-
         internal MonitorCommandTestServiceProvider(CancellationToken cancellationToken)
         {
             string testDatabaseFullName = Path.Combine(

@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
+using System.Threading;
 
 namespace InstallationsMonitor.Tests.UnitTests.Persistence
 {
@@ -27,7 +28,9 @@ namespace InstallationsMonitor.Tests.UnitTests.Persistence
             FileRenaming fileRenaming = new FileRenaming(
                 "FileRenamed", DateTime.MinValue, installation.Id, "OldFile");
 
-            IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider();
+            using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+            IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
+                cancellationTokenSource.Token);
             using DatabaseConnection databaseConnection = serviceProvider
                 .GetRequiredService<DatabaseConnection>();
 

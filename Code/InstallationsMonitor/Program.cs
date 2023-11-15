@@ -1,7 +1,9 @@
-﻿using InstallationsMonitor.Commands.Monitor;
+﻿using InstallationsMonitor.Commands.Installations;
+using InstallationsMonitor.Commands.Monitor;
 using McMaster.Extensions.CommandLineUtils;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Threading.Tasks;
 
 namespace InstallationsMonitor
 {
@@ -17,6 +19,7 @@ namespace InstallationsMonitor
             commandLineApplication.HelpOption();
 
             DefineMonitorCommand(commandLineApplication);
+            DefineInstallationsCommand(commandLineApplication);
 
             return commandLineApplication.Execute(args);
         }
@@ -45,6 +48,25 @@ namespace InstallationsMonitor
 
                         await monitorCommand.ExecuteAsync(
                             directoryCommandOption.Value(), programNameCommandOption.Value());
+                    });
+                });
+        }
+
+        private static void DefineInstallationsCommand(CommandLineApplication commandLineApplication)
+        {
+            commandLineApplication.Command(
+                "installations",
+                command =>
+                {
+                    command.OnExecuteAsync(ct =>
+                    {
+                        IServiceProvider serviceProvider = new InstallationsCommandServiceProvider(ct);
+                        IInstallationsCommand installationsCommand = serviceProvider
+                            .GetRequiredService<IInstallationsCommand>();
+
+                        installationsCommand.Execute();
+
+                        return Task.CompletedTask;
                     });
                 });
         }

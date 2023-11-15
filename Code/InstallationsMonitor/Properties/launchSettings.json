@@ -7,6 +7,10 @@
     "Monitor D:\\": {
       "commandName": "Project",
       "commandLineArgs": "monitor -d C:\\"
+    },
+    "Installations": {
+      "commandName": "Project",
+      "commandLineArgs": "installations"
     }
   }
 }
