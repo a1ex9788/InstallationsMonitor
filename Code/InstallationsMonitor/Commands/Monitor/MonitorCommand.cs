@@ -5,20 +5,13 @@ using System.Threading.Tasks;
 
 namespace InstallationsMonitor.Commands.Monitor
 {
-    internal class MonitorCommand : ICommand
+    internal class MonitorCommand : IMonitorCommand
     {
         private readonly Utilities.InstallationsMonitor installationsMonitor;
 
-        private readonly string? directory;
-        private readonly string? programName;
-
-        internal MonitorCommand(
-            Utilities.InstallationsMonitor installationsMonitor, string? directory, string? programName)
+        public MonitorCommand(Utilities.InstallationsMonitor installationsMonitor)
         {
             this.installationsMonitor = installationsMonitor;
-
-            this.directory = directory;
-            this.programName = programName;
         }
 
         internal static void ConfigureSpecificServices(IServiceCollection services)
@@ -28,9 +21,9 @@ namespace InstallationsMonitor.Commands.Monitor
             services.AddScoped<DatabaseFilesChecker>();
         }
 
-        public async Task ExecuteAsync()
+        public async Task ExecuteAsync(string? directory, string? programName)
         {
-            await this.installationsMonitor.MonitorAsync(this.directory, this.programName);
+            await this.installationsMonitor.MonitorAsync(directory, programName);
         }
     }
 }

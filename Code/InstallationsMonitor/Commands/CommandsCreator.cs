@@ -7,14 +7,10 @@ namespace InstallationsMonitor.Commands
 {
     internal static class CommandsCreator
     {
-        // Hooks for tests.
+        // Hook for tests.
         internal static Action<IServiceCollection>? ExtraRegistrationsAction;
 
-        internal static Func<IServiceProvider, string?, string?, ICommand> CreateMonitorCommandFunction =
-            (sp, d, pn) => new MonitorCommand(sp.GetRequiredService<Monitor.Utilities.InstallationsMonitor>(), d, pn);
-
-        internal static ICommand CreateMonitorCommand(
-            string? directory, string? programName, CancellationToken cancellationToken)
+        internal static IMonitorCommand CreateMonitorCommand(CancellationToken cancellationToken)
         {
             IServiceCollection services = new ServiceCollection();
 
@@ -22,15 +18,12 @@ namespace InstallationsMonitor.Commands
 
             services.AddPersistence();
 
-            services.AddSingleton(
-                typeof(ICommand),
-                sp => CreateMonitorCommandFunction.Invoke(sp, directory, programName));
-
+            services.AddScoped<IMonitorCommand, MonitorCommand>();
             MonitorCommand.ConfigureSpecificServices(services);
 
             ExtraRegistrationsAction?.Invoke(services);
 
-            return services.BuildServiceProvider().GetRequiredService<ICommand>();
+            return services.BuildServiceProvider().GetRequiredService<IMonitorCommand>();
         }
     }
 }

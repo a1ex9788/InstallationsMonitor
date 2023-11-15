@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using InstallationsMonitor.Commands;
+using InstallationsMonitor.Commands.Monitor;
 using InstallationsMonitor.Entities;
 using InstallationsMonitor.Persistence;
 using InstallationsMonitor.Tests.Utilities;
@@ -17,15 +18,6 @@ namespace InstallationsMonitor.Tests.IntegrationTests
     [TestClass]
     public class MonitorCommandTests
     {
-        private readonly Func<IServiceProvider, string?, string?, ICommand>
-            CreateMonitorCommandFunction = CommandsCreator.CreateMonitorCommandFunction;
-
-        [TestCleanup]
-        public void TestCleanUp()
-        {
-            CommandsCreator.CreateMonitorCommandFunction = this.CreateMonitorCommandFunction;
-        }
-
         [TestMethod]
         public async Task MonitorCommand_SomeFilesCreated_PrintsExpectedResults()
         {
@@ -89,12 +81,17 @@ namespace InstallationsMonitor.Tests.IntegrationTests
 
             string? directoryPassed = null;
 
-            CommandsCreator.CreateMonitorCommandFunction = (_, d, _) =>
-            {
-                directoryPassed = d;
+            IMonitorCommand monitorCommand = Substitute.For<IMonitorCommand>();
+            monitorCommand
+                .ExecuteAsync(Arg.Any<string?>(), Arg.Any<string?>())
+                .Returns(x =>
+                {
+                    directoryPassed = x.Args()[0] as string;
 
-                return Substitute.For<ICommand>();
-            };
+                    return Task.CompletedTask;
+                });
+
+            CommandsCreator.ExtraRegistrationsAction = sc => { sc.AddSingleton(monitorCommand); };
 
             // Act.
             Program.Main(args);
@@ -112,12 +109,17 @@ namespace InstallationsMonitor.Tests.IntegrationTests
 
             string? directoryPassed = null;
 
-            CommandsCreator.CreateMonitorCommandFunction = (_, d, _) =>
-            {
-                directoryPassed = d;
+            IMonitorCommand monitorCommand = Substitute.For<IMonitorCommand>();
+            monitorCommand
+                .ExecuteAsync(Arg.Any<string?>(), Arg.Any<string?>())
+                .Returns(x =>
+                {
+                    directoryPassed = x.Args()[0] as string;
 
-                return Substitute.For<ICommand>();
-            };
+                    return Task.CompletedTask;
+                });
+
+            CommandsCreator.ExtraRegistrationsAction = sc => { sc.AddSingleton(monitorCommand); };
 
             // Act.
             Program.Main(args);
@@ -134,12 +136,17 @@ namespace InstallationsMonitor.Tests.IntegrationTests
 
             string? programNamePassed = null;
 
-            CommandsCreator.CreateMonitorCommandFunction = (_, _, pn) =>
-            {
-                programNamePassed = pn;
+            IMonitorCommand monitorCommand = Substitute.For<IMonitorCommand>();
+            monitorCommand
+                .ExecuteAsync(Arg.Any<string?>(), Arg.Any<string?>())
+                .Returns(x =>
+                {
+                    programNamePassed = x.Args()[1] as string;
 
-                return Substitute.For<ICommand>();
-            };
+                    return Task.CompletedTask;
+                });
+
+            CommandsCreator.ExtraRegistrationsAction = sc => { sc.AddSingleton(monitorCommand); };
 
             // Act.
             Program.Main(args);
@@ -157,12 +164,17 @@ namespace InstallationsMonitor.Tests.IntegrationTests
 
             string? programNamePassed = null;
 
-            CommandsCreator.CreateMonitorCommandFunction = (_, _, pn) =>
-            {
-                programNamePassed = pn;
+            IMonitorCommand monitorCommand = Substitute.For<IMonitorCommand>();
+            monitorCommand
+                .ExecuteAsync(Arg.Any<string?>(), Arg.Any<string?>())
+                .Returns(x =>
+                {
+                    programNamePassed = x.Args()[1] as string;
 
-                return Substitute.For<ICommand>();
-            };
+                    return Task.CompletedTask;
+                });
+
+            CommandsCreator.ExtraRegistrationsAction = sc => { sc.AddSingleton(monitorCommand); };
 
             // Act.
             Program.Main(args);
