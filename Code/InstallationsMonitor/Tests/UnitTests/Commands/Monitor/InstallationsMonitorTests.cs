@@ -3,6 +3,8 @@ using InstallationsMonitor.Commands.Monitor;
 using InstallationsMonitor.Entities;
 using InstallationsMonitor.Persistence;
 using InstallationsMonitor.Tests.Utilities;
+using InstallationsMonitor.Tests.Utilities.ServiceProviders;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
@@ -25,9 +27,12 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-            Get get = new Get(cancellationTokenSource.Token);
-            using DatabaseConnection databaseConnection = get.DatabaseConnection;
-            InstallationsMonitorClass installationsMonitor = get.InstallationsMonitor;
+            IServiceProvider serviceProvider = new MonitorCommandServiceProvider(
+                cancellationTokenSource.Token);
+            using DatabaseConnection databaseConnection = serviceProvider
+                .GetRequiredService<DatabaseConnection>();
+            InstallationsMonitorClass installationsMonitor = serviceProvider
+                .GetRequiredService<InstallationsMonitorClass>();
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
@@ -73,9 +78,12 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-            Get get = new Get(cancellationTokenSource.Token);
-            using DatabaseConnection databaseConnection = get.DatabaseConnection;
-            InstallationsMonitorClass installationsMonitor = get.InstallationsMonitor;
+            IServiceProvider serviceProvider = new MonitorCommandServiceProvider(
+                cancellationTokenSource.Token);
+            using DatabaseConnection databaseConnection = serviceProvider
+                .GetRequiredService<DatabaseConnection>();
+            InstallationsMonitorClass installationsMonitor = serviceProvider
+                .GetRequiredService<InstallationsMonitorClass>();
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
@@ -115,9 +123,12 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             string programName = "Program";
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-            Get get = new Get(cancellationTokenSource.Token);
-            using DatabaseConnection databaseConnection = get.DatabaseConnection;
-            InstallationsMonitorClass installationsMonitor = get.InstallationsMonitor;
+            IServiceProvider serviceProvider = new MonitorCommandServiceProvider(
+                cancellationTokenSource.Token);
+            using DatabaseConnection databaseConnection = serviceProvider
+                .GetRequiredService<DatabaseConnection>();
+            InstallationsMonitorClass installationsMonitor = serviceProvider
+                .GetRequiredService<InstallationsMonitorClass>();
 
             using StringReader stringReader = new StringReader(programName);
             Console.SetIn(stringReader);
@@ -148,9 +159,12 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             string programName = "Program";
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-            Get get = new Get(cancellationTokenSource.Token);
-            using DatabaseConnection databaseConnection = get.DatabaseConnection;
-            InstallationsMonitorClass installationsMonitor = get.InstallationsMonitor;
+            IServiceProvider serviceProvider = new MonitorCommandServiceProvider(
+                cancellationTokenSource.Token);
+            using DatabaseConnection databaseConnection = serviceProvider
+                .GetRequiredService<DatabaseConnection>();
+            InstallationsMonitorClass installationsMonitor = serviceProvider
+                .GetRequiredService<InstallationsMonitorClass>();
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);

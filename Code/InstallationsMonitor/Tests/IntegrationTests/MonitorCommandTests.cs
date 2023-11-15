@@ -3,6 +3,7 @@ using InstallationsMonitor.Commands;
 using InstallationsMonitor.Entities;
 using InstallationsMonitor.Persistence;
 using InstallationsMonitor.Tests.Utilities;
+using InstallationsMonitor.Tests.Utilities.ServiceProviders;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
@@ -35,13 +36,16 @@ namespace InstallationsMonitor.Tests.IntegrationTests
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-            using DatabaseConnection databaseConnection = DatabaseUtilities.GetTestDatabaseConnection();
+            IServiceProvider serviceProvider = new MonitorCommandServiceProvider(
+                cancellationTokenSource.Token);
+            using DatabaseConnection databaseConnection = serviceProvider
+                .GetRequiredService<DatabaseConnection>();
 
             CommandsCreator.ExtraRegistrationsAction =
                 sc =>
                 {
                     sc.AddSingleton(typeof(CancellationToken), cancellationTokenSource.Token);
-                    sc.AddSingleton(databaseConnection);
+                    sc.AddSingleton(serviceProvider.GetRequiredService<DatabaseOptions>());
                 };
 
             using StringWriter stringWriter = new StringWriter();

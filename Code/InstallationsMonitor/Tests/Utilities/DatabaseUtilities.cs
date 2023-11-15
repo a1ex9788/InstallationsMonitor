@@ -3,29 +3,12 @@ using InstallationsMonitor.Entities;
 using InstallationsMonitor.Entities.Base;
 using InstallationsMonitor.Persistence;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 namespace InstallationsMonitor.Tests.Utilities
 {
     internal static class DatabaseUtilities
     {
-        internal static readonly string TestDatabaseFullName = Path.Combine(
-                TempPathUtilities.GetTempDirectory(), "TestDatabase.db");
-
-        internal static DatabaseOptions DatabaseOptions = new DatabaseOptions(TestDatabaseFullName);
-
-        internal static DatabaseConnection GetTestDatabaseConnection()
-        {
-            AppDbContext appDbContext = new AppDbContext(DatabaseOptions);
-            DatabaseConnection databaseConnection = new DatabaseConnection(appDbContext);
-
-            appDbContext.Database.EnsureDeleted();
-            appDbContext.Database.EnsureCreated();
-
-            return databaseConnection;
-        }
-
         internal static Installation CheckInstallation(
             DatabaseConnection databaseConnection, string programName)
         {

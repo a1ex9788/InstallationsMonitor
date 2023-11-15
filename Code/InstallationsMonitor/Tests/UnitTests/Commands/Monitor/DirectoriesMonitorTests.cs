@@ -4,6 +4,8 @@ using InstallationsMonitor.Entities;
 using InstallationsMonitor.Entities.Base;
 using InstallationsMonitor.Persistence;
 using InstallationsMonitor.Tests.Utilities;
+using InstallationsMonitor.Tests.Utilities.ServiceProviders;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -25,9 +27,12 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             int installationId = 1;
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-            Get get = new Get(cancellationTokenSource.Token);
-            using DatabaseConnection databaseConnection = get.DatabaseConnection;
-            DirectoriesMonitor directoriesMonitor = get.DirectoriesMonitor;
+            IServiceProvider serviceProvider = new MonitorCommandServiceProvider(
+                cancellationTokenSource.Token);
+            using DatabaseConnection databaseConnection = serviceProvider
+                .GetRequiredService<DatabaseConnection>();
+            DirectoriesMonitor directoriesMonitor = serviceProvider
+                .GetRequiredService<DirectoriesMonitor>();
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
@@ -64,9 +69,12 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             int installationId = 1;
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-            Get get = new Get(cancellationTokenSource.Token);
-            using DatabaseConnection databaseConnection = get.DatabaseConnection;
-            DirectoriesMonitor directoriesMonitor = get.DirectoriesMonitor;
+            IServiceProvider serviceProvider = new MonitorCommandServiceProvider(
+                cancellationTokenSource.Token);
+            using DatabaseConnection databaseConnection = serviceProvider
+                .GetRequiredService<DatabaseConnection>();
+            DirectoriesMonitor directoriesMonitor = serviceProvider
+                .GetRequiredService<DirectoriesMonitor>();
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
@@ -101,9 +109,12 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             int installationId = 1;
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-            Get get = new Get(cancellationTokenSource.Token);
-            using DatabaseConnection databaseConnection = get.DatabaseConnection;
-            DirectoriesMonitor directoriesMonitor = get.DirectoriesMonitor;
+            IServiceProvider serviceProvider = new MonitorCommandServiceProvider(
+                cancellationTokenSource.Token);
+            using DatabaseConnection databaseConnection = serviceProvider
+                .GetRequiredService<DatabaseConnection>();
+            DirectoriesMonitor directoriesMonitor = serviceProvider
+                .GetRequiredService<DirectoriesMonitor>();
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
@@ -141,9 +152,12 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             int installationId = 1;
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-            Get get = new Get(cancellationTokenSource.Token);
-            using DatabaseConnection databaseConnection = get.DatabaseConnection;
-            DirectoriesMonitor directoriesMonitor = get.DirectoriesMonitor;
+            IServiceProvider serviceProvider = new MonitorCommandServiceProvider(
+                cancellationTokenSource.Token);
+            using DatabaseConnection databaseConnection = serviceProvider
+                .GetRequiredService<DatabaseConnection>();
+            DirectoriesMonitor directoriesMonitor = serviceProvider
+                .GetRequiredService<DirectoriesMonitor>();
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
@@ -178,13 +192,18 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
         public async Task MonitorAsync_DatabaseOperations_DatabaseFilesNotAnalysed()
         {
             // Arrange.
-            string testPath = Directory.GetParent(DatabaseUtilities.TestDatabaseFullName)!.FullName;
             int installationId = 1;
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-            Get get = new Get(cancellationTokenSource.Token);
-            using DatabaseConnection databaseConnection = get.DatabaseConnection;
-            DirectoriesMonitor directoriesMonitor = get.DirectoriesMonitor;
+            IServiceProvider serviceProvider = new MonitorCommandServiceProvider(
+                cancellationTokenSource.Token);
+            using DatabaseConnection databaseConnection = serviceProvider
+                .GetRequiredService<DatabaseConnection>();
+            DirectoriesMonitor directoriesMonitor = serviceProvider
+                .GetRequiredService<DirectoriesMonitor>();
+
+            DatabaseOptions databaseOptions = serviceProvider.GetRequiredService<DatabaseOptions>();
+            string testPath = Directory.GetParent(databaseOptions.DatabaseFullName)!.FullName;
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
@@ -213,12 +232,12 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             cancellationTokenSource.Cancel();
             await task;
 
-            stringWriter.ToString().Should().NotContain(DatabaseUtilities.TestDatabaseFullName);
+            stringWriter.ToString().Should().NotContain(databaseOptions.DatabaseFullName);
 
             IEnumerable<FileOperation> fileOperations = databaseConnection.GetFileOperations();
             fileOperations.Should().HaveCount(4);
             fileOperations.FirstOrDefault(
-                fo => fo.FilePath == DatabaseUtilities.TestDatabaseFullName).Should().BeNull();
+                fo => fo.FilePath == databaseOptions.DatabaseFullName).Should().BeNull();
         }
     }
 }

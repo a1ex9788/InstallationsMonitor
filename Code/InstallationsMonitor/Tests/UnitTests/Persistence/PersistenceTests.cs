@@ -2,7 +2,8 @@
 using InstallationsMonitor.Entities;
 using InstallationsMonitor.Entities.Base;
 using InstallationsMonitor.Persistence;
-using InstallationsMonitor.Tests.Utilities;
+using InstallationsMonitor.Tests.Utilities.ServiceProviders;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,9 @@ namespace InstallationsMonitor.Tests.UnitTests.Persistence
             FileRenaming fileRenaming = new FileRenaming(
                 "FileRenamed", DateTime.MinValue, installation.Id, "OldFile");
 
-            using DatabaseConnection databaseConnection = DatabaseUtilities.GetTestDatabaseConnection();
+            IServiceProvider serviceProvider = new MonitorCommandServiceProvider();
+            using DatabaseConnection databaseConnection = serviceProvider
+                .GetRequiredService<DatabaseConnection>();
 
             // Act.
             databaseConnection.CreateInstallation(installation);
