@@ -1,5 +1,4 @@
 ﻿using InstallationsMonitor.Entities;
-using InstallationsMonitor.Entities.Base;
 using Microsoft.EntityFrameworkCore;
 using System.IO;
 
@@ -11,7 +10,13 @@ namespace InstallationsMonitor.Persistence
 
         internal DbSet<Installation> Installations { get; set; } = null!;
 
-        internal DbSet<FileOperation> FileOperations { get; set; } = null!;
+        internal DbSet<FileChange> FileChanges { get; set; } = null!;
+
+        internal DbSet<FileCreation> FileCreations { get; set; } = null!;
+
+        internal DbSet<FileDeletion> FileDeletions { get; set; } = null!;
+
+        internal DbSet<FileRenaming> FileRenamings { get; set; } = null!;
 
         public AppDbContext(DatabaseOptions databaseOptions)
             : base(new DbContextOptions<AppDbContext>())

@@ -2,6 +2,7 @@
 using InstallationsMonitor.Entities;
 using InstallationsMonitor.Entities.Base;
 using InstallationsMonitor.Persistence;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -24,10 +25,32 @@ namespace InstallationsMonitor.Tests.Utilities
             int installationId,
             IEnumerable<string> filePaths,
             bool checkFileOperationsNumber = true)
+                where T : FileOperation
         {
             IList<string> filePathsList = filePaths.ToList();
 
-            IList<FileOperation> fileOperations = databaseConnection.GetFileOperations().ToList();
+            IList<T> fileOperations;
+
+            if (typeof(T) == typeof(FileChange))
+            {
+                fileOperations = databaseConnection.GetFileChanges().Cast<T>().ToList();
+            }
+            else if (typeof(T) == typeof(FileCreation))
+            {
+                fileOperations = databaseConnection.GetFileCreations().Cast<T>().ToList();
+            }
+            else if (typeof(T) == typeof(FileDeletion))
+            {
+                fileOperations = databaseConnection.GetFileDeletions().Cast<T>().ToList();
+            }
+            else if (typeof(T) == typeof(FileRenaming))
+            {
+                fileOperations = databaseConnection.GetFileRenamings().Cast<T>().ToList();
+            }
+            else
+            {
+                throw new InvalidOperationException("Unknown file operation.");
+            }
 
             if (checkFileOperationsNumber)
             {
@@ -36,9 +59,8 @@ namespace InstallationsMonitor.Tests.Utilities
 
             for (int i = 0; i < filePathsList.Count; i++)
             {
-                FileOperation? fileOperation = fileOperations.SingleOrDefault(
-                    fo => fo.GetType() == typeof(T)
-                        && fo.FilePath == filePathsList.ElementAt(i)
+                T? fileOperation = fileOperations.SingleOrDefault(
+                    fo => fo.FilePath == filePathsList.ElementAt(i)
                         && fo.InstallationId == installationId);
 
                 fileOperation.Should().NotBeNull();

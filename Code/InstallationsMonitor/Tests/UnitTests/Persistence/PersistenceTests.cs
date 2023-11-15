@@ -1,12 +1,10 @@
 ﻿using FluentAssertions;
 using InstallationsMonitor.Entities;
-using InstallationsMonitor.Entities.Base;
 using InstallationsMonitor.Persistence;
 using InstallationsMonitor.Tests.Utilities.ServiceProviders;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace InstallationsMonitor.Tests.UnitTests.Persistence
@@ -35,18 +33,23 @@ namespace InstallationsMonitor.Tests.UnitTests.Persistence
 
             // Act.
             databaseConnection.CreateInstallation(installation);
-            databaseConnection.CreateFileOperation(fileChange);
-            databaseConnection.CreateFileOperation(fileCreation);
-            databaseConnection.CreateFileOperation(fileDeletion);
-            databaseConnection.CreateFileOperation(fileRenaming);
+            databaseConnection.CreateFileChange(fileChange);
+            databaseConnection.CreateFileCreation(fileCreation);
+            databaseConnection.CreateFileDeletion(fileDeletion);
+            databaseConnection.CreateFileRenaming(fileRenaming);
 
             // Assert.
             Installation installationFromDB = databaseConnection.GetInstallations().Single();
             installationFromDB.Should().Be(installation);
 
-            IEnumerable<FileOperation> fileOperations = databaseConnection.GetFileOperations();
-            fileOperations.Should().BeEquivalentTo(
-                new FileOperation[] { fileChange, fileCreation, fileDeletion, fileRenaming });
+            FileChange fileChangeFromDB = databaseConnection.GetFileChanges().Single();
+            fileChangeFromDB.Should().Be(fileChange);
+            FileCreation fileCreationFromDB = databaseConnection.GetFileCreations().Single();
+            fileCreationFromDB.Should().Be(fileCreation);
+            FileDeletion fileDeletionFromDB = databaseConnection.GetFileDeletions().Single();
+            fileDeletionFromDB.Should().Be(fileDeletion);
+            FileRenaming fileRenamingFromDB = databaseConnection.GetFileRenamings().Single();
+            fileRenamingFromDB.Should().Be(fileRenaming);
         }
     }
 }

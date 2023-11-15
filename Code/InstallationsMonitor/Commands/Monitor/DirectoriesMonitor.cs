@@ -64,7 +64,7 @@ namespace InstallationsMonitor.Commands.Monitor
 
             Console.WriteLine($"[{DateTime.Now.TimeOfDay}] Changed: {e.FullPath}");
 
-            this.databaseConnection.CreateFileOperation(
+            this.databaseConnection.CreateFileChange(
                 new FileChange(e.FullPath, DateTime.Now, this.installationId!.Value));
         }
 
@@ -77,7 +77,7 @@ namespace InstallationsMonitor.Commands.Monitor
 
             Console.WriteLine($"[{DateTime.Now.TimeOfDay}] Created: {e.FullPath}");
 
-            this.databaseConnection.CreateFileOperation(
+            this.databaseConnection.CreateFileCreation(
                 new FileCreation(e.FullPath, DateTime.Now, this.installationId!.Value));
         }
 
@@ -90,7 +90,7 @@ namespace InstallationsMonitor.Commands.Monitor
 
             Console.WriteLine($"[{DateTime.Now.TimeOfDay}] Deleted: {e.FullPath}");
 
-            this.databaseConnection.CreateFileOperation(
+            this.databaseConnection.CreateFileDeletion(
                 new FileDeletion(e.FullPath, DateTime.Now, this.installationId!.Value));
         }
 
@@ -103,7 +103,7 @@ namespace InstallationsMonitor.Commands.Monitor
 
             Console.WriteLine($"[{DateTime.Now.TimeOfDay}] Renamed: {e.OldFullPath} to {e.FullPath}");
 
-            this.databaseConnection.CreateFileOperation(
+            this.databaseConnection.CreateFileRenaming(
                 new FileRenaming(e.FullPath, DateTime.Now, this.installationId!.Value, e.OldFullPath));
         }
 

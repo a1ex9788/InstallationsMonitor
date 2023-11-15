@@ -56,7 +56,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             cancellationTokenSource.Cancel();
             await task;
 
-            FileChange fileChange = (FileChange)databaseConnection.GetFileOperations().ElementAt(1);
+            FileChange fileChange = databaseConnection.GetFileChanges().Single();
             fileChange.FilePath.Should().Be(filePath);
             fileChange.InstallationId.Should().Be(installationId);
         }
@@ -96,7 +96,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             cancellationTokenSource.Cancel();
             await task;
 
-            FileCreation fileCreation = (FileCreation)databaseConnection.GetFileOperations().Single();
+            FileCreation fileCreation = databaseConnection.GetFileCreations().Single();
             fileCreation.FilePath.Should().Be(filePath);
             fileCreation.InstallationId.Should().Be(installationId);
         }
@@ -139,7 +139,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             cancellationTokenSource.Cancel();
             await task;
 
-            FileDeletion fileDeletion = (FileDeletion)databaseConnection.GetFileOperations().ElementAt(1);
+            FileDeletion fileDeletion = databaseConnection.GetFileDeletions().Single();
             fileDeletion.FilePath.Should().Be(filePath);
             fileDeletion.InstallationId.Should().Be(installationId);
         }
@@ -182,7 +182,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             cancellationTokenSource.Cancel();
             await task;
 
-            FileRenaming fileRenaming = (FileRenaming)databaseConnection.GetFileOperations().ElementAt(1);
+            FileRenaming fileRenaming = databaseConnection.GetFileRenamings().Single();
             fileRenaming.FilePath.Should().Be(newFilePath);
             fileRenaming.InstallationId.Should().Be(installationId);
             fileRenaming.OldPath.Should().Be(filePath);
@@ -234,10 +234,17 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
 
             stringWriter.ToString().Should().NotContain(databaseOptions.DatabaseFullName);
 
-            IEnumerable<FileOperation> fileOperations = databaseConnection.GetFileOperations();
+            IEnumerable<FileOperation> fileChanges = databaseConnection.GetFileChanges();
+            IEnumerable<FileOperation> fileCreations = databaseConnection.GetFileCreations();
+            IEnumerable<FileOperation> fileDeletions = databaseConnection.GetFileDeletions();
+            IEnumerable<FileOperation> fileRenamings = databaseConnection.GetFileRenamings();
+            IEnumerable<FileOperation> fileOperations = fileChanges
+                .Concat(fileCreations).Concat(fileDeletions).Concat(fileRenamings);
             fileOperations.Should().HaveCount(4);
-            fileOperations.FirstOrDefault(
-                fo => fo.FilePath == databaseOptions.DatabaseFullName).Should().BeNull();
+            fileOperations
+                .Where(
+                    fo => fo.FilePath.Contains(databaseOptions.DatabaseFullName, StringComparison.Ordinal))
+                .Should().BeEmpty();
         }
     }
 }
