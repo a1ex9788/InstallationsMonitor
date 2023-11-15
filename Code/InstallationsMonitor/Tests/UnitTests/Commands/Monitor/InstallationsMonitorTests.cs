@@ -27,7 +27,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-            IServiceProvider serviceProvider = new MonitorCommandServiceProvider(
+            IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
                 cancellationTokenSource.Token);
             using DatabaseConnection databaseConnection = serviceProvider
                 .GetRequiredService<DatabaseConnection>();
@@ -78,7 +78,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-            IServiceProvider serviceProvider = new MonitorCommandServiceProvider(
+            IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
                 cancellationTokenSource.Token);
             using DatabaseConnection databaseConnection = serviceProvider
                 .GetRequiredService<DatabaseConnection>();
@@ -123,7 +123,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             string programName = "Program";
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-            IServiceProvider serviceProvider = new MonitorCommandServiceProvider(
+            IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
                 cancellationTokenSource.Token);
             using DatabaseConnection databaseConnection = serviceProvider
                 .GetRequiredService<DatabaseConnection>();
@@ -159,7 +159,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             string programName = "Program";
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-            IServiceProvider serviceProvider = new MonitorCommandServiceProvider(
+            IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
                 cancellationTokenSource.Token);
             using DatabaseConnection databaseConnection = serviceProvider
                 .GetRequiredService<DatabaseConnection>();

@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using InstallationsMonitor.Commands;
 using InstallationsMonitor.Commands.Monitor;
 using InstallationsMonitor.Entities;
 using InstallationsMonitor.Persistence;
@@ -28,12 +27,12 @@ namespace InstallationsMonitor.Tests.IntegrationTests
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-            IServiceProvider serviceProvider = new MonitorCommandServiceProvider(
+            IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
                 cancellationTokenSource.Token);
             using DatabaseConnection databaseConnection = serviceProvider
                 .GetRequiredService<DatabaseConnection>();
 
-            CommandsCreator.ExtraRegistrationsAction =
+            MonitorCommandServiceProvider.ExtraRegistrationsAction =
                 sc =>
                 {
                     sc.AddSingleton(typeof(CancellationToken), cancellationTokenSource.Token);
@@ -91,7 +90,7 @@ namespace InstallationsMonitor.Tests.IntegrationTests
                     return Task.CompletedTask;
                 });
 
-            CommandsCreator.ExtraRegistrationsAction = sc => { sc.AddSingleton(monitorCommand); };
+            MonitorCommandServiceProvider.ExtraRegistrationsAction = sc => sc.AddSingleton(monitorCommand);
 
             // Act.
             Program.Main(args);
@@ -119,7 +118,7 @@ namespace InstallationsMonitor.Tests.IntegrationTests
                     return Task.CompletedTask;
                 });
 
-            CommandsCreator.ExtraRegistrationsAction = sc => { sc.AddSingleton(monitorCommand); };
+            MonitorCommandServiceProvider.ExtraRegistrationsAction = sc => sc.AddSingleton(monitorCommand);
 
             // Act.
             Program.Main(args);
@@ -146,7 +145,7 @@ namespace InstallationsMonitor.Tests.IntegrationTests
                     return Task.CompletedTask;
                 });
 
-            CommandsCreator.ExtraRegistrationsAction = sc => { sc.AddSingleton(monitorCommand); };
+            MonitorCommandServiceProvider.ExtraRegistrationsAction = sc => sc.AddSingleton(monitorCommand);
 
             // Act.
             Program.Main(args);
@@ -174,7 +173,7 @@ namespace InstallationsMonitor.Tests.IntegrationTests
                     return Task.CompletedTask;
                 });
 
-            CommandsCreator.ExtraRegistrationsAction = sc => { sc.AddSingleton(monitorCommand); };
+            MonitorCommandServiceProvider.ExtraRegistrationsAction = sc => sc.AddSingleton(monitorCommand);
 
             // Act.
             Program.Main(args);

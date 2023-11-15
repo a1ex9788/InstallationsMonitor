@@ -27,7 +27,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Persistence
             FileRenaming fileRenaming = new FileRenaming(
                 "FileRenamed", DateTime.MinValue, installation.Id, "OldFile");
 
-            IServiceProvider serviceProvider = new MonitorCommandServiceProvider();
+            IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider();
             using DatabaseConnection databaseConnection = serviceProvider
                 .GetRequiredService<DatabaseConnection>();
 

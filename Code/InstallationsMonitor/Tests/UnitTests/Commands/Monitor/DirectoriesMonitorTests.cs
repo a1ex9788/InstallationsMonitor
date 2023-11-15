@@ -27,7 +27,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             int installationId = 1;
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-            IServiceProvider serviceProvider = new MonitorCommandServiceProvider(
+            IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
                 cancellationTokenSource.Token);
             using DatabaseConnection databaseConnection = serviceProvider
                 .GetRequiredService<DatabaseConnection>();
@@ -69,7 +69,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             int installationId = 1;
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-            IServiceProvider serviceProvider = new MonitorCommandServiceProvider(
+            IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
                 cancellationTokenSource.Token);
             using DatabaseConnection databaseConnection = serviceProvider
                 .GetRequiredService<DatabaseConnection>();
@@ -109,7 +109,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             int installationId = 1;
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-            IServiceProvider serviceProvider = new MonitorCommandServiceProvider(
+            IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
                 cancellationTokenSource.Token);
             using DatabaseConnection databaseConnection = serviceProvider
                 .GetRequiredService<DatabaseConnection>();
@@ -152,7 +152,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             int installationId = 1;
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-            IServiceProvider serviceProvider = new MonitorCommandServiceProvider(
+            IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
                 cancellationTokenSource.Token);
             using DatabaseConnection databaseConnection = serviceProvider
                 .GetRequiredService<DatabaseConnection>();
@@ -195,7 +195,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             int installationId = 1;
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-            IServiceProvider serviceProvider = new MonitorCommandServiceProvider(
+            IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
                 cancellationTokenSource.Token);
             using DatabaseConnection databaseConnection = serviceProvider
                 .GetRequiredService<DatabaseConnection>();

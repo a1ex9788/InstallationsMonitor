@@ -1,6 +1,7 @@
-﻿using InstallationsMonitor.Commands;
-using InstallationsMonitor.Commands.Monitor;
+﻿using InstallationsMonitor.Commands.Monitor;
 using McMaster.Extensions.CommandLineUtils;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace InstallationsMonitor
 {
@@ -38,7 +39,9 @@ namespace InstallationsMonitor
 
                     command.OnExecuteAsync(async ct =>
                     {
-                        IMonitorCommand monitorCommand = CommandsCreator.CreateMonitorCommand(ct);
+                        IServiceProvider serviceProvider = new MonitorCommandServiceProvider(ct);
+                        IMonitorCommand monitorCommand = serviceProvider
+                            .GetRequiredService<IMonitorCommand>();
 
                         await monitorCommand.ExecuteAsync(
                             directoryCommandOption.Value(), programNameCommandOption.Value());

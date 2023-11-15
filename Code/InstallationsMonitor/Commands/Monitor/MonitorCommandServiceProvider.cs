@@ -1,16 +1,17 @@
-﻿using InstallationsMonitor.Commands.Monitor;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading;
 
-namespace InstallationsMonitor.Commands
+namespace InstallationsMonitor.Commands.Monitor
 {
-    internal static class CommandsCreator
+    internal class MonitorCommandServiceProvider : IServiceProvider
     {
+        private readonly IServiceProvider serviceProvider;
+
         // Hook for tests.
         internal static Action<IServiceCollection>? ExtraRegistrationsAction;
 
-        internal static IMonitorCommand CreateMonitorCommand(CancellationToken cancellationToken)
+        internal MonitorCommandServiceProvider(CancellationToken cancellationToken)
         {
             IServiceCollection services = new ServiceCollection();
 
@@ -23,7 +24,12 @@ namespace InstallationsMonitor.Commands
 
             ExtraRegistrationsAction?.Invoke(services);
 
-            return services.BuildServiceProvider().GetRequiredService<IMonitorCommand>();
+            this.serviceProvider = services.BuildServiceProvider();
+        }
+
+        public object? GetService(Type serviceType)
+        {
+            return this.serviceProvider.GetService(serviceType);
         }
     }
 }
