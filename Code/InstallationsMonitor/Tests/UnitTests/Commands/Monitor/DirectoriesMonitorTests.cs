@@ -238,8 +238,8 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             IEnumerable<FileOperation> fileCreations = databaseConnection.GetFileCreations();
             IEnumerable<FileOperation> fileDeletions = databaseConnection.GetFileDeletions();
             IEnumerable<FileOperation> fileRenamings = databaseConnection.GetFileRenamings();
-            IEnumerable<FileOperation> fileOperations = fileChanges
-                .Concat(fileCreations).Concat(fileDeletions).Concat(fileRenamings);
+            IList<FileOperation> fileOperations = fileChanges
+                .Concat(fileCreations).Concat(fileDeletions).Concat(fileRenamings).ToList();
             fileOperations.Should().HaveCount(4);
             fileOperations
                 .Where(
