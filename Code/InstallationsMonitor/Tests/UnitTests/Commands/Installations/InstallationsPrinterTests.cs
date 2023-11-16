@@ -16,7 +16,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Installations
     public class InstallationsPrinterTests
     {
         [TestMethod]
-        public async Task ExecuteAsync_ForAllDrives_CreatesInstallationWithAllFiles()
+        public void ExecuteAsync_ForAllDrives_CreatesInstallationWithAllFiles()
         {
             // Arrange.
             string programName1 = "Program1";
