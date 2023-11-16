@@ -7,8 +7,8 @@ namespace InstallationsMonitor.Utilities
 {
     internal class TablesCreator
     {
-        private static readonly char ColumnSeparator = '|';
-        private static readonly char ColumnNamesRowSeparator = '-';
+        private const char ColumnSeparator = '|';
+        private const char ColumnNamesRowSeparator = '-';
         private static readonly string NewLine = Environment.NewLine;
 
         private readonly IList<string> columnNames;

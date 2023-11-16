@@ -1,6 +1,8 @@
 ﻿using InstallationsMonitor.Entities;
+using InstallationsMonitor.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading;
 
 namespace InstallationsMonitor.Commands.Installations.Utilities
@@ -21,15 +23,23 @@ namespace InstallationsMonitor.Commands.Installations.Utilities
         {
             IEnumerable<Installation> installations = this.installationsObtainer.GetInstallations();
 
+            IEnumerable<string> columnNames = new string[] { "Id", "Program name", "Date" };
+
+            TablesCreator tablesCreator = new TablesCreator(columnNames);
+
             foreach (Installation installation in installations)
             {
-                if (this.cancellationToken.IsCancellationRequested)
+                tablesCreator.AddRow(new string[]
                 {
-                    return;
-                }
-
-                Console.WriteLine(installation.ProgramName + " - " + installation.DateTime);
+                    installation.Id.ToString(CultureInfo.InvariantCulture),
+                    installation.ProgramName,
+                    installation.DateTime.ToString(CultureInfo.InvariantCulture),
+                });
             }
+
+            string installationsTable = tablesCreator.Create();
+
+            Console.WriteLine(installationsTable);
         }
     }
 }
