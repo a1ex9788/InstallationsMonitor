@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -15,29 +16,10 @@ namespace InstallationsMonitor.Tests.Utilities
 
         internal static async Task WaitForEventsRegistrationAsync(StringWriter stringWriter)
         {
-            using CancellationTokenSource cancellationTokenSource =
-                new CancellationTokenSource(EventsRegistrationMaxTime);
-
-            bool expectedResultsPrinted = false;
-
-            do
-            {
-                try
-                {
-                    stringWriter.ToString().Should().Contain("Monitoring directory");
-
-                    expectedResultsPrinted = true;
-                }
-                catch
-                {
-                    if (cancellationTokenSource.IsCancellationRequested)
-                    {
-                        throw;
-                    }
-
-                    await Task.Delay(WaitingTimeBetweenRetries);
-                }
-            } while (!expectedResultsPrinted);
+            await WaitForExpectedOutputAsync(
+                stringWriter,
+                "Monitoring directory",
+                EventsRegistrationMaxTime);
 
             // Extra waiting time just in case.
             await Task.Delay(TimeSpan.FromMilliseconds(300));
@@ -51,81 +33,14 @@ namespace InstallationsMonitor.Tests.Utilities
             IEnumerable<string>? expectedDeletedFiles = null,
             IEnumerable<(string OldPath, string NewPath)>? expectedRenamedFiles = null)
         {
-            using CancellationTokenSource cancellationTokenSource =
-                new CancellationTokenSource(EventsProsecutionMaxTime);
-
-            bool expectedResultsPrinted = false;
-
-            do
-            {
-                try
-                {
-                    TestOutput(
-                        stringWriter,
-                        expectedChangedFiles,
-                        expectedCreatedFiles,
-                        expectedNotCreatedFiles,
-                        expectedDeletedFiles,
-                        expectedRenamedFiles);
-
-                    expectedResultsPrinted = true;
-                }
-                catch
-                {
-                    if (cancellationTokenSource.IsCancellationRequested)
-                    {
-                        throw;
-                    }
-
-                    await Task.Delay(WaitingTimeBetweenRetries);
-                }
-            } while (!expectedResultsPrinted);
-        }
-
-        internal static async Task WaitForEventsProsecutionAsync(
-            StringWriter stringWriter, string expectedOutput)
-        {
-            using CancellationTokenSource cancellationTokenSource =
-                new CancellationTokenSource(EventsProsecutionMaxTime);
-
-            bool expectedResultsPrinted = false;
-
-            do
-            {
-                try
-                {
-                    stringWriter.ToString().Should().Contain(expectedOutput);
-
-                    expectedResultsPrinted = true;
-                }
-                catch
-                {
-                    if (cancellationTokenSource.IsCancellationRequested)
-                    {
-                        throw;
-                    }
-
-                    await Task.Delay(WaitingTimeBetweenRetries);
-                }
-            } while (!expectedResultsPrinted);
-        }
-
-        private static void TestOutput(
-            StringWriter stringWriter,
-            IEnumerable<string>? expectedChangedFiles = null,
-            IEnumerable<string>? expectedCreatedFiles = null,
-            IEnumerable<string>? expectedNotCreatedFiles = null,
-            IEnumerable<string>? expectedDeletedFiles = null,
-            IEnumerable<(string OldPath, string NewPath)>? expectedRenamedFiles = null)
-        {
-            // Assert.
-            string output = stringWriter.ToString();
+            IList<string> expectedOutput = new List<string>();
+            IList<string> notExpectedOutput = new List<string>();
 
             if (expectedChangedFiles is not null)
             {
                 foreach (string expectedChangedFile in expectedChangedFiles)
                 {
-                    output.Should().Contain($"Changed: {expectedChangedFile}");
+                    expectedOutput.Add($"Changed: {expectedChangedFile}");
                 }
             }
 
@@ -133,7 +48,7 @@ namespace InstallationsMonitor.Tests.Utilities
             {
                 foreach (string expectedCreatedFile in expectedCreatedFiles)
                 {
-                    output.Should().Contain($"Created: {expectedCreatedFile}");
+                    expectedOutput.Add($"Created: {expectedCreatedFile}");
                 }
             }
 
@@ -141,7 +56,7 @@ namespace InstallationsMonitor.Tests.Utilities
             {
                 foreach (string expectedNotCreatedFile in expectedNotCreatedFiles)
                 {
-                    output.Should().NotContain($"Created: {expectedNotCreatedFile}");
+                    notExpectedOutput.Add($"Created: {expectedNotCreatedFile}");
                 }
             }
 
@@ -149,7 +64,7 @@ namespace InstallationsMonitor.Tests.Utilities
             {
                 foreach (string expectedDeletedFile in expectedDeletedFiles)
                 {
-                    output.Should().Contain($"Deleted: {expectedDeletedFile}");
+                    expectedOutput.Add($"Deleted: {expectedDeletedFile}");
                 }
             }
 
@@ -157,9 +72,91 @@ namespace InstallationsMonitor.Tests.Utilities
             {
                 foreach ((string OldPath, string NewPath) in expectedRenamedFiles)
                 {
-                    output.Should().Contain($"Renamed: {OldPath} to {NewPath}");
+                    expectedOutput.Add($"Renamed: {OldPath} to {NewPath}");
                 }
             }
+
+            await WaitForExpectedOutputAsync(
+                stringWriter,
+                expectedOutput,
+                notExpectedOutput,
+                EventsProsecutionMaxTime);
+        }
+
+        internal static async Task WaitForEventsProsecutionAsync(
+            StringWriter stringWriter, string expectedOutput)
+        {
+            await WaitForExpectedOutputAsync(stringWriter, expectedOutput, EventsProsecutionMaxTime);
+        }
+
+        private static async Task WaitForExpectedOutputAsync(
+            StringWriter stringWriter, string expectedOutput, TimeSpan maxWaitingTime)
+        {
+            using CancellationTokenSource cancellationTokenSource =
+                new CancellationTokenSource(maxWaitingTime);
+
+            bool expectedOutputPrinted = false;
+
+            do
+            {
+                try
+                {
+                    stringWriter.ToString().Should().Contain(expectedOutput);
+
+                    expectedOutputPrinted = true;
+                }
+                catch
+                {
+                    if (cancellationTokenSource.IsCancellationRequested)
+                    {
+                        throw;
+                    }
+
+                    await Task.Delay(WaitingTimeBetweenRetries);
+                }
+            } while (!expectedOutputPrinted);
+        }
+
+        private static async Task WaitForExpectedOutputAsync(
+            StringWriter stringWriter,
+            IEnumerable<string> expectedOutput,
+            IEnumerable<string> notExpectedOutput,
+            TimeSpan maxWaitingTime)
+        {
+            using CancellationTokenSource cancellationTokenSource =
+                new CancellationTokenSource(maxWaitingTime);
+
+            bool expectedOutputPrinted = false;
+
+            IList<string> expectedOutputList = expectedOutput.ToList();
+            IList<string> notExpectedOutputList = notExpectedOutput.ToList();
+
+            do
+            {
+                try
+                {
+                    foreach (string expectedOutputPart in expectedOutputList)
+                    {
+                        stringWriter.ToString().Should().Contain(expectedOutputPart);
+                    }
+
+                    foreach (string expectedOutputPart in notExpectedOutputList)
+                    {
+                        stringWriter.ToString().Should().NotContain(expectedOutputPart);
+                    }
+
+                    expectedOutputPrinted = true;
+                }
+                catch
+                {
+                    if (cancellationTokenSource.IsCancellationRequested)
+                    {
+                        throw;
+                    }
+
+                    await Task.Delay(WaitingTimeBetweenRetries);
+                }
+            } while (!expectedOutputPrinted);
         }
     }
 }
