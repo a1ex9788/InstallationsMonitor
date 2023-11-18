@@ -29,6 +29,8 @@ namespace InstallationsMonitor.Commands.Installations.Utilities
 
             foreach (Installation installation in installations)
             {
+                this.cancellationToken.ThrowIfCancellationRequested();
+
                 tablesCreator.AddRow(new string[]
                 {
                     installation.Id.ToString(CultureInfo.InvariantCulture),
