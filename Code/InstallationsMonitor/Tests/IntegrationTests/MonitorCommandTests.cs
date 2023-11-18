@@ -62,7 +62,6 @@ namespace InstallationsMonitor.Tests.IntegrationTests
             cancellationTokenSource.Cancel();
             await task;
 
-            // Add checks.
             Installation installation = DatabaseChecker.CheckInstallation(
                 databaseConnection, programName);
             DatabaseChecker.CheckFileOperations<FileCreation>(

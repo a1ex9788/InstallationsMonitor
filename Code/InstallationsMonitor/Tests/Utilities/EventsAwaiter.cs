@@ -9,10 +9,14 @@ namespace InstallationsMonitor.Tests.Utilities
 {
     internal class EventsAwaiter
     {
+        private static readonly TimeSpan EventsRegistrationMaxTime = TimeSpan.FromSeconds(1);
+        private static readonly TimeSpan EventsProsecutionMaxTime = TimeSpan.FromSeconds(2);
+        private static readonly TimeSpan WaitingTimeBetweenRetries = TimeSpan.FromMilliseconds(100);
+
         internal static async Task WaitForEventsRegistrationAsync(StringWriter stringWriter)
         {
             using CancellationTokenSource cancellationTokenSource =
-                new CancellationTokenSource(TimeSpan.FromSeconds(1));
+                new CancellationTokenSource(EventsRegistrationMaxTime);
 
             bool expectedResultsPrinted = false;
 
@@ -31,7 +35,7 @@ namespace InstallationsMonitor.Tests.Utilities
                         throw;
                     }
 
-                    await Task.Delay(TimeSpan.FromMilliseconds(100));
+                    await Task.Delay(WaitingTimeBetweenRetries);
                 }
             } while (!expectedResultsPrinted);
 
@@ -48,7 +52,7 @@ namespace InstallationsMonitor.Tests.Utilities
             IEnumerable<(string OldPath, string NewPath)>? expectedRenamedFiles = null)
         {
             using CancellationTokenSource cancellationTokenSource =
-                new CancellationTokenSource(TimeSpan.FromSeconds(2));
+                new CancellationTokenSource(EventsProsecutionMaxTime);
 
             bool expectedResultsPrinted = false;
 
@@ -73,7 +77,35 @@ namespace InstallationsMonitor.Tests.Utilities
                         throw;
                     }
 
-                    await Task.Delay(TimeSpan.FromMilliseconds(10));
+                    await Task.Delay(WaitingTimeBetweenRetries);
+                }
+            } while (!expectedResultsPrinted);
+        }
+
+        internal static async Task WaitForEventsProsecutionAsync(
+            StringWriter stringWriter, string expectedOutput)
+        {
+            using CancellationTokenSource cancellationTokenSource =
+                new CancellationTokenSource(EventsProsecutionMaxTime);
+
+            bool expectedResultsPrinted = false;
+
+            do
+            {
+                try
+                {
+                    stringWriter.ToString().Should().Contain(expectedOutput);
+
+                    expectedResultsPrinted = true;
+                }
+                catch
+                {
+                    if (cancellationTokenSource.IsCancellationRequested)
+                    {
+                        throw;
+                    }
+
+                    await Task.Delay(WaitingTimeBetweenRetries);
                 }
             } while (!expectedResultsPrinted);
         }
