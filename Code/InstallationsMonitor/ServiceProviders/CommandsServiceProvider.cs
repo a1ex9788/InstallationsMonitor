@@ -2,16 +2,20 @@
 using System;
 using System.Threading;
 
-namespace InstallationsMonitor.Commands.Installations
+namespace InstallationsMonitor.ServiceProviders
 {
-    internal class InstallationsCommandServiceProvider : IServiceProvider
+    internal abstract class CommandsServiceProvider<T, U> : IServiceProvider
+        where T : class
+        where U : class, T
     {
         private readonly IServiceProvider serviceProvider;
 
         // Hook for tests.
         internal static Action<IServiceCollection>? ExtraRegistrationsAction;
 
-        internal InstallationsCommandServiceProvider(CancellationToken cancellationToken)
+        internal CommandsServiceProvider(
+            Action<IServiceCollection> configureSpecificServicesAction,
+            CancellationToken cancellationToken)
         {
             IServiceCollection services = new ServiceCollection();
 
@@ -19,8 +23,8 @@ namespace InstallationsMonitor.Commands.Installations
 
             services.AddPersistence();
 
-            services.AddScoped<IInstallationsCommand, InstallationsCommand>();
-            InstallationsCommand.ConfigureSpecificServices(services);
+            services.AddScoped<T, U>();
+            configureSpecificServicesAction.Invoke(services);
 
             ExtraRegistrationsAction?.Invoke(services);
 
