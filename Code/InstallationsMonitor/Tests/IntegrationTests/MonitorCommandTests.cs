@@ -26,7 +26,6 @@ namespace InstallationsMonitor.Tests.IntegrationTests
             string[] args = new string[] { "monitor", "-p", programName };
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
                 cancellationTokenSource.Token);
             using DatabaseConnection databaseConnection = serviceProvider

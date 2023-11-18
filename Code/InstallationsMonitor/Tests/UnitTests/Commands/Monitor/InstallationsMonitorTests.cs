@@ -26,7 +26,6 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             string programName = "Program";
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
                 cancellationTokenSource.Token);
             using DatabaseConnection databaseConnection = serviceProvider
@@ -77,7 +76,6 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             string programName = "Program";
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
                 cancellationTokenSource.Token);
             using DatabaseConnection databaseConnection = serviceProvider
@@ -121,8 +119,8 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
         {
             // Arrange.
             string programName = "Program";
-            using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
+            using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
                 cancellationTokenSource.Token);
             using DatabaseConnection databaseConnection = serviceProvider
@@ -157,8 +155,8 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
         {
             // Arrange.
             string programName = "Program";
-            using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
+            using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
                 cancellationTokenSource.Token);
             using DatabaseConnection databaseConnection = serviceProvider

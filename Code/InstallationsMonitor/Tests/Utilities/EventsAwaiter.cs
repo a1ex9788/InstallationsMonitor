@@ -83,12 +83,6 @@ namespace InstallationsMonitor.Tests.Utilities
                 EventsProsecutionMaxTime);
         }
 
-        internal static async Task WaitForEventsProsecutionAsync(
-            StringWriter stringWriter, string expectedOutput)
-        {
-            await WaitForExpectedOutputAsync(stringWriter, expectedOutput, EventsProsecutionMaxTime);
-        }
-
         private static async Task WaitForExpectedOutputAsync(
             StringWriter stringWriter, string expectedOutput, TimeSpan maxWaitingTime)
         {

@@ -1,14 +1,13 @@
-﻿using InstallationsMonitor.Commands.Installations;
+﻿using FluentAssertions;
+using InstallationsMonitor.Commands.Installations;
 using InstallationsMonitor.Entities;
 using InstallationsMonitor.Persistence;
-using InstallationsMonitor.Tests.Utilities;
 using InstallationsMonitor.Tests.Utilities.ServiceProviders;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace InstallationsMonitor.Tests.IntegrationTests
 {
@@ -16,7 +15,7 @@ namespace InstallationsMonitor.Tests.IntegrationTests
     public class InstallationsCommandTests
     {
         [TestMethod]
-        public async Task InstallationsCommand_SomeFilesCreated_PrintsExpectedResults()
+        public void InstallationsCommand_SomeFilesCreated_PrintsExpectedResults()
         {
             // Arrange.
             string programName = "Program";
@@ -25,7 +24,6 @@ namespace InstallationsMonitor.Tests.IntegrationTests
             string[] args = new string[] { "installations", };
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-
             IServiceProvider serviceProvider = new InstallationsCommandTestServiceProvider(
                 cancellationTokenSource.Token);
             using DatabaseConnection databaseConnection = serviceProvider
@@ -34,17 +32,13 @@ namespace InstallationsMonitor.Tests.IntegrationTests
             databaseConnection.CreateInstallation(new Installation(programName, dateTime));
 
             InstallationsCommandServiceProvider.ExtraRegistrationsAction =
-                sc =>
-                {
-                    sc.AddSingleton(typeof(CancellationToken), cancellationTokenSource.Token);
-                    sc.AddSingleton(serviceProvider.GetRequiredService<DatabaseOptions>());
-                };
+                sc => sc.AddSingleton(serviceProvider.GetRequiredService<DatabaseOptions>());
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
 
             // Act.
-            Task task = Task.Run(() => Program.Main(args));
+            Program.Main(args);
 
             // Assert.
             string expectedOutput =
@@ -52,10 +46,7 @@ namespace InstallationsMonitor.Tests.IntegrationTests
                 $"-------------------------------------------{Environment.NewLine}" +
                 $"|  1 |      Program | 01/01/0001 01:01:01 |{Environment.NewLine}";
 
-            await EventsAwaiter.WaitForEventsProsecutionAsync(stringWriter, expectedOutput);
-
-            cancellationTokenSource.Cancel();
-            await task;
+            stringWriter.ToString().Should().Be(expectedOutput);
         }
     }
 }
