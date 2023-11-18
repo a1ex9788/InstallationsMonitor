@@ -1,5 +1,9 @@
 {
   "profiles": {
+    "Installations": {
+      "commandName": "Project",
+      "commandLineArgs": "installations"
+    },
     "Monitor all drives": {
       "commandName": "Project",
       "commandLineArgs": "monitor"
@@ -8,9 +12,9 @@
       "commandName": "Project",
       "commandLineArgs": "monitor -d C:\\"
     },
-    "Installations": {
+    "Remove": {
       "commandName": "Project",
-      "commandLineArgs": "installations"
+      "commandLineArgs": "remove -i 1"
     }
   }
 }

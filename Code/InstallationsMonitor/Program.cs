@@ -1,5 +1,6 @@
 ﻿using InstallationsMonitor.Commands.Installations;
 using InstallationsMonitor.Commands.Monitor;
+using InstallationsMonitor.Commands.Remove;
 using McMaster.Extensions.CommandLineUtils;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -18,10 +19,30 @@ namespace InstallationsMonitor
 
             commandLineApplication.HelpOption();
 
-            DefineMonitorCommand(commandLineApplication);
             DefineInstallationsCommand(commandLineApplication);
+            DefineMonitorCommand(commandLineApplication);
+            DefineRemoveCommand(commandLineApplication);
 
             return commandLineApplication.Execute(args);
+        }
+
+        private static void DefineInstallationsCommand(CommandLineApplication commandLineApplication)
+        {
+            commandLineApplication.Command(
+                "installations",
+                command =>
+                {
+                    command.OnExecuteAsync(ct =>
+                    {
+                        IServiceProvider serviceProvider = new InstallationsCommandServiceProvider(ct);
+                        IInstallationsCommand installationsCommand = serviceProvider
+                            .GetRequiredService<IInstallationsCommand>();
+
+                        installationsCommand.Execute();
+
+                        return Task.CompletedTask;
+                    });
+                });
         }
 
         private static void DefineMonitorCommand(CommandLineApplication commandLineApplication)
@@ -52,21 +73,35 @@ namespace InstallationsMonitor
                 });
         }
 
-        private static void DefineInstallationsCommand(CommandLineApplication commandLineApplication)
+        private static void DefineRemoveCommand(CommandLineApplication commandLineApplication)
         {
             commandLineApplication.Command(
-                "installations",
+                "remove",
                 command =>
                 {
-                    command.OnExecuteAsync(ct =>
+                    CommandOption installationIdCommandOption = command.Option(
+                        "-i",
+                        "The identifier of the installation to remove.",
+                        CommandOptionType.SingleValue).IsRequired();
+
+                    command.OnExecuteAsync(async ct =>
                     {
-                        IServiceProvider serviceProvider = new InstallationsCommandServiceProvider(ct);
-                        IInstallationsCommand installationsCommand = serviceProvider
-                            .GetRequiredService<IInstallationsCommand>();
+                        IServiceProvider serviceProvider = new RemoveCommandServiceProvider(ct);
+                        IRemoveCommand removeCommand = serviceProvider
+                            .GetRequiredService<IRemoveCommand>();
 
-                        installationsCommand.Execute();
+                        bool isInt = int.TryParse(
+                            installationIdCommandOption.Value(), out int installationIdentifier);
 
-                        return Task.CompletedTask;
+                        if (!isInt)
+                        {
+                            // Use of McMaster for this is avoided since it throws exception.
+                            await Console.Error.WriteLineAsync("The -i field must be an integer.");
+
+                            return;
+                        }
+
+                        removeCommand.Execute(installationIdentifier);
                     });
                 });
         }

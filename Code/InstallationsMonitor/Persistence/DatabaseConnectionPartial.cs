@@ -75,6 +75,18 @@ namespace InstallationsMonitor.Persistence
             return installations;
         }
 
+        internal Installation? GetInstallation(int installationId)
+        {
+            this.Lock();
+
+            Installation? installation = this.appDbContext.Installations
+                .SingleOrDefault(i => i.Id == installationId);
+
+            this.Unlock();
+
+            return installation;
+        }
+
         internal IEnumerable<FileChange> GetFileChanges()
         {
             this.Lock();
@@ -117,6 +129,17 @@ namespace InstallationsMonitor.Persistence
             this.Unlock();
 
             return fileRenamings;
+        }
+
+        internal void RemoveInstallation(int installationId)
+        {
+            this.Lock();
+
+            Installation installation = this.appDbContext.Installations.Single(i => i.Id == installationId);
+            this.appDbContext.Installations.Remove(installation);
+            this.appDbContext.SaveChanges();
+
+            this.Unlock();
         }
     }
 }

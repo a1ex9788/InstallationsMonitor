@@ -13,11 +13,31 @@ namespace InstallationsMonitor.Tests.Utilities
         internal static Installation CheckInstallation(
             DatabaseConnection databaseConnection, string programName)
         {
-            Installation installation = databaseConnection.GetInstallations().Single();
+            IEnumerable<Installation> installations = databaseConnection.GetInstallations();
+
+            installations.Should().HaveCount(1);
+
+            Installation installation = installations.Single();
 
             installation.ProgramName.Should().Be(programName);
 
             return installation;
+        }
+
+        internal static void CheckInstallations(
+            DatabaseConnection databaseConnection, IEnumerable<string> programNames)
+        {
+            IEnumerable<Installation> installations = databaseConnection.GetInstallations();
+
+            installations.Should().HaveSameCount(programNames);
+
+            foreach (string programName in programNames)
+            {
+                Installation? installation = installations
+                    .FirstOrDefault(i => i.ProgramName == programName);
+
+                installation.Should().NotBeNull();
+            }
         }
 
         internal static void CheckFileOperations<T>(
