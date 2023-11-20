@@ -12,7 +12,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace InstallationsMonitor.Tests.IntegrationTests
+namespace InstallationsMonitor.Tests.IntegrationTests.Commands
 {
     [TestClass]
     public class MonitorCommandTests
