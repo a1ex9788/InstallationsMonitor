@@ -1,6 +1,9 @@
-﻿using InstallationsMonitor.Commands.Installations;
-using InstallationsMonitor.Commands.Monitor;
-using InstallationsMonitor.Commands.Remove;
+﻿using InstallationsMonitor.Logic.Commands.Installations;
+using InstallationsMonitor.Logic.Commands.Monitor;
+using InstallationsMonitor.Logic.Commands.Remove;
+using InstallationsMonitor.ServiceProviders.Installations;
+using InstallationsMonitor.ServiceProviders.Monitor;
+using InstallationsMonitor.ServiceProviders.Remove;
 using McMaster.Extensions.CommandLineUtils;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -8,9 +11,9 @@ using System.Threading.Tasks;
 
 namespace InstallationsMonitor
 {
-    internal class Program
+    public class Program
     {
-        internal static int Main(string[] args)
+        public static int Main(string[] args)
         {
             using CommandLineApplication commandLineApplication = new CommandLineApplication()
             {
@@ -34,7 +37,8 @@ namespace InstallationsMonitor
                 {
                     command.OnExecuteAsync(ct =>
                     {
-                        IServiceProvider serviceProvider = new InstallationsCommandServiceProvider(ct);
+                        IServiceProvider serviceProvider =
+                            new InstallationsCommandServiceProvider(ct, Settings.GetDatabaseFullName());
                         IInstallationsCommand installationsCommand = serviceProvider
                             .GetRequiredService<IInstallationsCommand>();
 
@@ -63,7 +67,8 @@ namespace InstallationsMonitor
 
                     command.OnExecuteAsync(async ct =>
                     {
-                        IServiceProvider serviceProvider = new MonitorCommandServiceProvider(ct);
+                        IServiceProvider serviceProvider =
+                            new MonitorCommandServiceProvider(ct, Settings.GetDatabaseFullName());
                         IMonitorCommand monitorCommand = serviceProvider
                             .GetRequiredService<IMonitorCommand>();
 
@@ -86,7 +91,8 @@ namespace InstallationsMonitor
 
                     command.OnExecuteAsync(async ct =>
                     {
-                        IServiceProvider serviceProvider = new RemoveCommandServiceProvider(ct);
+                        IServiceProvider serviceProvider =
+                            new RemoveCommandServiceProvider(ct, Settings.GetDatabaseFullName());
                         IRemoveCommand removeCommand = serviceProvider
                             .GetRequiredService<IRemoveCommand>();
 

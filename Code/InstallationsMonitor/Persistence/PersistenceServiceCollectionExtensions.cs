@@ -1,15 +1,15 @@
-﻿using InstallationsMonitor;
-using InstallationsMonitor.Persistence;
+﻿using InstallationsMonitor.Persistence;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
-    internal static class PersistenceServiceCollectionExtensions
+    public static class PersistenceServiceCollectionExtensions
     {
-        internal static IServiceCollection AddPersistence(this IServiceCollection services)
+        public static IServiceCollection AddPersistence(
+            this IServiceCollection services, string databaseFullName)
         {
             services.AddDbContext<AppDbContext>();
             services.AddSingleton<DatabaseConnection>();
-            services.AddSingleton(new DatabaseOptions(Settings.GetDatabaseFullName()));
+            services.AddSingleton(new DatabaseOptions(databaseFullName));
 
             return services;
         }

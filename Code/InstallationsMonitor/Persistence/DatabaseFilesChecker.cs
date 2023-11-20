@@ -2,7 +2,7 @@
 
 namespace InstallationsMonitor.Persistence
 {
-    internal class DatabaseFilesChecker
+    public class DatabaseFilesChecker
     {
         private readonly DatabaseOptions databaseOptions;
 
@@ -11,7 +11,7 @@ namespace InstallationsMonitor.Persistence
             this.databaseOptions = databaseOptions;
         }
 
-        internal bool IsDatabaseFile(string path)
+        public bool IsDatabaseFile(string path)
         {
             return path.StartsWith(this.databaseOptions.DatabaseFullName, StringComparison.Ordinal);
         }

@@ -1,9 +1,9 @@
 ﻿using FluentAssertions;
-using InstallationsMonitor.Commands.Remove;
-using InstallationsMonitor.Entities;
+using InstallationsMonitor.Domain;
 using InstallationsMonitor.Persistence;
-using InstallationsMonitor.Tests.Utilities;
-using InstallationsMonitor.Tests.Utilities.ServiceProviders;
+using InstallationsMonitor.ServiceProviders.Base;
+using InstallationsMonitor.TestsUtilities;
+using InstallationsMonitor.TestsUtilities.ServiceProviders;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -26,7 +26,7 @@ namespace InstallationsMonitor.Tests.IntegrationTests.Commands
             string[] args = new string[] { "remove", "-i", installationId };
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-            IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
+            IServiceProvider serviceProvider = new RemoveCommandTestServiceProvider(
                 cancellationTokenSource.Token);
             using DatabaseConnection databaseConnection = serviceProvider
                 .GetRequiredService<DatabaseConnection>();
@@ -34,7 +34,7 @@ namespace InstallationsMonitor.Tests.IntegrationTests.Commands
             databaseConnection.CreateInstallation(new Installation(programName, dateTime));
             DatabaseChecker.CheckInstallation(databaseConnection, programName);
 
-            RemoveCommandServiceProvider.ExtraRegistrationsAction =
+            CommandsServiceProvider.ExtraRegistrationsAction =
                 sc => sc.AddSingleton(serviceProvider.GetRequiredService<DatabaseOptions>());
 
             using StringWriter stringWriter = new StringWriter();

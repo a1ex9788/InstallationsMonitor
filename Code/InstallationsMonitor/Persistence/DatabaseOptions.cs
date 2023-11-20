@@ -1,4 +1,4 @@
 ﻿namespace InstallationsMonitor.Persistence
 {
-    internal record DatabaseOptions(string DatabaseFullName);
+    public record DatabaseOptions(string DatabaseFullName);
 }

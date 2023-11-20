@@ -1,22 +1,22 @@
-﻿using InstallationsMonitor.Entities;
+﻿using InstallationsMonitor.Domain;
 using Microsoft.EntityFrameworkCore;
 using System.IO;
 
 namespace InstallationsMonitor.Persistence
 {
-    internal class AppDbContext : DbContext
+    public class AppDbContext : DbContext
     {
         private readonly DatabaseOptions databaseOptions;
 
-        internal DbSet<Installation> Installations { get; set; } = null!;
+        public DbSet<Installation> Installations { get; set; } = null!;
 
-        internal DbSet<FileChange> FileChanges { get; set; } = null!;
+        public DbSet<FileChange> FileChanges { get; set; } = null!;
 
-        internal DbSet<FileCreation> FileCreations { get; set; } = null!;
+        public DbSet<FileCreation> FileCreations { get; set; } = null!;
 
-        internal DbSet<FileDeletion> FileDeletions { get; set; } = null!;
+        public DbSet<FileDeletion> FileDeletions { get; set; } = null!;
 
-        internal DbSet<FileRenaming> FileRenamings { get; set; } = null!;
+        public DbSet<FileRenaming> FileRenamings { get; set; } = null!;
 
         public AppDbContext(DatabaseOptions databaseOptions)
             : base(new DbContextOptions<AppDbContext>())

@@ -1,19 +1,20 @@
-﻿using InstallationsMonitor.ServiceProviders;
+﻿using InstallationsMonitor.ServiceProviders.Base;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading;
 
-namespace InstallationsMonitor.Commands.Monitor
+namespace InstallationsMonitor.ServiceProviders.Monitor
 {
-    internal class MonitorCommandServiceProvider : CommandsServiceProvider<IMonitorCommand, MonitorCommand>
+    public class MonitorCommandServiceProvider : CommandsServiceProvider
     {
-        internal MonitorCommandServiceProvider(CancellationToken cancellationToken)
-            : base(ConfigureSpecificServices, cancellationToken)
+        public MonitorCommandServiceProvider(
+            CancellationToken cancellationToken, string databaseFullName)
+                : base(ConfigureSpecificServices, cancellationToken, databaseFullName)
         {
         }
 
         private static void ConfigureSpecificServices(IServiceCollection services)
         {
-            MonitorCommand.ConfigureSpecificServices(services);
+            services.AddMonitorCommand();
         }
     }
 }

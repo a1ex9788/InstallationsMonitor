@@ -1,4 +1,4 @@
-﻿using InstallationsMonitor.Entities;
+﻿using InstallationsMonitor.Domain;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -6,9 +6,9 @@ using System.Linq;
 
 namespace InstallationsMonitor.Persistence
 {
-    internal partial class DatabaseConnection : IDisposable
+    public partial class DatabaseConnection : IDisposable
     {
-        internal int CreateInstallation(Installation installation)
+        public int CreateInstallation(Installation installation)
         {
             this.Lock();
 
@@ -24,7 +24,7 @@ namespace InstallationsMonitor.Persistence
             return id;
         }
 
-        internal void CreateFileChange(FileChange fileChange)
+        public void CreateFileChange(FileChange fileChange)
         {
             this.Lock();
 
@@ -34,7 +34,7 @@ namespace InstallationsMonitor.Persistence
             this.Unlock();
         }
 
-        internal void CreateFileCreation(FileCreation fileCreation)
+        public void CreateFileCreation(FileCreation fileCreation)
         {
             this.Lock();
 
@@ -44,7 +44,7 @@ namespace InstallationsMonitor.Persistence
             this.Unlock();
         }
 
-        internal void CreateFileDeletion(FileDeletion fileDeletion)
+        public void CreateFileDeletion(FileDeletion fileDeletion)
         {
             this.Lock();
 
@@ -54,7 +54,7 @@ namespace InstallationsMonitor.Persistence
             this.Unlock();
         }
 
-        internal void CreateFileRenaming(FileRenaming fileRenaming)
+        public void CreateFileRenaming(FileRenaming fileRenaming)
         {
             this.Lock();
 
@@ -64,7 +64,7 @@ namespace InstallationsMonitor.Persistence
             this.Unlock();
         }
 
-        internal IEnumerable<Installation> GetInstallations()
+        public IEnumerable<Installation> GetInstallations()
         {
             this.Lock();
 
@@ -75,7 +75,7 @@ namespace InstallationsMonitor.Persistence
             return installations;
         }
 
-        internal Installation? GetInstallation(int installationId)
+        public Installation? GetInstallation(int installationId)
         {
             this.Lock();
 
@@ -87,7 +87,7 @@ namespace InstallationsMonitor.Persistence
             return installation;
         }
 
-        internal IEnumerable<FileChange> GetFileChanges()
+        public IEnumerable<FileChange> GetFileChanges()
         {
             this.Lock();
 
@@ -98,7 +98,7 @@ namespace InstallationsMonitor.Persistence
             return fileChanges;
         }
 
-        internal IEnumerable<FileCreation> GetFileCreations()
+        public IEnumerable<FileCreation> GetFileCreations()
         {
             this.Lock();
 
@@ -109,7 +109,7 @@ namespace InstallationsMonitor.Persistence
             return fileCreations;
         }
 
-        internal IEnumerable<FileDeletion> GetFileDeletions()
+        public IEnumerable<FileDeletion> GetFileDeletions()
         {
             this.Lock();
 
@@ -120,7 +120,7 @@ namespace InstallationsMonitor.Persistence
             return fileDeletions;
         }
 
-        internal IEnumerable<FileRenaming> GetFileRenamings()
+        public IEnumerable<FileRenaming> GetFileRenamings()
         {
             this.Lock();
 
@@ -131,7 +131,7 @@ namespace InstallationsMonitor.Persistence
             return fileRenamings;
         }
 
-        internal void RemoveInstallation(int installationId)
+        public void RemoveInstallation(int installationId)
         {
             this.Lock();
 

@@ -1,19 +1,20 @@
-﻿using InstallationsMonitor.ServiceProviders;
+﻿using InstallationsMonitor.ServiceProviders.Base;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading;
 
-namespace InstallationsMonitor.Commands.Remove
+namespace InstallationsMonitor.ServiceProviders.Remove
 {
-    internal class RemoveCommandServiceProvider : CommandsServiceProvider<IRemoveCommand, RemoveCommand>
+    public class RemoveCommandServiceProvider : CommandsServiceProvider
     {
-        internal RemoveCommandServiceProvider(CancellationToken cancellationToken)
-            : base(ConfigureSpecificServices, cancellationToken)
+        public RemoveCommandServiceProvider(
+            CancellationToken cancellationToken, string databaseFullName)
+                : base(ConfigureSpecificServices, cancellationToken, databaseFullName)
         {
         }
 
         private static void ConfigureSpecificServices(IServiceCollection services)
         {
-            RemoveCommand.ConfigureSpecificServices(services);
+            services.AddRemoveCommand();
         }
     }
 }

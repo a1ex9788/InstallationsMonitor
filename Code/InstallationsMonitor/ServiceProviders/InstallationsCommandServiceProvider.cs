@@ -1,20 +1,20 @@
-﻿using InstallationsMonitor.ServiceProviders;
+﻿using InstallationsMonitor.ServiceProviders.Base;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading;
 
-namespace InstallationsMonitor.Commands.Installations
+namespace InstallationsMonitor.ServiceProviders.Installations
 {
-    internal class InstallationsCommandServiceProvider
-        : CommandsServiceProvider<IInstallationsCommand, InstallationsCommand>
+    public class InstallationsCommandServiceProvider : CommandsServiceProvider
     {
-        internal InstallationsCommandServiceProvider(CancellationToken cancellationToken)
-            : base(ConfigureSpecificServices, cancellationToken)
+        public InstallationsCommandServiceProvider(
+            CancellationToken cancellationToken, string databaseFullName)
+                : base(ConfigureSpecificServices, cancellationToken, databaseFullName)
         {
         }
 
         private static void ConfigureSpecificServices(IServiceCollection services)
         {
-            InstallationsCommand.ConfigureSpecificServices(services);
+            services.AddInstallationsCommand();
         }
     }
 }

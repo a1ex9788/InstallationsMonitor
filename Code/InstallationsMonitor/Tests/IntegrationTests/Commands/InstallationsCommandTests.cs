@@ -1,8 +1,8 @@
 ﻿using FluentAssertions;
-using InstallationsMonitor.Commands.Installations;
-using InstallationsMonitor.Entities;
+using InstallationsMonitor.Domain;
 using InstallationsMonitor.Persistence;
-using InstallationsMonitor.Tests.Utilities.ServiceProviders;
+using InstallationsMonitor.ServiceProviders.Base;
+using InstallationsMonitor.TestsUtilities.ServiceProviders;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -31,7 +31,7 @@ namespace InstallationsMonitor.Tests.IntegrationTests.Commands
 
             databaseConnection.CreateInstallation(new Installation(programName, dateTime));
 
-            InstallationsCommandServiceProvider.ExtraRegistrationsAction =
+            CommandsServiceProvider.ExtraRegistrationsAction =
                 sc => sc.AddSingleton(serviceProvider.GetRequiredService<DatabaseOptions>());
 
             using StringWriter stringWriter = new StringWriter();

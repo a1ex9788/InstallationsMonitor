@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <AssemblyName>InstallationsMonitor.Tests</AssemblyName>
     <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
@@ -15,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\InstallationsMonitor.csproj" />
+    <ProjectReference Include="..\TestUtilities\TestUtilities.csproj" />
   </ItemGroup>
 
 </Project>

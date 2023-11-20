@@ -3,7 +3,7 @@ using System.Threading;
 
 namespace InstallationsMonitor.Persistence
 {
-    internal partial class DatabaseConnection : IDisposable
+    public partial class DatabaseConnection : IDisposable
     {
         private readonly AppDbContext appDbContext;
 

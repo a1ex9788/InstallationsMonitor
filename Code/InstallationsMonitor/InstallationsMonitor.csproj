@@ -1,14 +1,30 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <AssemblyName>InstallationsMonitor</AssemblyName>
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Domain\**" />
+    <Compile Remove="Logic\**" />
+    <Compile Remove="Persistence\**" />
+    <Compile Remove="ServiceProviders\**" />
     <Compile Remove="Tests\**" />
+    <Compile Remove="TestUtilities\**" />
+    <EmbeddedResource Remove="Domain\**" />
+    <EmbeddedResource Remove="Logic\**" />
+    <EmbeddedResource Remove="Persistence\**" />
+    <EmbeddedResource Remove="ServiceProviders\**" />
     <EmbeddedResource Remove="Tests\**" />
+    <EmbeddedResource Remove="TestUtilities\**" />
+    <None Remove="Domain\**" />
+    <None Remove="Logic\**" />
+    <None Remove="Persistence\**" />
+    <None Remove="ServiceProviders\**" />
     <None Remove="Tests\**" />
+    <None Remove="TestUtilities\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,9 +35,12 @@
 
   <ItemGroup>
     <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="4.0.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.19" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.19" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="Logic\Logic.csproj" />
+    <ProjectReference Include="ServiceProviders\ServiceProviders.csproj" />
   </ItemGroup>
 
 </Project>
