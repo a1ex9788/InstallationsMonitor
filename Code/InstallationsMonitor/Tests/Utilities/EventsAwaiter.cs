@@ -20,9 +20,6 @@ namespace InstallationsMonitor.Tests.Utilities
                 stringWriter,
                 "Monitoring directory",
                 EventsRegistrationMaxTime);
-
-            // Extra waiting time just in case.
-            await Task.Delay(TimeSpan.FromMilliseconds(300));
         }
 
         internal static async Task WaitForEventsProsecutionAsync(

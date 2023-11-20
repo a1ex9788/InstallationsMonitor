@@ -46,7 +46,7 @@ namespace InstallationsMonitor.Commands.Monitor.Utilities
             {
                 while (!this.cancellationToken.IsCancellationRequested)
                 {
-                    await Task.Delay(TimeSpan.FromSeconds(1), this.cancellationToken);
+                    await Task.Delay(TimeSpan.FromSeconds(10), this.cancellationToken);
                 }
             }
             catch (TaskCanceledException)
