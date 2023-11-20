@@ -146,8 +146,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             stringWriter.ToString().Should().Contain(
                 $"Monitoring installation of program '{programName}'...");
 
-            Installation installation = DatabaseChecker.CheckInstallation(
-                databaseConnection, programName);
+            DatabaseChecker.CheckInstallation(databaseConnection, programName);
         }
 
         [TestMethod]
@@ -179,8 +178,43 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Monitor
             stringWriter.ToString().Should().Contain(
                 $"Monitoring installation of program '{programName}'...");
 
-            Installation installation = DatabaseChecker.CheckInstallation(
-                databaseConnection, programName);
+            DatabaseChecker.CheckInstallation(databaseConnection, programName);
+        }
+
+        [TestMethod]
+        public async Task ExecuteAsync_RepeatedProgramName_CreatesInstallationWithSameProgramName()
+        {
+            // Arrange.
+            string programName = "Program";
+
+            using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+            IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
+                cancellationTokenSource.Token);
+            using DatabaseConnection databaseConnection = serviceProvider
+                .GetRequiredService<DatabaseConnection>();
+            InstallationsMonitorClass installationsMonitor = serviceProvider
+                .GetRequiredService<InstallationsMonitorClass>();
+
+            databaseConnection.CreateInstallation(new Installation(programName, DateTime.Now));
+            DatabaseChecker.CheckInstallation(databaseConnection, programName);
+
+            using StringWriter stringWriter = new StringWriter();
+            Console.SetOut(stringWriter);
+
+            // Act.
+            Task task = installationsMonitor.MonitorAsync(directory: null, programName);
+
+            await EventsAwaiter.WaitForEventsRegistrationAsync(stringWriter);
+
+            cancellationTokenSource.Cancel();
+            await task;
+
+            // Assert.
+            stringWriter.ToString().Should().Contain(
+                $"Monitoring installation of program '{programName}'...");
+
+            DatabaseChecker.CheckInstallations(
+                databaseConnection, new string[] { programName, programName });
         }
     }
 }
