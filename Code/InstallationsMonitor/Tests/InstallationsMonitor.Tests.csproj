@@ -6,12 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CliWrap" Version="3.6.4" />
-    <PackageReference Include="FluentAssertions" Version="6.11.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
-    <PackageReference Include="MSTest.TestAdapter" Version="2.2.10" />
-    <PackageReference Include="MSTest.TestFramework" Version="2.2.10" />
-    <PackageReference Include="NSubstitute" Version="5.1.0" />
+    <PackageReference Include="CliWrap" Version="$(CliWrapVersion)" />
+    <PackageReference Include="FluentAssertions" Version="$(FluentAssertionsVersion)" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="$(MicrosoftNetTestVersion)" />
+    <PackageReference Include="MSTest.TestAdapter" Version="$(MsTestVersion)" />
+    <PackageReference Include="MSTest.TestFramework" Version="$(MsTestVersion)" />
+    <PackageReference Include="NSubstitute" Version="$(NSubstituteVersion)" />
   </ItemGroup>
 
   <ItemGroup>

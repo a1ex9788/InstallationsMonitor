@@ -1,0 +1,14 @@
+<Project>
+
+  <PropertyGroup>
+    <CliWrapVersion>3.6.4</CliWrapVersion>
+    <FluentAssertionsVersion>6.11.0</FluentAssertionsVersion>
+    <McMasterVersion>4.0.2</McMasterVersion>
+    <MicrosoftEntityFrameworkCoreVersion>6.0.19</MicrosoftEntityFrameworkCoreVersion>
+    <MicrosoftExtensionsVersion>6.0.1</MicrosoftExtensionsVersion>
+    <MicrosoftNetTestVersion>17.5.0</MicrosoftNetTestVersion>
+    <MsTestVersion>2.2.10</MsTestVersion>
+    <NSubstituteVersion>5.1.0</NSubstituteVersion>
+  </PropertyGroup>
+
+</Project>
