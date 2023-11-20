@@ -1,9 +1,12 @@
-﻿using System;
+﻿using InstallationsMonitor.Persistence.Contracts;
+using System;
 using System.Threading;
 
 namespace InstallationsMonitor.Persistence
 {
-    public partial class DatabaseConnection : IDisposable
+    public partial class DatabaseConnection
+        : IDatabaseConnectionEntitiesCreator, IDatabaseConnectionEntitiesObtainer,
+            IDatabaseConnectionEntitiesRemover, IDisposable
     {
         private readonly AppDbContext appDbContext;
 

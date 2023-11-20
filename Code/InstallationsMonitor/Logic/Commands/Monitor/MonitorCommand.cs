@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using InstallationsMonitor.Logic.Contracts;
+using System.Threading.Tasks;
 
 namespace InstallationsMonitor.Logic.Commands.Monitor
 {

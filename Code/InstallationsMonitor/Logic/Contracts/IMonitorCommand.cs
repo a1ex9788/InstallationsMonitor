@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace InstallationsMonitor.Logic.Commands.Monitor
+namespace InstallationsMonitor.Logic.Contracts
 {
     public interface IMonitorCommand
     {

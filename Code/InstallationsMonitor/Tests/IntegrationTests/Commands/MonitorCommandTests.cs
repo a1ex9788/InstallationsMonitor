@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
 using InstallationsMonitor.Domain;
-using InstallationsMonitor.Logic.Commands.Monitor;
+using InstallationsMonitor.Logic.Contracts;
 using InstallationsMonitor.Persistence;
 using InstallationsMonitor.ServiceProviders.Base;
 using InstallationsMonitor.TestsUtilities;

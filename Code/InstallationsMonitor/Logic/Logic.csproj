@@ -6,14 +6,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Contracts\**" />
     <Compile Remove="Tests\**" />
+    <EmbeddedResource Remove="Contracts\**" />
     <EmbeddedResource Remove="Tests\**" />
+    <None Remove="Contracts\**" />
     <None Remove="Tests\**" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Domain\Domain.csproj" />
     <ProjectReference Include="..\Persistence\Persistence.csproj" />
+    <ProjectReference Include="Contracts\Logic.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

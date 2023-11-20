@@ -1,4 +1,4 @@
-﻿namespace InstallationsMonitor.Logic.Commands.Installations
+﻿namespace InstallationsMonitor.Logic.Contracts
 {
     public interface IInstallationsCommand
     {

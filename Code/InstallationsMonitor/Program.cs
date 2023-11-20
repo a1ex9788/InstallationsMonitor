@@ -1,6 +1,4 @@
-﻿using InstallationsMonitor.Logic.Commands.Installations;
-using InstallationsMonitor.Logic.Commands.Monitor;
-using InstallationsMonitor.Logic.Commands.Remove;
+﻿using InstallationsMonitor.Logic.Contracts;
 using InstallationsMonitor.ServiceProviders.Installations;
 using InstallationsMonitor.ServiceProviders.Monitor;
 using InstallationsMonitor.ServiceProviders.Remove;

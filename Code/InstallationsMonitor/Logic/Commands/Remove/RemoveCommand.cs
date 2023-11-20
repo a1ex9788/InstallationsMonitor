@@ -1,4 +1,5 @@
 ﻿using InstallationsMonitor.Logic.Commands.Remove.Utilities;
+using InstallationsMonitor.Logic.Contracts;
 
 namespace InstallationsMonitor.Logic.Commands.Remove
 {

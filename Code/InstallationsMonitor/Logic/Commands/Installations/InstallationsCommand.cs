@@ -1,4 +1,5 @@
 ﻿using InstallationsMonitor.Logic.Commands.Installations.Utilities;
+using InstallationsMonitor.Logic.Contracts;
 
 namespace InstallationsMonitor.Logic.Commands.Installations
 {

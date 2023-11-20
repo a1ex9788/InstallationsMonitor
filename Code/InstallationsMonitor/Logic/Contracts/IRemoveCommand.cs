@@ -1,4 +1,4 @@
-﻿namespace InstallationsMonitor.Logic.Commands.Remove
+﻿namespace InstallationsMonitor.Logic.Contracts
 {
     public interface IRemoveCommand
     {

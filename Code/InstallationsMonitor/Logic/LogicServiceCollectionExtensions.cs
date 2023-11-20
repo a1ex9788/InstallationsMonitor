@@ -4,6 +4,7 @@ using InstallationsMonitor.Logic.Commands.Monitor;
 using InstallationsMonitor.Logic.Commands.Monitor.Utilities;
 using InstallationsMonitor.Logic.Commands.Remove;
 using InstallationsMonitor.Logic.Commands.Remove.Utilities;
+using InstallationsMonitor.Logic.Contracts;
 using InstallationsMonitor.Persistence;
 
 using InstallationsMonitorClass =
