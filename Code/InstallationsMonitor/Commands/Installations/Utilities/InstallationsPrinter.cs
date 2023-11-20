@@ -3,6 +3,7 @@ using InstallationsMonitor.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading;
 
 namespace InstallationsMonitor.Commands.Installations.Utilities
@@ -22,6 +23,13 @@ namespace InstallationsMonitor.Commands.Installations.Utilities
         internal void Print()
         {
             IEnumerable<Installation> installations = this.installationsObtainer.GetInstallations();
+
+            if (!installations.Any())
+            {
+                Console.WriteLine("No installations monitored yet.");
+
+                return;
+            }
 
             IEnumerable<string> columnNames = new string[] { "Id", "Program name", "Date" };
 

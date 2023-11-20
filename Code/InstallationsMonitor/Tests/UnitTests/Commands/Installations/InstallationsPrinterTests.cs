@@ -15,7 +15,7 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Installations
     public class InstallationsPrinterTests
     {
         [TestMethod]
-        public void ExecuteAsync_ForAllDrives_CreatesInstallationWithAllFiles()
+        public void Print_SomeInstallationsExist_PrintsInstallations()
         {
             // Arrange.
             string programName1 = "Program1";
@@ -46,6 +46,28 @@ namespace InstallationsMonitor.Tests.UnitTests.Commands.Installations
                 $"-------------------------------------------{Environment.NewLine}" +
                 $"|  1 |     Program1 | 01/01/0001 01:01:01 |{Environment.NewLine}" +
                 $"|  2 |     Program2 | 02/02/0002 02:02:02 |{Environment.NewLine}";
+
+            stringWriter.ToString().Should().Be(expectedOutput);
+        }
+
+        [TestMethod]
+        public void Print_NoInstallationsExist_PrintsNoInstallationsMessage()
+        {
+            // Arrange.
+            using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+            IServiceProvider serviceProvider = new InstallationsCommandTestServiceProvider(
+                cancellationTokenSource.Token);
+            InstallationsPrinter installationsPrinter = serviceProvider
+                .GetRequiredService<InstallationsPrinter>();
+
+            using StringWriter stringWriter = new StringWriter();
+            Console.SetOut(stringWriter);
+
+            // Act.
+            installationsPrinter.Print();
+
+            // Assert.
+            string expectedOutput = $"No installations monitored yet.{Environment.NewLine}";
 
             stringWriter.ToString().Should().Be(expectedOutput);
         }

@@ -15,7 +15,7 @@ namespace InstallationsMonitor.Tests.IntegrationTests.Commands
     public class InstallationsCommandTests
     {
         [TestMethod]
-        public void InstallationsCommand_SomeFilesCreated_PrintsExpectedResults()
+        public void InstallationsCommand_SomeInstallationsExist_PrintsExpectedResults()
         {
             // Arrange.
             string programName = "Program";
