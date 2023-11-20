@@ -3,7 +3,7 @@ using InstallationsMonitor.Domain;
 using InstallationsMonitor.Persistence;
 using InstallationsMonitor.Persistence.Contracts;
 using InstallationsMonitor.ServiceProviders.Base;
-using InstallationsMonitor.TestsUtilities.ServiceProviders;
+using InstallationsMonitor.Tests.Utilities.ServiceProviders;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;

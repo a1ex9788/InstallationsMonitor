@@ -13,9 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!-- TODO: Remove this reference. -->
-    <ProjectReference Include="..\..\ServiceProviders\ServiceProviders.csproj" />
-    <ProjectReference Include="..\..\TestUtilities\TestUtilities.csproj" />
     <ProjectReference Include="..\Persistence.csproj" />
   </ItemGroup>
 

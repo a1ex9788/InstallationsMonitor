@@ -1,11 +1,12 @@
 ﻿using InstallationsMonitor.Persistence;
 using InstallationsMonitor.ServiceProviders.Base;
+using InstallationsMonitor.TestsUtilities;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
 using System.Threading;
 
-namespace InstallationsMonitor.TestsUtilities.ServiceProviders.Base
+namespace InstallationsMonitor.Tests.Utilities.ServiceProviders.Base
 {
     public class CommandsTestServiceProvider : IServiceProvider
     {
@@ -16,7 +17,7 @@ namespace InstallationsMonitor.TestsUtilities.ServiceProviders.Base
             CancellationToken cancellationToken)
         {
             string testDatabaseFullName = Path.Combine(
-                TempPathsObtainer.GetTempDirectory(), "TestDatabase.db");
+                TempPathsObtainer.GetTempDirectory(), $"TestDatabase.{Guid.NewGuid()}.db");
 
             DatabaseOptions databaseOptions = new DatabaseOptions(testDatabaseFullName);
 

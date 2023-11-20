@@ -1,9 +1,9 @@
-﻿using InstallationsMonitor.ServiceProviders.Monitor;
-using InstallationsMonitor.TestsUtilities.ServiceProviders.Base;
+﻿using InstallationsMonitor.Logic.Tests.Utilities.ServiceProviders.Base;
+using InstallationsMonitor.ServiceProviders.Monitor;
 using System;
 using System.Threading;
 
-namespace InstallationsMonitor.TestsUtilities.ServiceProviders
+namespace InstallationsMonitor.Logic.Tests.Utilities.ServiceProviders
 {
     public class MonitorCommandTestServiceProvider : CommandsTestServiceProvider
     {

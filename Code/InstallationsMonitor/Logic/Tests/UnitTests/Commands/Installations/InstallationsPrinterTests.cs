@@ -1,8 +1,8 @@
 ﻿using FluentAssertions;
 using InstallationsMonitor.Domain;
 using InstallationsMonitor.Logic.Commands.Installations.Utilities;
+using InstallationsMonitor.Logic.Tests.Utilities.ServiceProviders;
 using InstallationsMonitor.Persistence.Contracts;
-using InstallationsMonitor.TestsUtilities.ServiceProviders;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;

@@ -1,12 +1,10 @@
 ﻿using FluentAssertions;
 using InstallationsMonitor.Domain;
 using InstallationsMonitor.Persistence.Contracts;
-using InstallationsMonitor.TestsUtilities.ServiceProviders;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
-using System.Threading;
 
 namespace Persistence.Tests.UnitTests
 {
@@ -28,9 +26,9 @@ namespace Persistence.Tests.UnitTests
             FileRenaming fileRenaming = new FileRenaming(
                 "FileRenamed", DateTime.MinValue, installation.Id, "OldFile");
 
-            using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-            IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
-                cancellationTokenSource.Token);
+            IServiceCollection services = new ServiceCollection();
+            services.AddPersistence($"PersistenceTests.{Guid.NewGuid()}.db");
+            IServiceProvider serviceProvider = services.BuildServiceProvider();
             IDatabaseConnection databaseConnection = serviceProvider
                 .GetRequiredService<IDatabaseConnection>();
 
