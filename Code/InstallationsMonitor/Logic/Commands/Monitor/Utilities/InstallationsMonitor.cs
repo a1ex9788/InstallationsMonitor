@@ -1,5 +1,5 @@
 ﻿using InstallationsMonitor.Domain;
-using InstallationsMonitor.Persistence;
+using InstallationsMonitor.Persistence.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -9,13 +9,14 @@ namespace InstallationsMonitor.Logic.Commands.Monitor.Utilities
     public class InstallationsMonitor
     {
         private readonly DirectoriesMonitor directoriesMonitor;
-        private readonly DatabaseConnection databaseConnection;
+        private readonly IDatabaseConnection databaseConnectionEntitiesCreator;
 
         public InstallationsMonitor(
-            DirectoriesMonitor directoriesMonitor, DatabaseConnection databaseConnection)
+            DirectoriesMonitor directoriesMonitor,
+            IDatabaseConnection databaseConnectionEntitiesCreator)
         {
             this.directoriesMonitor = directoriesMonitor;
-            this.databaseConnection = databaseConnection;
+            this.databaseConnectionEntitiesCreator = databaseConnectionEntitiesCreator;
         }
 
         public async Task MonitorAsync(string? directory, string? programName)
@@ -24,7 +25,7 @@ namespace InstallationsMonitor.Logic.Commands.Monitor.Utilities
 
             Console.WriteLine("Monitoring installation of program '{0}'...", programNameToUse);
 
-            int installationId = this.databaseConnection.CreateInstallation(
+            int installationId = this.databaseConnectionEntitiesCreator.CreateInstallation(
                 new Installation(programNameToUse, DateTime.Now));
 
             if (directory is null)

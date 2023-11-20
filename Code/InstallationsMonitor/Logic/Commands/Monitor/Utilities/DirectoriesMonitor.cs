@@ -1,5 +1,6 @@
 ﻿using InstallationsMonitor.Domain;
-using InstallationsMonitor.Persistence;
+using InstallationsMonitor.Persistence.Contracts;
+using Persistence.Contracts;
 using System;
 using System.IO;
 using System.Threading;
@@ -9,18 +10,18 @@ namespace InstallationsMonitor.Logic.Commands.Monitor.Utilities
 {
     public class DirectoriesMonitor
     {
-        private readonly DatabaseConnection databaseConnection;
-        private readonly DatabaseFilesChecker databaseFilesChecker;
+        private readonly IDatabaseConnection databaseConnectionEntitiesCreator;
+        private readonly IDatabaseFilesChecker databaseFilesChecker;
         private readonly CancellationToken cancellationToken;
 
         private int? installationId;
 
         public DirectoriesMonitor(
-            DatabaseConnection databaseConnection,
-            DatabaseFilesChecker databaseFilesChecker,
+            IDatabaseConnection databaseConnectionEntitiesCreator,
+            IDatabaseFilesChecker databaseFilesChecker,
             CancellationToken cancellationToken)
         {
-            this.databaseConnection = databaseConnection;
+            this.databaseConnectionEntitiesCreator = databaseConnectionEntitiesCreator;
             this.databaseFilesChecker = databaseFilesChecker;
             this.cancellationToken = cancellationToken;
         }
@@ -64,7 +65,7 @@ namespace InstallationsMonitor.Logic.Commands.Monitor.Utilities
 
             Console.WriteLine($"[{DateTime.Now.TimeOfDay}] Changed: {e.FullPath}");
 
-            this.databaseConnection.CreateFileChange(
+            this.databaseConnectionEntitiesCreator.CreateFileChange(
                 new FileChange(e.FullPath, DateTime.Now, this.installationId!.Value));
         }
 
@@ -77,7 +78,7 @@ namespace InstallationsMonitor.Logic.Commands.Monitor.Utilities
 
             Console.WriteLine($"[{DateTime.Now.TimeOfDay}] Created: {e.FullPath}");
 
-            this.databaseConnection.CreateFileCreation(
+            this.databaseConnectionEntitiesCreator.CreateFileCreation(
                 new FileCreation(e.FullPath, DateTime.Now, this.installationId!.Value));
         }
 
@@ -90,7 +91,7 @@ namespace InstallationsMonitor.Logic.Commands.Monitor.Utilities
 
             Console.WriteLine($"[{DateTime.Now.TimeOfDay}] Deleted: {e.FullPath}");
 
-            this.databaseConnection.CreateFileDeletion(
+            this.databaseConnectionEntitiesCreator.CreateFileDeletion(
                 new FileDeletion(e.FullPath, DateTime.Now, this.installationId!.Value));
         }
 
@@ -103,7 +104,7 @@ namespace InstallationsMonitor.Logic.Commands.Monitor.Utilities
 
             Console.WriteLine($"[{DateTime.Now.TimeOfDay}] Renamed: {e.OldFullPath} to {e.FullPath}");
 
-            this.databaseConnection.CreateFileRenaming(
+            this.databaseConnectionEntitiesCreator.CreateFileRenaming(
                 new FileRenaming(e.FullPath, DateTime.Now, this.installationId!.Value, e.OldFullPath));
         }
 

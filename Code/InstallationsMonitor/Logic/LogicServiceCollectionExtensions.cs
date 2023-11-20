@@ -5,8 +5,6 @@ using InstallationsMonitor.Logic.Commands.Monitor.Utilities;
 using InstallationsMonitor.Logic.Commands.Remove;
 using InstallationsMonitor.Logic.Commands.Remove.Utilities;
 using InstallationsMonitor.Logic.Contracts;
-using InstallationsMonitor.Persistence;
-
 using InstallationsMonitorClass =
     InstallationsMonitor.Logic.Commands.Monitor.Utilities.InstallationsMonitor;
 
@@ -28,7 +26,6 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IMonitorCommand, MonitorCommand>();
             services.AddScoped<InstallationsMonitorClass>();
             services.AddScoped<DirectoriesMonitor>();
-            services.AddScoped<DatabaseFilesChecker>();
 
             return services;
         }

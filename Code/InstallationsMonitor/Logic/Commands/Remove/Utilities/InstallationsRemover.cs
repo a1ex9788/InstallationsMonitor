@@ -1,14 +1,14 @@
 ﻿using InstallationsMonitor.Domain;
-using InstallationsMonitor.Persistence;
+using InstallationsMonitor.Persistence.Contracts;
 using System;
 
 namespace InstallationsMonitor.Logic.Commands.Remove.Utilities
 {
     public class InstallationsRemover
     {
-        private readonly DatabaseConnection databaseConnection;
+        private readonly IDatabaseConnection databaseConnection;
 
-        public InstallationsRemover(DatabaseConnection databaseConnection)
+        public InstallationsRemover(IDatabaseConnection databaseConnection)
         {
             this.databaseConnection = databaseConnection;
         }

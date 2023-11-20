@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using InstallationsMonitor.Domain;
 using InstallationsMonitor.Domain.Base;
-using InstallationsMonitor.Persistence;
+using InstallationsMonitor.Persistence.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +11,7 @@ namespace InstallationsMonitor.TestsUtilities
     public static class DatabaseChecker
     {
         public static Installation CheckInstallation(
-            DatabaseConnection databaseConnection, string programName)
+            IDatabaseConnection databaseConnection, string programName)
         {
             IEnumerable<Installation> installations = databaseConnection.GetInstallations();
 
@@ -25,7 +25,7 @@ namespace InstallationsMonitor.TestsUtilities
         }
 
         public static void CheckInstallations(
-            DatabaseConnection databaseConnection, IEnumerable<string> programNames)
+            IDatabaseConnection databaseConnection, IEnumerable<string> programNames)
         {
             IEnumerable<Installation> installations = databaseConnection.GetInstallations();
 
@@ -41,7 +41,7 @@ namespace InstallationsMonitor.TestsUtilities
         }
 
         public static void CheckFileOperations<T>(
-            DatabaseConnection databaseConnection,
+            IDatabaseConnection databaseConnection,
             int installationId,
             IEnumerable<string> filePaths,
             bool checkFileOperationsNumber = true)

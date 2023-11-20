@@ -3,8 +3,18 @@ using System.Collections.Generic;
 
 namespace InstallationsMonitor.Persistence.Contracts
 {
-    public interface IDatabaseConnectionEntitiesObtainer
+    public interface IDatabaseConnection
     {
+        int CreateInstallation(Installation installation);
+
+        void CreateFileChange(FileChange fileChange);
+
+        void CreateFileCreation(FileCreation fileCreation);
+
+        void CreateFileDeletion(FileDeletion fileDeletion);
+
+        void CreateFileRenaming(FileRenaming fileRenaming);
+
         IEnumerable<Installation> GetInstallations();
 
         Installation? GetInstallation(int installationId);
@@ -16,5 +26,7 @@ namespace InstallationsMonitor.Persistence.Contracts
         IEnumerable<FileDeletion> GetFileDeletions();
 
         IEnumerable<FileRenaming> GetFileRenamings();
+
+        void RemoveInstallation(int installationId);
     }
 }

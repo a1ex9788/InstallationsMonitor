@@ -1,14 +1,14 @@
 ﻿using InstallationsMonitor.Domain;
-using InstallationsMonitor.Persistence;
+using InstallationsMonitor.Persistence.Contracts;
 using System.Collections.Generic;
 
 namespace InstallationsMonitor.Logic.Commands.Installations.Utilities
 {
     public class InstallationsObtainer
     {
-        private readonly DatabaseConnection databaseConnection;
+        private readonly IDatabaseConnection databaseConnection;
 
-        public InstallationsObtainer(DatabaseConnection databaseConnection)
+        public InstallationsObtainer(IDatabaseConnection databaseConnection)
         {
             this.databaseConnection = databaseConnection;
         }

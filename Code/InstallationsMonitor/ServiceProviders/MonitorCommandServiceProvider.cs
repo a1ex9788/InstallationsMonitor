@@ -15,6 +15,8 @@ namespace InstallationsMonitor.ServiceProviders.Monitor
         private static void ConfigureSpecificServices(IServiceCollection services)
         {
             services.AddMonitorCommand();
+
+            services.AddDatabaseFilesChecker();
         }
     }
 }

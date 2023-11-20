@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using InstallationsMonitor.Domain;
 using InstallationsMonitor.Logic.Commands.Remove.Utilities;
-using InstallationsMonitor.Persistence;
+using InstallationsMonitor.Persistence.Contracts;
 using InstallationsMonitor.TestsUtilities;
 using InstallationsMonitor.TestsUtilities.ServiceProviders;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,8 +30,8 @@ namespace InstallationsMonitor.Logic.Tests.UnitTests.Commands.Remove
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             IServiceProvider serviceProvider = new RemoveCommandTestServiceProvider(
                 cancellationTokenSource.Token);
-            using DatabaseConnection databaseConnection = serviceProvider
-                .GetRequiredService<DatabaseConnection>();
+            IDatabaseConnection databaseConnection = serviceProvider
+                .GetRequiredService<IDatabaseConnection>();
             InstallationsRemover installationsRemover = serviceProvider
                 .GetRequiredService<InstallationsRemover>();
 

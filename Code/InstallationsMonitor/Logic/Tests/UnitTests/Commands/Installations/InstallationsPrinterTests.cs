@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using InstallationsMonitor.Domain;
 using InstallationsMonitor.Logic.Commands.Installations.Utilities;
-using InstallationsMonitor.Persistence;
+using InstallationsMonitor.Persistence.Contracts;
 using InstallationsMonitor.TestsUtilities.ServiceProviders;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -26,8 +26,8 @@ namespace InstallationsMonitor.Logic.Tests.UnitTests.Commands.Installations
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             IServiceProvider serviceProvider = new InstallationsCommandTestServiceProvider(
                 cancellationTokenSource.Token);
-            using DatabaseConnection databaseConnection = serviceProvider
-                .GetRequiredService<DatabaseConnection>();
+            IDatabaseConnection databaseConnection = serviceProvider
+                .GetRequiredService<IDatabaseConnection>();
             InstallationsPrinter installationsPrinter = serviceProvider
                 .GetRequiredService<InstallationsPrinter>();
 

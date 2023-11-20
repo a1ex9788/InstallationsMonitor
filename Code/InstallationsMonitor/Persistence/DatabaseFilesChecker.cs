@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Persistence.Contracts;
+using System;
 
 namespace InstallationsMonitor.Persistence
 {
-    public class DatabaseFilesChecker
+    public class DatabaseFilesChecker : IDatabaseFilesChecker
     {
         private readonly DatabaseOptions databaseOptions;
 

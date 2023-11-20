@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using InstallationsMonitor.Domain;
 using InstallationsMonitor.Persistence;
+using InstallationsMonitor.Persistence.Contracts;
 using InstallationsMonitor.ServiceProviders.Base;
 using InstallationsMonitor.TestsUtilities.ServiceProviders;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,8 +27,8 @@ namespace InstallationsMonitor.Tests.IntegrationTests.Commands
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             IServiceProvider serviceProvider = new InstallationsCommandTestServiceProvider(
                 cancellationTokenSource.Token);
-            using DatabaseConnection databaseConnection = serviceProvider
-                .GetRequiredService<DatabaseConnection>();
+            IDatabaseConnection databaseConnection = serviceProvider
+                .GetRequiredService<IDatabaseConnection>();
 
             databaseConnection.CreateInstallation(new Installation(programName, dateTime));
 

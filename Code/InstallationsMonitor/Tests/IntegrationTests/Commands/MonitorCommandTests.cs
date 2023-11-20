@@ -2,6 +2,7 @@
 using InstallationsMonitor.Domain;
 using InstallationsMonitor.Logic.Contracts;
 using InstallationsMonitor.Persistence;
+using InstallationsMonitor.Persistence.Contracts;
 using InstallationsMonitor.ServiceProviders.Base;
 using InstallationsMonitor.TestsUtilities;
 using InstallationsMonitor.TestsUtilities.ServiceProviders;
@@ -29,8 +30,8 @@ namespace InstallationsMonitor.Tests.IntegrationTests.Commands
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
                 cancellationTokenSource.Token);
-            using DatabaseConnection databaseConnection = serviceProvider
-                .GetRequiredService<DatabaseConnection>();
+            IDatabaseConnection databaseConnection = serviceProvider
+                .GetRequiredService<IDatabaseConnection>();
 
             CommandsServiceProvider.ExtraRegistrationsAction =
                 sc =>

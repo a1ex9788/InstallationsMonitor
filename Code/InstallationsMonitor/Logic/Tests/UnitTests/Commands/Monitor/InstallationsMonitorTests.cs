@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using InstallationsMonitor.Domain;
 using InstallationsMonitor.Logic.Commands.Monitor.Utilities;
-using InstallationsMonitor.Persistence;
+using InstallationsMonitor.Persistence.Contracts;
 using InstallationsMonitor.TestsUtilities;
 using InstallationsMonitor.TestsUtilities.ServiceProviders;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,8 +28,8 @@ namespace InstallationsMonitor.Logic.Tests.UnitTests.Commands.Monitor
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
                 cancellationTokenSource.Token);
-            using DatabaseConnection databaseConnection = serviceProvider
-                .GetRequiredService<DatabaseConnection>();
+            IDatabaseConnection databaseConnection = serviceProvider
+                .GetRequiredService<IDatabaseConnection>();
             InstallationsMonitorClass installationsMonitor = serviceProvider
                 .GetRequiredService<InstallationsMonitorClass>();
 
@@ -78,8 +78,8 @@ namespace InstallationsMonitor.Logic.Tests.UnitTests.Commands.Monitor
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
                 cancellationTokenSource.Token);
-            using DatabaseConnection databaseConnection = serviceProvider
-                .GetRequiredService<DatabaseConnection>();
+            IDatabaseConnection databaseConnection = serviceProvider
+                .GetRequiredService<IDatabaseConnection>();
             InstallationsMonitorClass installationsMonitor = serviceProvider
                 .GetRequiredService<InstallationsMonitorClass>();
 
@@ -123,8 +123,8 @@ namespace InstallationsMonitor.Logic.Tests.UnitTests.Commands.Monitor
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
                 cancellationTokenSource.Token);
-            using DatabaseConnection databaseConnection = serviceProvider
-                .GetRequiredService<DatabaseConnection>();
+            IDatabaseConnection databaseConnection = serviceProvider
+                .GetRequiredService<IDatabaseConnection>();
             InstallationsMonitorClass installationsMonitor = serviceProvider
                 .GetRequiredService<InstallationsMonitorClass>();
 
@@ -158,8 +158,8 @@ namespace InstallationsMonitor.Logic.Tests.UnitTests.Commands.Monitor
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
                 cancellationTokenSource.Token);
-            using DatabaseConnection databaseConnection = serviceProvider
-                .GetRequiredService<DatabaseConnection>();
+            IDatabaseConnection databaseConnection = serviceProvider
+                .GetRequiredService<IDatabaseConnection>();
             InstallationsMonitorClass installationsMonitor = serviceProvider
                 .GetRequiredService<InstallationsMonitorClass>();
 
@@ -190,8 +190,8 @@ namespace InstallationsMonitor.Logic.Tests.UnitTests.Commands.Monitor
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
                 cancellationTokenSource.Token);
-            using DatabaseConnection databaseConnection = serviceProvider
-                .GetRequiredService<DatabaseConnection>();
+            IDatabaseConnection databaseConnection = serviceProvider
+                .GetRequiredService<IDatabaseConnection>();
             InstallationsMonitorClass installationsMonitor = serviceProvider
                 .GetRequiredService<InstallationsMonitorClass>();
 

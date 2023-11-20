@@ -4,9 +4,7 @@ using System.Threading;
 
 namespace InstallationsMonitor.Persistence
 {
-    public partial class DatabaseConnection
-        : IDatabaseConnectionEntitiesCreator, IDatabaseConnectionEntitiesObtainer,
-            IDatabaseConnectionEntitiesRemover, IDisposable
+    public sealed partial class DatabaseConnection : IDatabaseConnection, IDisposable
     {
         private readonly AppDbContext appDbContext;
 
