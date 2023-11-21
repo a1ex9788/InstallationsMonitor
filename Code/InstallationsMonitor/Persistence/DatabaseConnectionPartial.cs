@@ -1,4 +1,5 @@
 ﻿using InstallationsMonitor.Domain;
+using InstallationsMonitor.Persistence.Contracts;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Linq;
 
 namespace InstallationsMonitor.Persistence
 {
-    public partial class DatabaseConnection : IDisposable
+    public sealed partial class DatabaseConnection : IDatabaseConnection, IDisposable
     {
         public int CreateInstallation(Installation installation)
         {
