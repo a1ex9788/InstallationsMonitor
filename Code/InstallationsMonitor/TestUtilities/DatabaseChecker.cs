@@ -79,9 +79,13 @@ namespace InstallationsMonitor.TestsUtilities
 
             for (int i = 0; i < filePathsList.Count; i++)
             {
-                T? fileOperation = fileOperations.SingleOrDefault(
+                IEnumerable<T?> currentFileOperations = fileOperations.Where(
                     fo => fo.FilePath == filePathsList.ElementAt(i)
                         && fo.InstallationId == installationId);
+
+                currentFileOperations.Should().HaveCountLessThanOrEqualTo(1);
+
+                T? fileOperation = currentFileOperations.SingleOrDefault();
 
                 fileOperation.Should().NotBeNull();
             }
