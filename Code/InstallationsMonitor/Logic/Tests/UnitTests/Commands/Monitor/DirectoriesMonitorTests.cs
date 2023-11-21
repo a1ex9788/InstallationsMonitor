@@ -57,9 +57,7 @@ namespace InstallationsMonitor.Logic.Tests.UnitTests.Commands.Monitor
             cancellationTokenSource.Cancel();
             await task;
 
-            IEnumerable<FileChange> fileChanges = databaseConnection.GetFileChanges();
-            fileChanges.Should().HaveCount(1);
-            FileChange fileChange = fileChanges.Single();
+            FileChange fileChange = databaseConnection.GetFileChanges().Single();
             fileChange.FilePath.Should().Be(filePath);
             fileChange.InstallationId.Should().Be(installationId);
         }
@@ -99,9 +97,7 @@ namespace InstallationsMonitor.Logic.Tests.UnitTests.Commands.Monitor
             cancellationTokenSource.Cancel();
             await task;
 
-            IEnumerable<FileCreation> fileCreations = databaseConnection.GetFileCreations();
-            fileCreations.Should().HaveCount(1);
-            FileCreation fileCreation = fileCreations.Single();
+            FileCreation fileCreation = databaseConnection.GetFileCreations().Single();
             fileCreation.FilePath.Should().Be(filePath);
             fileCreation.InstallationId.Should().Be(installationId);
         }
@@ -144,9 +140,7 @@ namespace InstallationsMonitor.Logic.Tests.UnitTests.Commands.Monitor
             cancellationTokenSource.Cancel();
             await task;
 
-            IEnumerable<FileDeletion> fileDeletions = databaseConnection.GetFileDeletions();
-            fileDeletions.Should().HaveCount(1);
-            FileDeletion fileDeletion = fileDeletions.Single();
+            FileDeletion fileDeletion = databaseConnection.GetFileDeletions().Single();
             fileDeletion.FilePath.Should().Be(filePath);
             fileDeletion.InstallationId.Should().Be(installationId);
         }
@@ -189,9 +183,7 @@ namespace InstallationsMonitor.Logic.Tests.UnitTests.Commands.Monitor
             cancellationTokenSource.Cancel();
             await task;
 
-            IEnumerable<FileRenaming> fileRenamings = databaseConnection.GetFileRenamings();
-            fileRenamings.Should().HaveCount(1);
-            FileRenaming fileRenaming = fileRenamings.Single();
+            FileRenaming fileRenaming = databaseConnection.GetFileRenamings().Single();
             fileRenaming.FilePath.Should().Be(newFilePath);
             fileRenaming.InstallationId.Should().Be(installationId);
             fileRenaming.OldPath.Should().Be(filePath);

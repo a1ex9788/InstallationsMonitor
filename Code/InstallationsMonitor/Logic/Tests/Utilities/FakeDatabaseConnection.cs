@@ -64,7 +64,7 @@ namespace Logic.Tests.Utilities
 
         public Installation? GetInstallation(int installationId)
         {
-            return this.installations.FirstOrDefault(i => i.Id == installationId);
+            return this.installations.SingleOrDefault(i => i.Id == installationId);
         }
 
         public IEnumerable<Installation> GetInstallations()

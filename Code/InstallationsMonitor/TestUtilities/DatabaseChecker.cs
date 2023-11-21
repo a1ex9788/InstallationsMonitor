@@ -13,11 +13,7 @@ namespace InstallationsMonitor.TestsUtilities
         public static Installation CheckInstallation(
             IDatabaseConnection databaseConnection, string programName)
         {
-            IEnumerable<Installation> installations = databaseConnection.GetInstallations();
-
-            installations.Should().HaveCount(1);
-
-            Installation installation = installations.Single();
+            Installation installation = databaseConnection.GetInstallations().Single();
 
             installation.ProgramName.Should().Be(programName);
 
@@ -33,10 +29,7 @@ namespace InstallationsMonitor.TestsUtilities
 
             foreach (string programName in programNames)
             {
-                Installation? installation = installations
-                    .FirstOrDefault(i => i.ProgramName == programName);
-
-                installation.Should().NotBeNull();
+                installations.Where(i => i.ProgramName == programName).Should().HaveCount(1);
             }
         }
 
@@ -79,15 +72,10 @@ namespace InstallationsMonitor.TestsUtilities
 
             for (int i = 0; i < filePathsList.Count; i++)
             {
-                IEnumerable<T?> currentFileOperations = fileOperations.Where(
-                    fo => fo.FilePath == filePathsList.ElementAt(i)
-                        && fo.InstallationId == installationId);
-
-                currentFileOperations.Should().HaveCountLessThanOrEqualTo(1);
-
-                T? fileOperation = currentFileOperations.SingleOrDefault();
-
-                fileOperation.Should().NotBeNull();
+                fileOperations
+                    .Where(fo => fo.FilePath == filePathsList.ElementAt(i)
+                        && fo.InstallationId == installationId)
+                    .Should().HaveCount(1);
             }
         }
     }

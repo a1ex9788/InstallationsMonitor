@@ -49,22 +49,20 @@ namespace Persistence.Tests.UnitTests
 
             // Act, assert.
             databaseConnection.CreateInstallation(installation);
-            IEnumerable<Installation> installations = databaseConnection.GetInstallations();
-            installations.Should().HaveCount(1);
-            Installation installationFromDB = installations.Single();
+            Installation installationFromDB = databaseConnection.GetInstallations().Single();
             installationFromDB.Should().Be(installation);
 
             databaseConnection.CreateFileChange(fileChange);
-            databaseConnection.GetFileChanges().Should().HaveCount(1).And.Contain(fileChange);
+            databaseConnection.GetFileChanges().Single().Should().Be(fileChange);
 
             databaseConnection.CreateFileCreation(fileCreation);
-            databaseConnection.GetFileCreations().Should().HaveCount(1).And.Contain(fileCreation);
+            databaseConnection.GetFileCreations().Single().Should().Be(fileCreation);
 
             databaseConnection.CreateFileDeletion(fileDeletion);
-            databaseConnection.GetFileDeletions().Should().HaveCount(1).And.Contain(fileDeletion);
+            databaseConnection.GetFileDeletions().Single().Should().Be(fileDeletion);
 
             databaseConnection.CreateFileRenaming(fileRenaming);
-            databaseConnection.GetFileRenamings().Should().HaveCount(1).And.Contain(fileRenaming);
+            databaseConnection.GetFileRenamings().Single().Should().Be(fileRenaming);
         }
 
         private static void RemoveEveryTypeOfEntity_DatabaseWithData_RemovesEverything(

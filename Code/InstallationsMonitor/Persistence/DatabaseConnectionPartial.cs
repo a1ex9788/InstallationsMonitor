@@ -17,7 +17,7 @@ namespace InstallationsMonitor.Persistence
             this.appDbContext.SaveChanges();
 
             int id = this.appDbContext.Installations
-                .First(i => i.ProgramName == installation.ProgramName
+                .Single(i => i.ProgramName == installation.ProgramName
                     && i.DateTime == installation.DateTime).Id;
 
             this.Unlock();
