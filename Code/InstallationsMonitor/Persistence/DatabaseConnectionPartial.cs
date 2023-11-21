@@ -135,8 +135,54 @@ namespace InstallationsMonitor.Persistence
         {
             this.Lock();
 
-            Installation installation = this.appDbContext.Installations.Single(i => i.Id == installationId);
-            this.appDbContext.Installations.Remove(installation);
+            Installation? installation = this.appDbContext.Installations
+                .SingleOrDefault(i => i.Id == installationId);
+
+            if (installation is not null)
+            {
+                this.appDbContext.Installations.Remove(installation);
+                this.appDbContext.SaveChanges();
+            }
+
+            this.Unlock();
+        }
+
+        public void RemoveFileOperations(int installationId)
+        {
+            this.Lock();
+
+            IList<FileChange> fileChangesToRemove =
+                this.appDbContext.FileChanges.Where(fc => fc.InstallationId == installationId).ToList();
+
+            foreach (FileChange fileChange in fileChangesToRemove)
+            {
+                this.appDbContext.FileChanges.Remove(fileChange);
+            }
+
+            IList<FileCreation> fileCreationsToRemove =
+                this.appDbContext.FileCreations.Where(fc => fc.InstallationId == installationId).ToList();
+
+            foreach (FileCreation fileCreation in fileCreationsToRemove)
+            {
+                this.appDbContext.FileCreations.Remove(fileCreation);
+            }
+
+            IList<FileDeletion> fileDeletionsToRemove =
+                this.appDbContext.FileDeletions.Where(fc => fc.InstallationId == installationId).ToList();
+
+            foreach (FileDeletion fileDeletion in fileDeletionsToRemove)
+            {
+                this.appDbContext.FileDeletions.Remove(fileDeletion);
+            }
+
+            IList<FileRenaming> fileRenamingsToRemove =
+                this.appDbContext.FileRenamings.Where(fc => fc.InstallationId == installationId).ToList();
+
+            foreach (FileRenaming fileRenaming in fileRenamingsToRemove)
+            {
+                this.appDbContext.FileRenamings.Remove(fileRenaming);
+            }
+
             this.appDbContext.SaveChanges();
 
             this.Unlock();

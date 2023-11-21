@@ -24,6 +24,8 @@ namespace InstallationsMonitor.Logic.Commands.Remove.Utilities
                 return;
             }
 
+            this.databaseConnection.RemoveFileOperations(installationId);
+
             this.databaseConnection.RemoveInstallation(installationId);
 
             Console.WriteLine($"Installation with id '{installationId}' removed.");

@@ -28,5 +28,7 @@ namespace InstallationsMonitor.Persistence.Contracts
         IEnumerable<FileRenaming> GetFileRenamings();
 
         void RemoveInstallation(int installationId);
+
+        void RemoveFileOperations(int installationId);
     }
 }

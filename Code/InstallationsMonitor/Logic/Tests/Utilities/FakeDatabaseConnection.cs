@@ -72,6 +72,33 @@ namespace Logic.Tests.Utilities
             return this.installations;
         }
 
+        public void RemoveFileOperations(int installationId)
+        {
+            foreach (FileChange fileChange in
+                this.fileChanges.Where(fc => fc.InstallationId == installationId).ToList())
+            {
+                this.fileChanges.Remove(fileChange);
+            }
+
+            foreach (FileCreation fileCreation in
+                this.fileCreations.Where(fc => fc.InstallationId == installationId).ToList())
+            {
+                this.fileCreations.Remove(fileCreation);
+            }
+
+            foreach (FileDeletion fileDeletion in
+                this.fileDeletions.Where(fc => fc.InstallationId == installationId).ToList())
+            {
+                this.fileDeletions.Remove(fileDeletion);
+            }
+
+            foreach (FileRenaming fileRenaming in
+                this.fileRenamings.Where(fc => fc.InstallationId == installationId).ToList())
+            {
+                this.fileRenamings.Remove(fileRenaming);
+            }
+        }
+
         public void RemoveInstallation(int installationId)
         {
             Installation? installation = this.GetInstallation(installationId);
