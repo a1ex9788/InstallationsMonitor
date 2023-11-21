@@ -2,7 +2,6 @@
 using InstallationsMonitor.Domain;
 using InstallationsMonitor.Logic.Contracts;
 using InstallationsMonitor.Persistence;
-using InstallationsMonitor.Persistence.Contracts;
 using InstallationsMonitor.ServiceProviders.Base;
 using InstallationsMonitor.Tests.Utilities.ServiceProviders;
 using InstallationsMonitor.TestsUtilities;
@@ -11,6 +10,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -30,8 +30,7 @@ namespace InstallationsMonitor.Tests.IntegrationTests.Commands
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
                 cancellationTokenSource.Token);
-            IDatabaseConnection databaseConnection = serviceProvider
-                .GetRequiredService<IDatabaseConnection>();
+            AppDbContext appDbContext = serviceProvider.GetRequiredService<AppDbContext>();
 
             CommandsServiceProvider.ExtraRegistrationsAction =
                 sc =>
@@ -63,13 +62,13 @@ namespace InstallationsMonitor.Tests.IntegrationTests.Commands
             cancellationTokenSource.Cancel();
             await task;
 
-            Installation installation = DatabaseChecker.CheckInstallation(
-                databaseConnection, programName);
-            DatabaseChecker.CheckFileOperations<FileCreation>(
-                databaseConnection,
-                installation.Id,
-                filePaths,
-                checkFileOperationsNumber: false);
+            Installation installation = appDbContext.Installations.Single();
+            installation.ProgramName.Should().Be(programName);
+
+            appDbContext.FileCreations
+                .Where(fc => fc.InstallationId == installation.Id)
+                .Select(fc => fc.FilePath)
+                .Should().BeEquivalentTo(filePaths);
         }
 
         [TestMethod]

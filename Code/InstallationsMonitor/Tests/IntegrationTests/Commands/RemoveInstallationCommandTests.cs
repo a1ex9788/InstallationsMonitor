@@ -1,10 +1,8 @@
 ﻿using FluentAssertions;
 using InstallationsMonitor.Domain;
 using InstallationsMonitor.Persistence;
-using InstallationsMonitor.Persistence.Contracts;
 using InstallationsMonitor.ServiceProviders.Base;
 using InstallationsMonitor.Tests.Utilities.ServiceProviders;
-using InstallationsMonitor.TestsUtilities;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -20,20 +18,20 @@ namespace InstallationsMonitor.Tests.IntegrationTests.Commands
         public void RemoveCommand_ExistentIdentifier_RemovesInstallation()
         {
             // Arrange.
-            string programName = "Program";
-            DateTime dateTime = new DateTime(1, 1, 1, 1, 1, 1);
+            Installation installation = new Installation("Program", new DateTime(1, 1, 1, 1, 1, 1))
+            {
+                Id = 1,
+            };
 
-            string installationId = "1";
-            string[] args = new string[] { "remove", "-i", installationId };
+            string[] args = new string[] { "remove", "-i", installation.Id.ToString() };
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             IServiceProvider serviceProvider = new RemoveCommandTestServiceProvider(
                 cancellationTokenSource.Token);
-            IDatabaseConnection databaseConnection = serviceProvider
-                .GetRequiredService<IDatabaseConnection>();
+            AppDbContext appDbContext = serviceProvider.GetRequiredService<AppDbContext>();
 
-            databaseConnection.CreateInstallation(new Installation(programName, dateTime));
-            DatabaseChecker.CheckInstallation(databaseConnection, programName);
+            appDbContext.Installations.Add(installation);
+            appDbContext.SaveChanges();
 
             CommandsServiceProvider.ExtraRegistrationsAction =
                 sc => sc.AddSingleton(serviceProvider.GetRequiredService<DatabaseOptions>());
@@ -46,9 +44,9 @@ namespace InstallationsMonitor.Tests.IntegrationTests.Commands
 
             // Assert.
             stringWriter.ToString().Should().Be(
-                $"Installation with id '{installationId}' removed.{Environment.NewLine}");
+                $"Installation with id '{installation.Id}' removed.{Environment.NewLine}");
 
-            DatabaseChecker.CheckInstallations(databaseConnection, Array.Empty<string>());
+            appDbContext.Installations.Should().BeEmpty();
         }
 
         [TestMethod]

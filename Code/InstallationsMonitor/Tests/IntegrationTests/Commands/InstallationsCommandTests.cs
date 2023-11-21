@@ -1,7 +1,6 @@
 ﻿using FluentAssertions;
 using InstallationsMonitor.Domain;
 using InstallationsMonitor.Persistence;
-using InstallationsMonitor.Persistence.Contracts;
 using InstallationsMonitor.ServiceProviders.Base;
 using InstallationsMonitor.Tests.Utilities.ServiceProviders;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,18 +18,20 @@ namespace InstallationsMonitor.Tests.IntegrationTests.Commands
         public void InstallationsCommand_SomeInstallationsExist_PrintsExpectedResults()
         {
             // Arrange.
-            string programName = "Program";
-            DateTime dateTime = new DateTime(1, 1, 1, 1, 1, 1);
+            Installation installation = new Installation("Program", new DateTime(1, 1, 1, 1, 1, 1))
+            {
+                Id = 1,
+            };
 
             string[] args = new string[] { "installations", };
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             IServiceProvider serviceProvider = new InstallationsCommandTestServiceProvider(
                 cancellationTokenSource.Token);
-            IDatabaseConnection databaseConnection = serviceProvider
-                .GetRequiredService<IDatabaseConnection>();
+            AppDbContext appDbContext = serviceProvider.GetRequiredService<AppDbContext>();
 
-            databaseConnection.CreateInstallation(new Installation(programName, dateTime));
+            appDbContext.Installations.Add(installation);
+            appDbContext.SaveChanges();
 
             CommandsServiceProvider.ExtraRegistrationsAction =
                 sc => sc.AddSingleton(serviceProvider.GetRequiredService<DatabaseOptions>());

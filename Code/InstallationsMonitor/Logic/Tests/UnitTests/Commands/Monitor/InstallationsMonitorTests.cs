@@ -213,7 +213,6 @@ namespace InstallationsMonitor.Logic.Tests.UnitTests.Commands.Monitor
             stringWriter.ToString().Should().Contain(
                 $"Monitoring installation of program '{programName}'...");
 
-            // TODO: Inspect database context.
             DatabaseChecker.CheckInstallations(
                 databaseConnection, new string[] { programName, programName });
         }
