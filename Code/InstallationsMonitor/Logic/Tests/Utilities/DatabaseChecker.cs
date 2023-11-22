@@ -6,11 +6,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace InstallationsMonitor.TestsUtilities
+namespace InstallationsMonitor.Logic.Tests.Utilities
 {
-    public static class DatabaseChecker
+    internal static class DatabaseChecker
     {
-        public static Installation CheckInstallation(
+        internal static Installation CheckInstallation(
             IDatabaseConnection databaseConnection, string programName)
         {
             Installation installation = databaseConnection.GetInstallations().Single();
@@ -20,20 +20,14 @@ namespace InstallationsMonitor.TestsUtilities
             return installation;
         }
 
-        public static void CheckInstallations(
+        internal static void CheckInstallations(
             IDatabaseConnection databaseConnection, IEnumerable<string> programNames)
         {
-            IEnumerable<Installation> installations = databaseConnection.GetInstallations();
-
-            installations.Should().HaveSameCount(programNames);
-
-            foreach (string programName in programNames)
-            {
-                installations.Where(i => i.ProgramName == programName).Should().HaveCount(1);
-            }
+            databaseConnection.GetInstallations().Select(i => i.ProgramName)
+                .Should().BeEquivalentTo(programNames);
         }
 
-        public static void CheckFileOperations<T>(
+        internal static void CheckFileOperations<T>(
             IDatabaseConnection databaseConnection,
             int installationId,
             IEnumerable<string> filePaths,

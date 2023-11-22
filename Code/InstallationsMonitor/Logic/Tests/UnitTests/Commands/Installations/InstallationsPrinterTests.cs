@@ -18,10 +18,8 @@ namespace InstallationsMonitor.Logic.Tests.UnitTests.Commands.Installations
         public void Print_SomeInstallationsExist_PrintsInstallations()
         {
             // Arrange.
-            string programName1 = "Program1";
-            string programName2 = "Program2";
-            DateTime dateTime1 = new DateTime(1, 1, 1, 1, 1, 1);
-            DateTime dateTime2 = new DateTime(2, 2, 2, 2, 2, 2);
+            Installation installation1 = new Installation("Program1", new DateTime(1, 1, 1, 1, 1, 1));
+            Installation installation2 = new Installation("Program2", new DateTime(2, 2, 2, 2, 2, 2));
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             IServiceProvider serviceProvider = new InstallationsCommandTestServiceProvider(
@@ -31,8 +29,10 @@ namespace InstallationsMonitor.Logic.Tests.UnitTests.Commands.Installations
             InstallationsPrinter installationsPrinter = serviceProvider
                 .GetRequiredService<InstallationsPrinter>();
 
-            databaseConnection.CreateInstallation(new Installation(programName1, dateTime1));
-            databaseConnection.CreateInstallation(new Installation(programName2, dateTime2));
+            databaseConnection.CreateInstallation(installation1);
+            databaseConnection.CreateInstallation(installation2);
+            installation1.Id.Should().Be(1);
+            installation2.Id.Should().Be(2);
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);

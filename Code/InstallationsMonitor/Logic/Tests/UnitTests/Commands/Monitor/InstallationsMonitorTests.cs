@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using InstallationsMonitor.Domain;
 using InstallationsMonitor.Logic.Commands.Monitor.Utilities;
+using InstallationsMonitor.Logic.Tests.Utilities;
 using InstallationsMonitor.Logic.Tests.Utilities.ServiceProviders;
 using InstallationsMonitor.Persistence.Contracts;
 using InstallationsMonitor.TestsUtilities;
@@ -135,7 +136,7 @@ namespace InstallationsMonitor.Logic.Tests.UnitTests.Commands.Monitor
             Console.SetOut(stringWriter);
 
             // Act.
-            Task task = installationsMonitor.MonitorAsync(directory: null, programName);
+            Task task = installationsMonitor.MonitorAsync(directory: null, programName: null);
 
             await EventsAwaiter.WaitForEventsRegistrationAsync(stringWriter);
 
@@ -143,8 +144,11 @@ namespace InstallationsMonitor.Logic.Tests.UnitTests.Commands.Monitor
             await task;
 
             // Assert.
-            stringWriter.ToString().Should().Contain(
-                $"Monitoring installation of program '{programName}'...");
+            string output = stringWriter.ToString();
+
+            stringWriter.ToString().Should()
+                .Contain("Introduce the name of the program of the installation to monitor: ").And
+                .Contain($"Monitoring installation of program '{programName}'...");
 
             DatabaseChecker.CheckInstallation(databaseConnection, programName);
         }
