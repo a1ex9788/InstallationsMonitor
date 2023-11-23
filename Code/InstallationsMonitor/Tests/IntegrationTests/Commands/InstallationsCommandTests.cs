@@ -28,10 +28,10 @@ namespace InstallationsMonitor.Tests.IntegrationTests.Commands
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             IServiceProvider serviceProvider = new InstallationsCommandTestServiceProvider(
                 cancellationTokenSource.Token);
-            AppDbContext appDbContext = serviceProvider.GetRequiredService<AppDbContext>();
+            DatabaseContext databaseContext = serviceProvider.GetRequiredService<DatabaseContext>();
 
-            appDbContext.Installations.Add(installation);
-            appDbContext.SaveChanges();
+            databaseContext.Installations.Add(installation);
+            databaseContext.SaveChanges();
 
             CommandsServiceProvider.ExtraRegistrationsAction =
                 sc => sc.AddSingleton(serviceProvider.GetRequiredService<DatabaseOptions>());

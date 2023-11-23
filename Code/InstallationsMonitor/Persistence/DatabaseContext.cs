@@ -4,7 +4,7 @@ using System.IO;
 
 namespace InstallationsMonitor.Persistence
 {
-    public class AppDbContext : DbContext
+    public class DatabaseContext : DbContext
     {
         private readonly DatabaseOptions databaseOptions;
 
@@ -18,8 +18,8 @@ namespace InstallationsMonitor.Persistence
 
         public DbSet<FileRenaming> FileRenamings { get; set; } = null!;
 
-        public AppDbContext(DatabaseOptions databaseOptions)
-            : base(new DbContextOptions<AppDbContext>())
+        public DatabaseContext(DatabaseOptions databaseOptions)
+            : base(new DbContextOptions<DatabaseContext>())
         {
             this.databaseOptions = databaseOptions;
 

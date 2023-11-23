@@ -27,10 +27,10 @@ namespace InstallationsMonitor.Tests.Utilities.ServiceProviders.Base
             this.serviceProvider = getServiceCollectionFunc.Invoke(
                 cancellationToken, testDatabaseFullName);
 
-            AppDbContext appDbContext = this.serviceProvider.GetRequiredService<AppDbContext>();
+            DatabaseContext databaseContext = this.serviceProvider.GetRequiredService<DatabaseContext>();
 
-            appDbContext.Database.EnsureDeleted();
-            appDbContext.Database.EnsureCreated();
+            databaseContext.Database.EnsureDeleted();
+            databaseContext.Database.EnsureCreated();
         }
 
         public object? GetService(Type serviceType)

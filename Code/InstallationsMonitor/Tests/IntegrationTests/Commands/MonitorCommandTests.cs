@@ -30,7 +30,7 @@ namespace InstallationsMonitor.Tests.IntegrationTests.Commands
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
                 cancellationTokenSource.Token);
-            AppDbContext appDbContext = serviceProvider.GetRequiredService<AppDbContext>();
+            DatabaseContext databaseContext = serviceProvider.GetRequiredService<DatabaseContext>();
 
             CommandsServiceProvider.ExtraRegistrationsAction =
                 sc =>
@@ -62,10 +62,10 @@ namespace InstallationsMonitor.Tests.IntegrationTests.Commands
             cancellationTokenSource.Cancel();
             await task;
 
-            Installation installation = appDbContext.Installations.Single();
+            Installation installation = databaseContext.Installations.Single();
             installation.ProgramName.Should().Be(programName);
 
-            appDbContext.FileCreations
+            databaseContext.FileCreations
                 .Where(fc => fc.InstallationId == installation.Id)
                 .Select(fc => fc.FilePath)
                 .Should().BeEquivalentTo(filePaths);

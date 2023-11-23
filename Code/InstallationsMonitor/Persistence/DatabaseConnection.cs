@@ -6,15 +6,15 @@ namespace InstallationsMonitor.Persistence
 {
     public sealed partial class DatabaseConnection : IDatabaseConnection, IDisposable
     {
-        private readonly AppDbContext appDbContext;
+        private readonly DatabaseContext databaseContext;
 
         // A semaphore is needed to avoid concurrency problems among different monitoring actions in
         // different directories.
         private readonly SemaphoreSlim semaphoreSlim;
 
-        public DatabaseConnection(AppDbContext appDbContext)
+        public DatabaseConnection(DatabaseContext databaseContext)
         {
-            this.appDbContext = appDbContext;
+            this.databaseContext = databaseContext;
             this.semaphoreSlim = new SemaphoreSlim(1);
         }
 

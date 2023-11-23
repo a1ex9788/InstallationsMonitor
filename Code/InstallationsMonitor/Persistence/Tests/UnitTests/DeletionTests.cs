@@ -10,12 +10,12 @@ namespace Persistence.Tests.UnitTests
     internal class DeletionTests
     {
         private readonly IDatabaseConnection databaseConnection;
-        private readonly AppDbContext appDbContext;
+        private readonly DatabaseContext databaseContext;
 
-        internal DeletionTests(IDatabaseConnection databaseConnection, AppDbContext appDbContext)
+        internal DeletionTests(IDatabaseConnection databaseConnection, DatabaseContext databaseContext)
         {
             this.databaseConnection = databaseConnection;
-            this.appDbContext = appDbContext;
+            this.databaseContext = databaseContext;
         }
 
         internal void TestDeleteInstallation(IEnumerable<Installation> installations)
@@ -25,20 +25,20 @@ namespace Persistence.Tests.UnitTests
             Installation installation3 = installations.ElementAt(2);
 
             this.databaseConnection.RemoveInstallation(installation1.Id);
-            this.appDbContext.Installations.Should().BeEquivalentTo(new Installation[]
+            this.databaseContext.Installations.Should().BeEquivalentTo(new Installation[]
                 {
                     installation2,
                     installation3,
                 });
 
             this.databaseConnection.RemoveInstallation(installation2.Id);
-            this.appDbContext.Installations.Should().BeEquivalentTo(new Installation[]
+            this.databaseContext.Installations.Should().BeEquivalentTo(new Installation[]
                 {
                     installation3,
                 });
 
             this.databaseConnection.RemoveInstallation(installation3.Id);
-            this.appDbContext.Installations.Should().BeEmpty();
+            this.databaseContext.Installations.Should().BeEmpty();
         }
 
         internal void TestDeleteFileOperations(
@@ -69,25 +69,25 @@ namespace Persistence.Tests.UnitTests
             FileRenaming fileRenaming4 = fileRenamings.ElementAt(3);
 
             this.databaseConnection.RemoveFileOperations(installation2.Id);
-            this.appDbContext.FileChanges.Should().BeEquivalentTo(new FileChange[]
+            this.databaseContext.FileChanges.Should().BeEquivalentTo(new FileChange[]
                 {
                     fileChange1,
                     fileChange3,
                     fileChange4,
                 });
-            this.appDbContext.FileCreations.Should().BeEquivalentTo(new FileCreation[]
+            this.databaseContext.FileCreations.Should().BeEquivalentTo(new FileCreation[]
                 {
                     fileCreation1,
                     fileCreation3,
                     fileCreation4,
                 });
-            this.appDbContext.FileDeletions.Should().BeEquivalentTo(new FileDeletion[]
+            this.databaseContext.FileDeletions.Should().BeEquivalentTo(new FileDeletion[]
                 {
                     fileDeletion1,
                     fileDeletion3,
                     fileDeletion4,
                 });
-            this.appDbContext.FileRenamings.Should().BeEquivalentTo(new FileRenaming[]
+            this.databaseContext.FileRenamings.Should().BeEquivalentTo(new FileRenaming[]
                 {
                     fileRenaming1,
                     fileRenaming3,
@@ -95,28 +95,28 @@ namespace Persistence.Tests.UnitTests
                 });
 
             this.databaseConnection.RemoveFileOperations(installation3.Id);
-            this.appDbContext.FileChanges.Should().BeEquivalentTo(new FileChange[]
+            this.databaseContext.FileChanges.Should().BeEquivalentTo(new FileChange[]
                 {
                     fileChange1,
                 });
-            this.appDbContext.FileCreations.Should().BeEquivalentTo(new FileCreation[]
+            this.databaseContext.FileCreations.Should().BeEquivalentTo(new FileCreation[]
                 {
                     fileCreation1,
                 });
-            this.appDbContext.FileDeletions.Should().BeEquivalentTo(new FileDeletion[]
+            this.databaseContext.FileDeletions.Should().BeEquivalentTo(new FileDeletion[]
                 {
                     fileDeletion1,
                 });
-            this.appDbContext.FileRenamings.Should().BeEquivalentTo(new FileRenaming[]
+            this.databaseContext.FileRenamings.Should().BeEquivalentTo(new FileRenaming[]
                 {
                     fileRenaming1,
                 });
 
             this.databaseConnection.RemoveFileOperations(installation1.Id);
-            this.appDbContext.FileChanges.Should().BeEmpty();
-            this.appDbContext.FileCreations.Should().BeEmpty();
-            this.appDbContext.FileDeletions.Should().BeEmpty();
-            this.appDbContext.FileRenamings.Should().BeEmpty();
+            this.databaseContext.FileChanges.Should().BeEmpty();
+            this.databaseContext.FileCreations.Should().BeEmpty();
+            this.databaseContext.FileDeletions.Should().BeEmpty();
+            this.databaseContext.FileRenamings.Should().BeEmpty();
         }
     }
 }

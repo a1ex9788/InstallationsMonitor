@@ -13,10 +13,10 @@ namespace InstallationsMonitor.Persistence
         {
             this.Lock();
 
-            this.appDbContext.Installations.Add(installation);
-            this.appDbContext.SaveChanges();
+            this.databaseContext.Installations.Add(installation);
+            this.databaseContext.SaveChanges();
 
-            int id = this.appDbContext.Installations
+            int id = this.databaseContext.Installations
                 .Single(i => i.ProgramName == installation.ProgramName
                     && i.DateTime == installation.DateTime).Id;
 
@@ -29,8 +29,8 @@ namespace InstallationsMonitor.Persistence
         {
             this.Lock();
 
-            this.appDbContext.FileChanges.Add(fileChange);
-            this.appDbContext.SaveChanges();
+            this.databaseContext.FileChanges.Add(fileChange);
+            this.databaseContext.SaveChanges();
 
             this.Unlock();
         }
@@ -39,8 +39,8 @@ namespace InstallationsMonitor.Persistence
         {
             this.Lock();
 
-            this.appDbContext.FileCreations.Add(fileCreation);
-            this.appDbContext.SaveChanges();
+            this.databaseContext.FileCreations.Add(fileCreation);
+            this.databaseContext.SaveChanges();
 
             this.Unlock();
         }
@@ -49,8 +49,8 @@ namespace InstallationsMonitor.Persistence
         {
             this.Lock();
 
-            this.appDbContext.FileDeletions.Add(fileDeletion);
-            this.appDbContext.SaveChanges();
+            this.databaseContext.FileDeletions.Add(fileDeletion);
+            this.databaseContext.SaveChanges();
 
             this.Unlock();
         }
@@ -59,8 +59,8 @@ namespace InstallationsMonitor.Persistence
         {
             this.Lock();
 
-            this.appDbContext.FileRenamings.Add(fileRenaming);
-            this.appDbContext.SaveChanges();
+            this.databaseContext.FileRenamings.Add(fileRenaming);
+            this.databaseContext.SaveChanges();
 
             this.Unlock();
         }
@@ -69,7 +69,7 @@ namespace InstallationsMonitor.Persistence
         {
             this.Lock();
 
-            DbSet<Installation> installations = this.appDbContext.Installations;
+            DbSet<Installation> installations = this.databaseContext.Installations;
 
             this.Unlock();
 
@@ -80,7 +80,7 @@ namespace InstallationsMonitor.Persistence
         {
             this.Lock();
 
-            Installation? installation = this.appDbContext.Installations
+            Installation? installation = this.databaseContext.Installations
                 .SingleOrDefault(i => i.Id == installationId);
 
             this.Unlock();
@@ -92,7 +92,7 @@ namespace InstallationsMonitor.Persistence
         {
             this.Lock();
 
-            DbSet<FileChange> fileChanges = this.appDbContext.FileChanges;
+            DbSet<FileChange> fileChanges = this.databaseContext.FileChanges;
 
             this.Unlock();
 
@@ -103,7 +103,7 @@ namespace InstallationsMonitor.Persistence
         {
             this.Lock();
 
-            DbSet<FileCreation> fileCreations = this.appDbContext.FileCreations;
+            DbSet<FileCreation> fileCreations = this.databaseContext.FileCreations;
 
             this.Unlock();
 
@@ -114,7 +114,7 @@ namespace InstallationsMonitor.Persistence
         {
             this.Lock();
 
-            DbSet<FileDeletion> fileDeletions = this.appDbContext.FileDeletions;
+            DbSet<FileDeletion> fileDeletions = this.databaseContext.FileDeletions;
 
             this.Unlock();
 
@@ -125,7 +125,7 @@ namespace InstallationsMonitor.Persistence
         {
             this.Lock();
 
-            DbSet<FileRenaming> fileRenamings = this.appDbContext.FileRenamings;
+            DbSet<FileRenaming> fileRenamings = this.databaseContext.FileRenamings;
 
             this.Unlock();
 
@@ -136,13 +136,13 @@ namespace InstallationsMonitor.Persistence
         {
             this.Lock();
 
-            Installation? installation = this.appDbContext.Installations
+            Installation? installation = this.databaseContext.Installations
                 .SingleOrDefault(i => i.Id == installationId);
 
             if (installation is not null)
             {
-                this.appDbContext.Installations.Remove(installation);
-                this.appDbContext.SaveChanges();
+                this.databaseContext.Installations.Remove(installation);
+                this.databaseContext.SaveChanges();
             }
 
             this.Unlock();
@@ -153,38 +153,38 @@ namespace InstallationsMonitor.Persistence
             this.Lock();
 
             IList<FileChange> fileChangesToRemove =
-                this.appDbContext.FileChanges.Where(fc => fc.InstallationId == installationId).ToList();
+                this.databaseContext.FileChanges.Where(fc => fc.InstallationId == installationId).ToList();
 
             foreach (FileChange fileChange in fileChangesToRemove)
             {
-                this.appDbContext.FileChanges.Remove(fileChange);
+                this.databaseContext.FileChanges.Remove(fileChange);
             }
 
             IList<FileCreation> fileCreationsToRemove =
-                this.appDbContext.FileCreations.Where(fc => fc.InstallationId == installationId).ToList();
+                this.databaseContext.FileCreations.Where(fc => fc.InstallationId == installationId).ToList();
 
             foreach (FileCreation fileCreation in fileCreationsToRemove)
             {
-                this.appDbContext.FileCreations.Remove(fileCreation);
+                this.databaseContext.FileCreations.Remove(fileCreation);
             }
 
             IList<FileDeletion> fileDeletionsToRemove =
-                this.appDbContext.FileDeletions.Where(fc => fc.InstallationId == installationId).ToList();
+                this.databaseContext.FileDeletions.Where(fc => fc.InstallationId == installationId).ToList();
 
             foreach (FileDeletion fileDeletion in fileDeletionsToRemove)
             {
-                this.appDbContext.FileDeletions.Remove(fileDeletion);
+                this.databaseContext.FileDeletions.Remove(fileDeletion);
             }
 
             IList<FileRenaming> fileRenamingsToRemove =
-                this.appDbContext.FileRenamings.Where(fc => fc.InstallationId == installationId).ToList();
+                this.databaseContext.FileRenamings.Where(fc => fc.InstallationId == installationId).ToList();
 
             foreach (FileRenaming fileRenaming in fileRenamingsToRemove)
             {
-                this.appDbContext.FileRenamings.Remove(fileRenaming);
+                this.databaseContext.FileRenamings.Remove(fileRenaming);
             }
 
-            this.appDbContext.SaveChanges();
+            this.databaseContext.SaveChanges();
 
             this.Unlock();
         }
