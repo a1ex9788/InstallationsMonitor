@@ -36,10 +36,10 @@ namespace Persistence.Tests.UnitTests
             ObtentionTests obtentionTests = new ObtentionTests(databaseConnection);
             obtentionTests.TestGetInstallations(installations);
             obtentionTests.TestGetInstallation(installations);
-            obtentionTests.TestGetFileChanges(fileChanges);
-            obtentionTests.TestGetFileCreations(fileCreations);
-            obtentionTests.TestGetFileDeletions(fileDeletions);
-            obtentionTests.TestGetFileRenamings(fileRenamings);
+            obtentionTests.TestGetFileChanges(installations, fileChanges);
+            obtentionTests.TestGetFileCreations(installations, fileCreations);
+            obtentionTests.TestGetFileDeletions(installations, fileDeletions);
+            obtentionTests.TestGetFileRenamings(installations, fileRenamings);
 
             DeletionTests deletionTests = new DeletionTests(databaseConnection, databaseContext);
             deletionTests.TestDeleteInstallation(installations);

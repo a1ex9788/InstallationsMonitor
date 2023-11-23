@@ -2,3 +2,4 @@
 
 [assembly: SuppressMessage("Design", "CA1068:CancellationToken parameters must come last", Justification = "These methods configure the DI, they does not use the cancellation token.", Scope = "namespaceanddescendants", Target = "~N:InstallationsMonitor.Logic.Tests.Utilities.ServiceProviders")]
 [assembly: SuppressMessage("Naming", "VSSpell001:Spell Check", Justification = "The name is okay.", Scope = "member", Target = "~M:Logic.Tests.Utilities.FakeDatabaseConnection.GetFileRenamings~System.Collections.Generic.IEnumerable{InstallationsMonitor.Domain.FileRenaming}")]
+[assembly: SuppressMessage("Naming", "VSSpell001:Spell Check", Justification = "The name is okay", Scope = "member", Target = "~M:Logic.Tests.Utilities.FakeDatabaseConnection.GetFileRenamings(System.Int32)~System.Collections.Generic.IEnumerable{InstallationsMonitor.Domain.FileRenaming}")]

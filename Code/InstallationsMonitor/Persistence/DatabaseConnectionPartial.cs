@@ -133,11 +133,35 @@ namespace InstallationsMonitor.Persistence
             return fileChanges;
         }
 
+        public IEnumerable<FileChange> GetFileChanges(int installationId)
+        {
+            this.Lock();
+
+            IList<FileChange> fileChanges = this.databaseContext.FileChanges
+                .Where(fc => fc.InstallationId == installationId).ToList();
+
+            this.Unlock();
+
+            return fileChanges;
+        }
+
         public IEnumerable<FileCreation> GetFileCreations()
         {
             this.Lock();
 
             DbSet<FileCreation> fileCreations = this.databaseContext.FileCreations;
+
+            this.Unlock();
+
+            return fileCreations;
+        }
+
+        public IEnumerable<FileCreation> GetFileCreations(int installationId)
+        {
+            this.Lock();
+
+            IList<FileCreation> fileCreations = this.databaseContext.FileCreations
+                .Where(fc => fc.InstallationId == installationId).ToList();
 
             this.Unlock();
 
@@ -155,11 +179,35 @@ namespace InstallationsMonitor.Persistence
             return fileDeletions;
         }
 
+        public IEnumerable<FileDeletion> GetFileDeletions(int installationId)
+        {
+            this.Lock();
+
+            IList<FileDeletion> fileDeletions = this.databaseContext.FileDeletions
+                .Where(fd => fd.InstallationId == installationId).ToList();
+
+            this.Unlock();
+
+            return fileDeletions;
+        }
+
         public IEnumerable<FileRenaming> GetFileRenamings()
         {
             this.Lock();
 
             DbSet<FileRenaming> fileRenamings = this.databaseContext.FileRenamings;
+
+            this.Unlock();
+
+            return fileRenamings;
+        }
+
+        public IEnumerable<FileRenaming> GetFileRenamings(int installationId)
+        {
+            this.Lock();
+
+            IList<FileRenaming> fileRenamings = this.databaseContext.FileRenamings
+                .Where(fr => fr.InstallationId == installationId).ToList();
 
             this.Unlock();
 

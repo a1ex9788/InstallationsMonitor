@@ -4,6 +4,10 @@
       "commandName": "Project",
       "commandLineArgs": "delete -i 1"
     },
+    "Installation": {
+      "commandName": "Project",
+      "commandLineArgs": "installation -i 1"
+    },
     "Installations": {
       "commandName": "Project",
       "commandLineArgs": "installations"

@@ -84,9 +84,19 @@ namespace Logic.Tests.Utilities
             return this.fileChanges;
         }
 
+        public IEnumerable<FileChange> GetFileChanges(int installationId)
+        {
+            return this.fileChanges.Where(fc => fc.InstallationId == installationId);
+        }
+
         public IEnumerable<FileCreation> GetFileCreations()
         {
             return this.fileCreations;
+        }
+
+        public IEnumerable<FileCreation> GetFileCreations(int installationId)
+        {
+            return this.fileCreations.Where(fc => fc.InstallationId == installationId);
         }
 
         public IEnumerable<FileDeletion> GetFileDeletions()
@@ -94,9 +104,19 @@ namespace Logic.Tests.Utilities
             return this.fileDeletions;
         }
 
+        public IEnumerable<FileDeletion> GetFileDeletions(int installationId)
+        {
+            return this.fileDeletions.Where(fd => fd.InstallationId == installationId);
+        }
+
         public IEnumerable<FileRenaming> GetFileRenamings()
         {
             return this.fileRenamings;
+        }
+
+        public IEnumerable<FileRenaming> GetFileRenamings(int installationId)
+        {
+            return this.fileRenamings.Where(fr => fr.InstallationId == installationId);
         }
 
         public InstallationInfo? GetInstallation(int installationId)

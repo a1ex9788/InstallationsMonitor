@@ -12,7 +12,8 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-using InstallationsMonitorClass = InstallationsMonitor.Logic.Commands.Monitor.Utilities.InstallationsMonitor;
+using InstallationsMonitorClass =
+    InstallationsMonitor.Logic.Commands.Monitor.Utilities.InstallationsMonitor;
 
 namespace InstallationsMonitor.Logic.Tests.UnitTests.Commands.Monitor
 {

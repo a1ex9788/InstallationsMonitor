@@ -21,11 +21,19 @@ namespace InstallationsMonitor.Persistence.Contracts
 
         IEnumerable<FileChange> GetFileChanges();
 
+        IEnumerable<FileChange> GetFileChanges(int installationId);
+
         IEnumerable<FileCreation> GetFileCreations();
+
+        IEnumerable<FileCreation> GetFileCreations(int installationId);
 
         IEnumerable<FileDeletion> GetFileDeletions();
 
+        IEnumerable<FileDeletion> GetFileDeletions(int installationId);
+
         IEnumerable<FileRenaming> GetFileRenamings();
+
+        IEnumerable<FileRenaming> GetFileRenamings(int installationId);
 
         InstallationInfo? GetInstallation(int installationId);
 

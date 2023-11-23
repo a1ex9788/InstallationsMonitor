@@ -1,10 +1,12 @@
 ﻿using InstallationsMonitor.Logic.Commands.Delete;
 using InstallationsMonitor.Logic.Commands.Delete.Utilities;
+using InstallationsMonitor.Logic.Commands.Installation.Utilities;
 using InstallationsMonitor.Logic.Commands.Installations;
 using InstallationsMonitor.Logic.Commands.Installations.Utilities;
 using InstallationsMonitor.Logic.Commands.Monitor;
 using InstallationsMonitor.Logic.Commands.Monitor.Utilities;
 using InstallationsMonitor.Logic.Contracts;
+
 using InstallationsMonitorClass =
     InstallationsMonitor.Logic.Commands.Monitor.Utilities.InstallationsMonitor;
 
@@ -16,6 +18,14 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             services.AddScoped<IDeleteCommand, DeleteCommand>();
             services.AddScoped<InstallationsDeleter>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddInstallationCommand(this IServiceCollection services)
+        {
+            services.AddScoped<IInstallationCommand, InstallationCommand>();
+            services.AddScoped<InstallationPrinter>();
 
             return services;
         }

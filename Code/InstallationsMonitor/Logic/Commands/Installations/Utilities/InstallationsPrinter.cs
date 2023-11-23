@@ -32,7 +32,6 @@ namespace InstallationsMonitor.Logic.Commands.Installations.Utilities
             }
 
             IEnumerable<string> columnNames = new string[] { "Id", "Program name", "Date" };
-
             TablesCreator tablesCreator = new TablesCreator(columnNames);
 
             foreach (InstallationInfo installation in installations)
