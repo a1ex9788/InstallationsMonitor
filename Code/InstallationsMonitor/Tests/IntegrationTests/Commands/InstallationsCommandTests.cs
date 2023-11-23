@@ -43,12 +43,10 @@ namespace InstallationsMonitor.Tests.IntegrationTests.Commands
             Program.Main(args);
 
             // Assert.
-            string expectedOutput =
+            stringWriter.ToString().Should().Be(
                 $"| Id | Program name |                Date |{Environment.NewLine}" +
                 $"-------------------------------------------{Environment.NewLine}" +
-                $"|  1 |      Program | 01/01/0001 01:01:01 |{Environment.NewLine}";
-
-            stringWriter.ToString().Should().Be(expectedOutput);
+                $"|  1 |      Program | 01/01/0001 01:01:01 |{Environment.NewLine}");
         }
     }
 }

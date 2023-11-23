@@ -55,12 +55,9 @@ namespace InstallationsMonitor.Logic.Tests.UnitTests.Utilities
             string table = tablesCreator.Create();
 
             // Assert.
-            string expectedOutput =
-                $"| A | B | C |{Environment.NewLine}" +
+            table.ToString().Should().Be($"| A | B | C |{Environment.NewLine}" +
                 $"-------------{Environment.NewLine}" +
-                $"| 1 | 2 | 3 |";
-
-            table.ToString().Should().Be(expectedOutput);
+                $"| 1 | 2 | 3 |");
         }
 
         [TestMethod]
@@ -79,14 +76,12 @@ namespace InstallationsMonitor.Logic.Tests.UnitTests.Utilities
             string table = tablesCreator.Create();
 
             // Assert.
-            string expectedOutput =
+            table.Should().Be(
                 $"| A | B | C |{Environment.NewLine}" +
                 $"-------------{Environment.NewLine}" +
                 $"| 1 | 2 | 3 |{Environment.NewLine}" +
                 $"| 4 | 5 | 6 |{Environment.NewLine}" +
-                $"| 7 | 8 | 9 |";
-
-            table.Should().Be(expectedOutput);
+                $"| 7 | 8 | 9 |");
         }
 
         [TestMethod]
@@ -105,14 +100,12 @@ namespace InstallationsMonitor.Logic.Tests.UnitTests.Utilities
             string table = tablesCreator.Create();
 
             // Assert.
-            string expectedOutput =
+            table.Should().Be(
                 $"| A | BB | CCC |     D |    E |{Environment.NewLine}" +
                 $"-------------------------------{Environment.NewLine}" +
                 $"| 1 |  2 |   3 |     d | eeee |{Environment.NewLine}" +
                 $"| 4 |  5 |   6 | ddddd |    e |{Environment.NewLine}" +
-                $"| 7 |  8 |   9 |   ddd |   ee |";
-
-            table.Should().Be(expectedOutput);
+                $"| 7 |  8 |   9 |   ddd |   ee |");
         }
     }
 }

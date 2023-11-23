@@ -41,13 +41,11 @@ namespace InstallationsMonitor.Logic.Tests.UnitTests.Commands.Installations
             installationsPrinter.Print();
 
             // Assert.
-            string expectedOutput =
+            stringWriter.ToString().Should().Be(
                 $"| Id | Program name |                Date |{Environment.NewLine}" +
                 $"-------------------------------------------{Environment.NewLine}" +
                 $"|  1 |     Program1 | 01/01/0001 01:01:01 |{Environment.NewLine}" +
-                $"|  2 |     Program2 | 02/02/0002 02:02:02 |{Environment.NewLine}";
-
-            stringWriter.ToString().Should().Be(expectedOutput);
+                $"|  2 |     Program2 | 02/02/0002 02:02:02 |{Environment.NewLine}");
         }
 
         [TestMethod]
@@ -67,9 +65,7 @@ namespace InstallationsMonitor.Logic.Tests.UnitTests.Commands.Installations
             installationsPrinter.Print();
 
             // Assert.
-            string expectedOutput = $"No installations monitored yet.{Environment.NewLine}";
-
-            stringWriter.ToString().Should().Be(expectedOutput);
+            stringWriter.ToString().Should().Be($"No installations monitored yet.{Environment.NewLine}");
         }
     }
 }
