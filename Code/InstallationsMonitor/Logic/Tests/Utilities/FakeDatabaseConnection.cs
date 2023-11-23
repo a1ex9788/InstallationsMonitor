@@ -7,7 +7,7 @@ namespace Logic.Tests.Utilities
 {
     internal class FakeDatabaseConnection : IDatabaseConnection
     {
-        private readonly IList<Installation> installations = new List<Installation>();
+        private readonly IList<InstallationInfo> installations = new List<InstallationInfo>();
         private readonly IList<FileChange> fileChanges = new List<FileChange>();
         private readonly IList<FileCreation> fileCreations = new List<FileCreation>();
         private readonly IList<FileDeletion> fileDeletions = new List<FileDeletion>();
@@ -33,7 +33,7 @@ namespace Logic.Tests.Utilities
             this.fileRenamings.Add(fileRenaming);
         }
 
-        public int CreateInstallation(Installation installation)
+        public int CreateInstallation(InstallationInfo installation)
         {
             installation.Id = this.installations.Count + 1;
 
@@ -71,7 +71,7 @@ namespace Logic.Tests.Utilities
 
         public void DeleteInstallation(int installationId)
         {
-            Installation? installation = this.GetInstallation(installationId);
+            InstallationInfo? installation = this.GetInstallation(installationId);
 
             if (installation is not null)
             {
@@ -99,12 +99,12 @@ namespace Logic.Tests.Utilities
             return this.fileRenamings;
         }
 
-        public Installation? GetInstallation(int installationId)
+        public InstallationInfo? GetInstallation(int installationId)
         {
             return this.installations.SingleOrDefault(i => i.Id == installationId);
         }
 
-        public IEnumerable<Installation> GetInstallations()
+        public IEnumerable<InstallationInfo> GetInstallations()
         {
             return this.installations;
         }

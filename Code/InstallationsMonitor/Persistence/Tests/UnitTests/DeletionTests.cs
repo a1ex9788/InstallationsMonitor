@@ -18,21 +18,21 @@ namespace Persistence.Tests.UnitTests
             this.databaseContext = databaseContext;
         }
 
-        internal void TestDeleteInstallation(IEnumerable<Installation> installations)
+        internal void TestDeleteInstallation(IEnumerable<InstallationInfo> installations)
         {
-            Installation installation1 = installations.First();
-            Installation installation2 = installations.ElementAt(1);
-            Installation installation3 = installations.ElementAt(2);
+            InstallationInfo installation1 = installations.First();
+            InstallationInfo installation2 = installations.ElementAt(1);
+            InstallationInfo installation3 = installations.ElementAt(2);
 
             this.databaseConnection.DeleteInstallation(installation1.Id);
-            this.databaseContext.Installations.Should().BeEquivalentTo(new Installation[]
+            this.databaseContext.Installations.Should().BeEquivalentTo(new InstallationInfo[]
                 {
                     installation2,
                     installation3,
                 });
 
             this.databaseConnection.DeleteInstallation(installation2.Id);
-            this.databaseContext.Installations.Should().BeEquivalentTo(new Installation[]
+            this.databaseContext.Installations.Should().BeEquivalentTo(new InstallationInfo[]
                 {
                     installation3,
                 });
@@ -42,15 +42,15 @@ namespace Persistence.Tests.UnitTests
         }
 
         internal void TestDeleteFileOperations(
-            IEnumerable<Installation> installations,
+            IEnumerable<InstallationInfo> installations,
             IEnumerable<FileChange> fileChanges,
             IEnumerable<FileCreation> fileCreations,
             IEnumerable<FileDeletion> fileDeletions,
             IEnumerable<FileRenaming> fileRenamings)
         {
-            Installation installation1 = installations.First();
-            Installation installation2 = installations.ElementAt(1);
-            Installation installation3 = installations.ElementAt(2);
+            InstallationInfo installation1 = installations.First();
+            InstallationInfo installation2 = installations.ElementAt(1);
+            InstallationInfo installation3 = installations.ElementAt(2);
 
             FileChange fileChange1 = fileChanges.First();
             FileChange fileChange3 = fileChanges.ElementAt(2);

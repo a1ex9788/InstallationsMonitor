@@ -18,8 +18,8 @@ namespace InstallationsMonitor.Logic.Tests.UnitTests.Commands.Installations
         public void Print_SomeInstallationsExist_PrintsInstallations()
         {
             // Arrange.
-            Installation installation1 = new Installation("Program1", new DateTime(1, 1, 1, 1, 1, 1));
-            Installation installation2 = new Installation("Program2", new DateTime(2, 2, 2, 2, 2, 2));
+            InstallationInfo installation1 = new InstallationInfo("Program1", new DateTime(1, 1, 1, 1, 1, 1));
+            InstallationInfo installation2 = new InstallationInfo("Program2", new DateTime(2, 2, 2, 2, 2, 2));
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             IServiceProvider serviceProvider = new InstallationsCommandTestServiceProvider(

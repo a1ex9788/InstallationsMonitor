@@ -13,7 +13,7 @@ namespace InstallationsMonitor.Logic.Commands.Installations.Utilities
             this.databaseConnection = databaseConnection;
         }
 
-        public IEnumerable<Installation> GetInstallations()
+        public IEnumerable<InstallationInfo> GetInstallations()
         {
             return this.databaseConnection.GetInstallations();
         }

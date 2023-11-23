@@ -15,7 +15,7 @@ namespace InstallationsMonitor.Logic.Commands.Delete.Utilities
 
         public void Delete(int installationId)
         {
-            Installation? installation = this.databaseConnection.GetInstallation(installationId);
+            InstallationInfo? installation = this.databaseConnection.GetInstallation(installationId);
 
             if (installation is null)
             {

@@ -49,7 +49,7 @@ namespace InstallationsMonitor.Persistence
             this.Unlock();
         }
 
-        public int CreateInstallation(Installation installation)
+        public int CreateInstallation(InstallationInfo installation)
         {
             this.Lock();
 
@@ -69,7 +69,7 @@ namespace InstallationsMonitor.Persistence
         {
             this.Lock();
 
-            Installation? installation = this.databaseContext.Installations
+            InstallationInfo? installation = this.databaseContext.Installations
                 .SingleOrDefault(i => i.Id == installationId);
 
             if (installation is not null)
@@ -166,11 +166,11 @@ namespace InstallationsMonitor.Persistence
             return fileRenamings;
         }
 
-        public Installation? GetInstallation(int installationId)
+        public InstallationInfo? GetInstallation(int installationId)
         {
             this.Lock();
 
-            Installation? installation = this.databaseContext.Installations
+            InstallationInfo? installation = this.databaseContext.Installations
                 .SingleOrDefault(i => i.Id == installationId);
 
             this.Unlock();
@@ -178,11 +178,11 @@ namespace InstallationsMonitor.Persistence
             return installation;
         }
 
-        public IEnumerable<Installation> GetInstallations()
+        public IEnumerable<InstallationInfo> GetInstallations()
         {
             this.Lock();
 
-            DbSet<Installation> installations = this.databaseContext.Installations;
+            DbSet<InstallationInfo> installations = this.databaseContext.Installations;
 
             this.Unlock();
 

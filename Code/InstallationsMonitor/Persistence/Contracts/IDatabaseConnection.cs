@@ -13,7 +13,7 @@ namespace InstallationsMonitor.Persistence.Contracts
 
         void CreateFileRenaming(FileRenaming fileRenaming);
 
-        int CreateInstallation(Installation installation);
+        int CreateInstallation(InstallationInfo installation);
 
         void DeleteFileOperations(int installationId);
 
@@ -27,8 +27,8 @@ namespace InstallationsMonitor.Persistence.Contracts
 
         IEnumerable<FileRenaming> GetFileRenamings();
 
-        Installation? GetInstallation(int installationId);
+        InstallationInfo? GetInstallation(int installationId);
 
-        IEnumerable<Installation> GetInstallations();
+        IEnumerable<InstallationInfo> GetInstallations();
     }
 }

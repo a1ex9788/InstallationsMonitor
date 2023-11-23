@@ -22,7 +22,7 @@ namespace InstallationsMonitor.Logic.Commands.Installations.Utilities
 
         public void Print()
         {
-            IEnumerable<Installation> installations = this.installationsObtainer.GetInstallations();
+            IEnumerable<InstallationInfo> installations = this.installationsObtainer.GetInstallations();
 
             if (!installations.Any())
             {
@@ -35,7 +35,7 @@ namespace InstallationsMonitor.Logic.Commands.Installations.Utilities
 
             TablesCreator tablesCreator = new TablesCreator(columnNames);
 
-            foreach (Installation installation in installations)
+            foreach (InstallationInfo installation in installations)
             {
                 this.cancellationToken.ThrowIfCancellationRequested();
 

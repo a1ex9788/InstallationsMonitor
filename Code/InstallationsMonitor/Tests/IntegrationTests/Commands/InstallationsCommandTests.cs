@@ -18,7 +18,7 @@ namespace InstallationsMonitor.Tests.IntegrationTests.Commands
         public void InstallationsCommand_SomeInstallationsExist_PrintsExpectedResults()
         {
             // Arrange.
-            Installation installation = new Installation("Program", new DateTime(1, 1, 1, 1, 1, 1))
+            InstallationInfo installation = new InstallationInfo("Program", new DateTime(1, 1, 1, 1, 1, 1))
             {
                 Id = 1,
             };

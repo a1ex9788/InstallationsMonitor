@@ -10,10 +10,10 @@ namespace InstallationsMonitor.Logic.Tests.Utilities
 {
     internal static class DatabaseChecker
     {
-        internal static Installation CheckInstallation(
+        internal static InstallationInfo CheckInstallation(
             IDatabaseConnection databaseConnection, string programName)
         {
-            Installation installation = databaseConnection.GetInstallations().Single();
+            InstallationInfo installation = databaseConnection.GetInstallations().Single();
 
             installation.ProgramName.Should().Be(programName);
 

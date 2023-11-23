@@ -8,7 +8,7 @@ namespace InstallationsMonitor.Persistence
     {
         private readonly DatabaseOptions databaseOptions;
 
-        public DbSet<Installation> Installations { get; set; } = null!;
+        public DbSet<InstallationInfo> Installations { get; set; } = null!;
 
         public DbSet<FileChange> FileChanges { get; set; } = null!;
 

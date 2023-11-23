@@ -26,7 +26,7 @@ namespace InstallationsMonitor.Logic.Commands.Monitor.Utilities
             Console.WriteLine("Monitoring installation of program '{0}'...", programNameToUse);
 
             int installationId = this.databaseConnectionEntitiesCreator.CreateInstallation(
-                new Installation(programNameToUse, DateTime.Now));
+                new InstallationInfo(programNameToUse, DateTime.Now));
 
             if (directory is null)
             {

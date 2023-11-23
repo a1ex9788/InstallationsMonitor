@@ -26,14 +26,14 @@ namespace InstallationsMonitor.Logic.Tests.UnitTests.Commands.Delete
             InstallationsDeleter installationsDeleter = serviceProvider
                 .GetRequiredService<InstallationsDeleter>();
 
-            Installation installation1 = new Installation("Program1", new DateTime(1, 1, 1, 1, 1, 1));
-            Installation installation2 = new Installation("Program2", new DateTime(2, 2, 2, 2, 2, 2));
-            Installation installation3 = new Installation("Program3", new DateTime(3, 3, 3, 3, 3, 3));
+            InstallationInfo installation1 = new InstallationInfo("Program1", new DateTime(1, 1, 1, 1, 1, 1));
+            InstallationInfo installation2 = new InstallationInfo("Program2", new DateTime(2, 2, 2, 2, 2, 2));
+            InstallationInfo installation3 = new InstallationInfo("Program3", new DateTime(3, 3, 3, 3, 3, 3));
 
             databaseConnection.CreateInstallation(installation1);
             databaseConnection.CreateInstallation(installation2);
             databaseConnection.CreateInstallation(installation3);
-            databaseConnection.GetInstallations().Should().BeEquivalentTo(new Installation[]
+            databaseConnection.GetInstallations().Should().BeEquivalentTo(new InstallationInfo[]
                 {
                     installation1,
                     installation2,
@@ -103,7 +103,7 @@ namespace InstallationsMonitor.Logic.Tests.UnitTests.Commands.Delete
             stringWriter.ToString().Should().Be(
                 $"Installation with id '{installation2.Id}' deleted.{Environment.NewLine}");
 
-            databaseConnection.GetInstallations().Should().BeEquivalentTo(new Installation[]
+            databaseConnection.GetInstallations().Should().BeEquivalentTo(new InstallationInfo[]
                 {
                     installation1,
                     installation3,

@@ -18,7 +18,7 @@ namespace InstallationsMonitor.Tests.IntegrationTests.Commands
         public void DeleteCommand_ExistentIdentifier_DeletesInstallation()
         {
             // Arrange.
-            Installation installation = new Installation("Program", new DateTime(1, 1, 1, 1, 1, 1))
+            InstallationInfo installation = new InstallationInfo("Program", new DateTime(1, 1, 1, 1, 1, 1))
             {
                 Id = 1,
             };

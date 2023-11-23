@@ -60,7 +60,7 @@ namespace InstallationsMonitor.Logic.Tests.UnitTests.Commands.Monitor
             cancellationTokenSource.Cancel();
             await task;
 
-            Installation installation = DatabaseChecker.CheckInstallation(
+            InstallationInfo installation = DatabaseChecker.CheckInstallation(
                 databaseConnection, programName);
             DatabaseChecker.CheckFileOperations<FileCreation>(
                 databaseConnection,
@@ -109,7 +109,7 @@ namespace InstallationsMonitor.Logic.Tests.UnitTests.Commands.Monitor
             cancellationTokenSource.Cancel();
             await task;
 
-            Installation installation = DatabaseChecker.CheckInstallation(
+            InstallationInfo installation = DatabaseChecker.CheckInstallation(
                 databaseConnection, programName);
             DatabaseChecker.CheckFileOperations<FileCreation>(
                 databaseConnection, installation.Id, new string[] { filePath1 });
@@ -199,7 +199,7 @@ namespace InstallationsMonitor.Logic.Tests.UnitTests.Commands.Monitor
             InstallationsMonitorClass installationsMonitor = serviceProvider
                 .GetRequiredService<InstallationsMonitorClass>();
 
-            databaseConnection.CreateInstallation(new Installation(programName, DateTime.Now));
+            databaseConnection.CreateInstallation(new InstallationInfo(programName, DateTime.Now));
             DatabaseChecker.CheckInstallation(databaseConnection, programName);
 
             using StringWriter stringWriter = new StringWriter();

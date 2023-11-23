@@ -62,7 +62,7 @@ namespace InstallationsMonitor.Tests.IntegrationTests.Commands
             cancellationTokenSource.Cancel();
             await task;
 
-            Installation installation = databaseContext.Installations.Single();
+            InstallationInfo installation = databaseContext.Installations.Single();
             installation.ProgramName.Should().Be(programName);
 
             databaseContext.FileCreations

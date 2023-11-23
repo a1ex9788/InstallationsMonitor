@@ -14,14 +14,14 @@ namespace Persistence.Tests.UnitTests
             this.databaseConnection = databaseConnection;
         }
 
-        internal void TestGetInstallations(IEnumerable<Installation> installations)
+        internal void TestGetInstallations(IEnumerable<InstallationInfo> installations)
         {
             this.databaseConnection.GetInstallations().Should().BeEquivalentTo(installations);
         }
 
-        internal void TestGetInstallation(IEnumerable<Installation> installations)
+        internal void TestGetInstallation(IEnumerable<InstallationInfo> installations)
         {
-            foreach (Installation installation in installations)
+            foreach (InstallationInfo installation in installations)
             {
                 this.databaseConnection.GetInstallation(installation.Id).Should().Be(installation);
             }

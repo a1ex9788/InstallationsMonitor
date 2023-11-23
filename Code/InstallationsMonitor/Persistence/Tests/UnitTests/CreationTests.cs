@@ -19,33 +19,33 @@ namespace Persistence.Tests.UnitTests
             this.databaseContext = databaseContext;
         }
 
-        internal IEnumerable<Installation> TestCreateInstallation()
+        internal IEnumerable<InstallationInfo> TestCreateInstallation()
         {
-            Installation installation1 = new Installation("Program1", DateTime.MinValue.AddDays(1));
+            InstallationInfo installation1 = new InstallationInfo("Program1", DateTime.MinValue.AddDays(1));
             this.databaseConnection.CreateInstallation(installation1);
-            this.databaseContext.Installations.Should().BeEquivalentTo(new Installation[]
+            this.databaseContext.Installations.Should().BeEquivalentTo(new InstallationInfo[]
                 {
                     installation1,
                 });
 
-            Installation installation2 = new Installation("Program2", DateTime.MinValue.AddDays(2));
+            InstallationInfo installation2 = new InstallationInfo("Program2", DateTime.MinValue.AddDays(2));
             this.databaseConnection.CreateInstallation(installation2);
-            this.databaseContext.Installations.Should().BeEquivalentTo(new Installation[]
+            this.databaseContext.Installations.Should().BeEquivalentTo(new InstallationInfo[]
                 {
                     installation1,
                     installation2,
                 });
 
-            Installation installation3 = new Installation("Program3", DateTime.MinValue.AddDays(3));
+            InstallationInfo installation3 = new InstallationInfo("Program3", DateTime.MinValue.AddDays(3));
             this.databaseConnection.CreateInstallation(installation3);
-            this.databaseContext.Installations.Should().BeEquivalentTo(new Installation[]
+            this.databaseContext.Installations.Should().BeEquivalentTo(new InstallationInfo[]
                 {
                     installation1,
                     installation2,
                     installation3,
                 });
 
-            return new Installation[]
+            return new InstallationInfo[]
             {
                 installation1,
                 installation2,
@@ -53,9 +53,9 @@ namespace Persistence.Tests.UnitTests
             };
         }
 
-        internal IEnumerable<FileChange> TestCreateFileChanges(IEnumerable<Installation> installations)
+        internal IEnumerable<FileChange> TestCreateFileChanges(IEnumerable<InstallationInfo> installations)
         {
-            Installation installation1 = installations.First();
+            InstallationInfo installation1 = installations.First();
             FileChange fileChange1 = new FileChange(
                 "FileChange1", DateTime.MinValue.AddMinutes(1), installation1.Id);
             this.databaseConnection.CreateFileChange(fileChange1);
@@ -64,7 +64,7 @@ namespace Persistence.Tests.UnitTests
                     fileChange1,
                 });
 
-            Installation installation2 = installations.ElementAt(1);
+            InstallationInfo installation2 = installations.ElementAt(1);
             FileChange fileChange2 = new FileChange(
                 "FileChange2", DateTime.MinValue.AddMinutes(2), installation2.Id);
             this.databaseConnection.CreateFileChange(fileChange2);
@@ -74,7 +74,7 @@ namespace Persistence.Tests.UnitTests
                     fileChange2,
                 });
 
-            Installation installation3 = installations.ElementAt(2);
+            InstallationInfo installation3 = installations.ElementAt(2);
             FileChange fileChange3 = new FileChange(
                 "FileChange3", DateTime.MinValue.AddMinutes(3), installation3.Id);
             this.databaseConnection.CreateFileChange(fileChange3);
@@ -105,9 +105,9 @@ namespace Persistence.Tests.UnitTests
             };
         }
 
-        internal IEnumerable<FileCreation> TestCreateFileCreations(IEnumerable<Installation> installations)
+        internal IEnumerable<FileCreation> TestCreateFileCreations(IEnumerable<InstallationInfo> installations)
         {
-            Installation installation1 = this.databaseContext.Installations.First();
+            InstallationInfo installation1 = this.databaseContext.Installations.First();
             FileCreation fileCreation1 = new FileCreation(
                 "FileCreation1", DateTime.MinValue.AddMinutes(1), installation1.Id);
             this.databaseConnection.CreateFileCreation(fileCreation1);
@@ -116,7 +116,7 @@ namespace Persistence.Tests.UnitTests
                     fileCreation1,
                 });
 
-            Installation installation2 = installations.ElementAt(1);
+            InstallationInfo installation2 = installations.ElementAt(1);
             FileCreation fileCreation2 = new FileCreation(
                 "FileCreation2", DateTime.MinValue.AddMinutes(2), installation2.Id);
             this.databaseConnection.CreateFileCreation(fileCreation2);
@@ -126,7 +126,7 @@ namespace Persistence.Tests.UnitTests
                     fileCreation2,
                 });
 
-            Installation installation3 = installations.ElementAt(2);
+            InstallationInfo installation3 = installations.ElementAt(2);
             FileCreation fileCreation3 = new FileCreation(
                 "FileCreation3", DateTime.MinValue.AddMinutes(3), installation3.Id);
             this.databaseConnection.CreateFileCreation(fileCreation3);
@@ -157,9 +157,9 @@ namespace Persistence.Tests.UnitTests
             };
         }
 
-        internal IEnumerable<FileDeletion> TestCreateFileDeletions(IEnumerable<Installation> installations)
+        internal IEnumerable<FileDeletion> TestCreateFileDeletions(IEnumerable<InstallationInfo> installations)
         {
-            Installation installation1 = installations.First();
+            InstallationInfo installation1 = installations.First();
             FileDeletion fileDeletion1 = new FileDeletion(
                 "FileDeletion1", DateTime.MinValue.AddMinutes(1), installation1.Id);
             this.databaseConnection.CreateFileDeletion(fileDeletion1);
@@ -168,7 +168,7 @@ namespace Persistence.Tests.UnitTests
                     fileDeletion1,
                 });
 
-            Installation installation2 = installations.ElementAt(1);
+            InstallationInfo installation2 = installations.ElementAt(1);
             FileDeletion fileDeletion2 = new FileDeletion(
                 "FileDeletion2", DateTime.MinValue.AddMinutes(2), installation2.Id);
             this.databaseConnection.CreateFileDeletion(fileDeletion2);
@@ -178,7 +178,7 @@ namespace Persistence.Tests.UnitTests
                     fileDeletion2,
                 });
 
-            Installation installation3 = installations.ElementAt(2);
+            InstallationInfo installation3 = installations.ElementAt(2);
             FileDeletion fileDeletion3 = new FileDeletion(
                 "FileDeletion3", DateTime.MinValue.AddMinutes(3), installation3.Id);
             this.databaseConnection.CreateFileDeletion(fileDeletion3);
@@ -209,9 +209,9 @@ namespace Persistence.Tests.UnitTests
             };
         }
 
-        internal IEnumerable<FileRenaming> TestCreateFileRenamings(IEnumerable<Installation> installations)
+        internal IEnumerable<FileRenaming> TestCreateFileRenamings(IEnumerable<InstallationInfo> installations)
         {
-            Installation installation1 = installations.First();
+            InstallationInfo installation1 = installations.First();
             FileRenaming fileRenaming1 = new FileRenaming(
                 "FileRenaming1", DateTime.MinValue.AddMinutes(1), installation1.Id, "OldFile1");
             this.databaseConnection.CreateFileRenaming(fileRenaming1);
@@ -220,7 +220,7 @@ namespace Persistence.Tests.UnitTests
                     fileRenaming1,
                 });
 
-            Installation installation2 = installations.ElementAt(1);
+            InstallationInfo installation2 = installations.ElementAt(1);
             FileRenaming fileRenaming2 = new FileRenaming(
                 "FileRenaming2", DateTime.MinValue.AddMinutes(2), installation2.Id, "OldFile2");
             this.databaseConnection.CreateFileRenaming(fileRenaming2);
@@ -230,7 +230,7 @@ namespace Persistence.Tests.UnitTests
                     fileRenaming2,
                 });
 
-            Installation installation3 = installations.ElementAt(2);
+            InstallationInfo installation3 = installations.ElementAt(2);
             FileRenaming fileRenaming3 = new FileRenaming(
                 "FileRenaming3", DateTime.MinValue.AddMinutes(3), installation3.Id, "OldFile3");
             this.databaseConnection.CreateFileRenaming(fileRenaming3);

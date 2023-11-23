@@ -27,7 +27,7 @@ namespace Persistence.Tests.UnitTests
 
             // Act, Assert.
             CreationTests creationTests = new CreationTests(databaseConnection, databaseContext);
-            IEnumerable<Installation> installations = creationTests.TestCreateInstallation();
+            IEnumerable<InstallationInfo> installations = creationTests.TestCreateInstallation();
             IEnumerable<FileChange> fileChanges = creationTests.TestCreateFileChanges(installations);
             IEnumerable<FileCreation> fileCreations = creationTests.TestCreateFileCreations(installations);
             IEnumerable<FileDeletion> fileDeletions = creationTests.TestCreateFileDeletions(installations);
