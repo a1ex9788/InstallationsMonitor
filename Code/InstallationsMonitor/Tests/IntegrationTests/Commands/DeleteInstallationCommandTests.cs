@@ -12,10 +12,10 @@ using System.Threading;
 namespace InstallationsMonitor.Tests.IntegrationTests.Commands
 {
     [TestClass]
-    public class RemoveInstallationCommandTests
+    public class DeleteInstallationCommandTests
     {
         [TestMethod]
-        public void RemoveCommand_ExistentIdentifier_RemovesInstallation()
+        public void DeleteCommand_ExistentIdentifier_DeletesInstallation()
         {
             // Arrange.
             Installation installation = new Installation("Program", new DateTime(1, 1, 1, 1, 1, 1))
@@ -23,10 +23,10 @@ namespace InstallationsMonitor.Tests.IntegrationTests.Commands
                 Id = 1,
             };
 
-            string[] args = new string[] { "remove", "-i", installation.Id.ToString() };
+            string[] args = new string[] { "delete", "-i", installation.Id.ToString() };
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-            IServiceProvider serviceProvider = new RemoveCommandTestServiceProvider(
+            IServiceProvider serviceProvider = new DeleteCommandTestServiceProvider(
                 cancellationTokenSource.Token);
             DatabaseContext databaseContext = serviceProvider.GetRequiredService<DatabaseContext>();
 
@@ -44,16 +44,16 @@ namespace InstallationsMonitor.Tests.IntegrationTests.Commands
 
             // Assert.
             stringWriter.ToString().Should().Be(
-                $"Installation with id '{installation.Id}' removed.{Environment.NewLine}");
+                $"Installation with id '{installation.Id}' deleted.{Environment.NewLine}");
 
             databaseContext.Installations.Should().BeEmpty();
         }
 
         [TestMethod]
-        public void RemoveCommand_WithoutIdentifier_ThrowsException()
+        public void DeleteCommand_WithoutIdentifier_ThrowsException()
         {
             // Arrange.
-            string[] args = new string[] { "remove" };
+            string[] args = new string[] { "delete" };
 
             using StringWriter outStringWriter = new StringWriter();
             Console.SetOut(outStringWriter);
@@ -72,10 +72,10 @@ namespace InstallationsMonitor.Tests.IntegrationTests.Commands
         }
 
         [TestMethod]
-        public void RemoveCommand_NotIntegerIdentifier_ThrowsException()
+        public void DeleteCommand_NotIntegerIdentifier_ThrowsException()
         {
             // Arrange.
-            string[] args = new string[] { "remove", "-i", "notInteger" };
+            string[] args = new string[] { "delete", "-i", "notInteger" };
 
             using StringWriter outStringWriter = new StringWriter();
             Console.SetOut(outStringWriter);

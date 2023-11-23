@@ -1,5 +1,9 @@
 {
   "profiles": {
+    "Delete": {
+      "commandName": "Project",
+      "commandLineArgs": "delete -i 1"
+    },
     "Installations": {
       "commandName": "Project",
       "commandLineArgs": "installations"
@@ -11,10 +15,6 @@
     "Monitor D:\\": {
       "commandName": "Project",
       "commandLineArgs": "monitor -d C:\\"
-    },
-    "Remove": {
-      "commandName": "Project",
-      "commandLineArgs": "remove -i 1"
     }
   }
 }

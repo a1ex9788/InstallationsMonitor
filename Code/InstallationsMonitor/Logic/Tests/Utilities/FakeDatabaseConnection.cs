@@ -42,6 +42,43 @@ namespace Logic.Tests.Utilities
             return installation.Id;
         }
 
+        public void DeleteFileOperations(int installationId)
+        {
+            foreach (FileChange fileChange in
+                this.fileChanges.Where(fc => fc.InstallationId == installationId).ToList())
+            {
+                this.fileChanges.Remove(fileChange);
+            }
+
+            foreach (FileCreation fileCreation in
+                this.fileCreations.Where(fc => fc.InstallationId == installationId).ToList())
+            {
+                this.fileCreations.Remove(fileCreation);
+            }
+
+            foreach (FileDeletion fileDeletion in
+                this.fileDeletions.Where(fc => fc.InstallationId == installationId).ToList())
+            {
+                this.fileDeletions.Remove(fileDeletion);
+            }
+
+            foreach (FileRenaming fileRenaming in
+                this.fileRenamings.Where(fc => fc.InstallationId == installationId).ToList())
+            {
+                this.fileRenamings.Remove(fileRenaming);
+            }
+        }
+
+        public void DeleteInstallation(int installationId)
+        {
+            Installation? installation = this.GetInstallation(installationId);
+
+            if (installation is not null)
+            {
+                this.installations.Remove(installation);
+            }
+        }
+
         public IEnumerable<FileChange> GetFileChanges()
         {
             return this.fileChanges;
@@ -70,43 +107,6 @@ namespace Logic.Tests.Utilities
         public IEnumerable<Installation> GetInstallations()
         {
             return this.installations;
-        }
-
-        public void RemoveFileOperations(int installationId)
-        {
-            foreach (FileChange fileChange in
-                this.fileChanges.Where(fc => fc.InstallationId == installationId).ToList())
-            {
-                this.fileChanges.Remove(fileChange);
-            }
-
-            foreach (FileCreation fileCreation in
-                this.fileCreations.Where(fc => fc.InstallationId == installationId).ToList())
-            {
-                this.fileCreations.Remove(fileCreation);
-            }
-
-            foreach (FileDeletion fileDeletion in
-                this.fileDeletions.Where(fc => fc.InstallationId == installationId).ToList())
-            {
-                this.fileDeletions.Remove(fileDeletion);
-            }
-
-            foreach (FileRenaming fileRenaming in
-                this.fileRenamings.Where(fc => fc.InstallationId == installationId).ToList())
-            {
-                this.fileRenamings.Remove(fileRenaming);
-            }
-        }
-
-        public void RemoveInstallation(int installationId)
-        {
-            Installation? installation = this.GetInstallation(installationId);
-
-            if (installation is not null)
-            {
-                this.installations.Remove(installation);
-            }
         }
     }
 }

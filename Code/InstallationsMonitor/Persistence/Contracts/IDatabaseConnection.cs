@@ -5,8 +5,6 @@ namespace InstallationsMonitor.Persistence.Contracts
 {
     public interface IDatabaseConnection
     {
-        int CreateInstallation(Installation installation);
-
         void CreateFileChange(FileChange fileChange);
 
         void CreateFileCreation(FileCreation fileCreation);
@@ -15,9 +13,11 @@ namespace InstallationsMonitor.Persistence.Contracts
 
         void CreateFileRenaming(FileRenaming fileRenaming);
 
-        IEnumerable<Installation> GetInstallations();
+        int CreateInstallation(Installation installation);
 
-        Installation? GetInstallation(int installationId);
+        void DeleteFileOperations(int installationId);
+
+        void DeleteInstallation(int installationId);
 
         IEnumerable<FileChange> GetFileChanges();
 
@@ -27,8 +27,8 @@ namespace InstallationsMonitor.Persistence.Contracts
 
         IEnumerable<FileRenaming> GetFileRenamings();
 
-        void RemoveInstallation(int installationId);
+        Installation? GetInstallation(int installationId);
 
-        void RemoveFileOperations(int installationId);
+        IEnumerable<Installation> GetInstallations();
     }
 }

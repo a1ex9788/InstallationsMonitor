@@ -1,13 +1,13 @@
 ﻿using InstallationsMonitor.Logic.Tests.Utilities.ServiceProviders.Base;
-using InstallationsMonitor.ServiceProviders.Remove;
+using InstallationsMonitor.ServiceProviders.Delete;
 using System;
 using System.Threading;
 
 namespace InstallationsMonitor.Logic.Tests.Utilities.ServiceProviders
 {
-    public class RemoveCommandTestServiceProvider : CommandsTestServiceProvider
+    public class DeleteCommandTestServiceProvider : CommandsTestServiceProvider
     {
-        public RemoveCommandTestServiceProvider(CancellationToken cancellationToken)
+        public DeleteCommandTestServiceProvider(CancellationToken cancellationToken)
             : base(GetServiceProvider, cancellationToken)
         {
         }
@@ -15,7 +15,7 @@ namespace InstallationsMonitor.Logic.Tests.Utilities.ServiceProviders
         private static IServiceProvider GetServiceProvider(
             CancellationToken cancellationToken, string databaseFullName)
         {
-            return new RemoveCommandServiceProvider(cancellationToken, databaseFullName);
+            return new DeleteCommandServiceProvider(cancellationToken, databaseFullName);
         }
     }
 }

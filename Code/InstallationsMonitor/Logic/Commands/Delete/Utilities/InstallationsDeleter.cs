@@ -2,18 +2,18 @@
 using InstallationsMonitor.Persistence.Contracts;
 using System;
 
-namespace InstallationsMonitor.Logic.Commands.Remove.Utilities
+namespace InstallationsMonitor.Logic.Commands.Delete.Utilities
 {
-    public class InstallationsRemover
+    public class InstallationsDeleter
     {
         private readonly IDatabaseConnection databaseConnection;
 
-        public InstallationsRemover(IDatabaseConnection databaseConnection)
+        public InstallationsDeleter(IDatabaseConnection databaseConnection)
         {
             this.databaseConnection = databaseConnection;
         }
 
-        public void Remove(int installationId)
+        public void Delete(int installationId)
         {
             Installation? installation = this.databaseConnection.GetInstallation(installationId);
 
@@ -24,11 +24,11 @@ namespace InstallationsMonitor.Logic.Commands.Remove.Utilities
                 return;
             }
 
-            this.databaseConnection.RemoveFileOperations(installationId);
+            this.databaseConnection.DeleteFileOperations(installationId);
 
-            this.databaseConnection.RemoveInstallation(installationId);
+            this.databaseConnection.DeleteInstallation(installationId);
 
-            Console.WriteLine($"Installation with id '{installationId}' removed.");
+            Console.WriteLine($"Installation with id '{installationId}' deleted.");
         }
     }
 }

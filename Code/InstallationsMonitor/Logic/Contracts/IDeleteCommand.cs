@@ -1,6 +1,6 @@
 ﻿namespace InstallationsMonitor.Logic.Contracts
 {
-    public interface IRemoveCommand
+    public interface IDeleteCommand
     {
         void Execute(int installationId);
     }

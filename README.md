@@ -9,7 +9,7 @@ The application has four commands:
 - `monitor`: starts the monitoring process.
 - `installations`: shows the monitored installations.
 - `installation`: shows the produced changes during a given installation.
-- `remove`: removes the saved information for a given installation.
+- `delete`: deletes the saved information for a given installation.
 
 ## Functioning
 

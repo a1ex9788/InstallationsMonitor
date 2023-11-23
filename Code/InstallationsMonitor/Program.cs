@@ -1,7 +1,7 @@
 ﻿using InstallationsMonitor.Logic.Contracts;
+using InstallationsMonitor.ServiceProviders.Delete;
 using InstallationsMonitor.ServiceProviders.Installations;
 using InstallationsMonitor.ServiceProviders.Monitor;
-using InstallationsMonitor.ServiceProviders.Remove;
 using McMaster.Extensions.CommandLineUtils;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -20,11 +20,45 @@ namespace InstallationsMonitor
 
             commandLineApplication.HelpOption();
 
+            DefineDeleteCommand(commandLineApplication);
             DefineInstallationsCommand(commandLineApplication);
             DefineMonitorCommand(commandLineApplication);
-            DefineRemoveCommand(commandLineApplication);
 
             return commandLineApplication.Execute(args);
+        }
+
+        private static void DefineDeleteCommand(CommandLineApplication commandLineApplication)
+        {
+            commandLineApplication.Command(
+                "delete",
+                command =>
+                {
+                    CommandOption installationIdCommandOption = command.Option(
+                        "-i",
+                        "The identifier of the installation to delete.",
+                        CommandOptionType.SingleValue).IsRequired();
+
+                    command.OnExecuteAsync(async ct =>
+                    {
+                        IServiceProvider serviceProvider =
+                            new DeleteCommandServiceProvider(ct, Settings.GetDatabaseFullName());
+                        IDeleteCommand deleteCommand = serviceProvider
+                            .GetRequiredService<IDeleteCommand>();
+
+                        bool isInt = int.TryParse(
+                            installationIdCommandOption.Value(), out int installationIdentifier);
+
+                        if (!isInt)
+                        {
+                            // Use of McMaster for this is avoided since it throws exception.
+                            await Console.Error.WriteLineAsync("The -i field must be an integer.");
+
+                            return;
+                        }
+
+                        deleteCommand.Execute(installationIdentifier);
+                    });
+                });
         }
 
         private static void DefineInstallationsCommand(CommandLineApplication commandLineApplication)
@@ -72,40 +106,6 @@ namespace InstallationsMonitor
 
                         await monitorCommand.ExecuteAsync(
                             directoryCommandOption.Value(), programNameCommandOption.Value());
-                    });
-                });
-        }
-
-        private static void DefineRemoveCommand(CommandLineApplication commandLineApplication)
-        {
-            commandLineApplication.Command(
-                "remove",
-                command =>
-                {
-                    CommandOption installationIdCommandOption = command.Option(
-                        "-i",
-                        "The identifier of the installation to remove.",
-                        CommandOptionType.SingleValue).IsRequired();
-
-                    command.OnExecuteAsync(async ct =>
-                    {
-                        IServiceProvider serviceProvider =
-                            new RemoveCommandServiceProvider(ct, Settings.GetDatabaseFullName());
-                        IRemoveCommand removeCommand = serviceProvider
-                            .GetRequiredService<IRemoveCommand>();
-
-                        bool isInt = int.TryParse(
-                            installationIdCommandOption.Value(), out int installationIdentifier);
-
-                        if (!isInt)
-                        {
-                            // Use of McMaster for this is avoided since it throws exception.
-                            await Console.Error.WriteLineAsync("The -i field must be an integer.");
-
-                            return;
-                        }
-
-                        removeCommand.Execute(installationIdentifier);
                     });
                 });
         }

@@ -9,22 +9,6 @@ namespace InstallationsMonitor.Persistence
 {
     public sealed partial class DatabaseConnection : IDatabaseConnection, IDisposable
     {
-        public int CreateInstallation(Installation installation)
-        {
-            this.Lock();
-
-            this.databaseContext.Installations.Add(installation);
-            this.databaseContext.SaveChanges();
-
-            int id = this.databaseContext.Installations
-                .Single(i => i.ProgramName == installation.ProgramName
-                    && i.DateTime == installation.DateTime).Id;
-
-            this.Unlock();
-
-            return id;
-        }
-
         public void CreateFileChange(FileChange fileChange)
         {
             this.Lock();
@@ -65,27 +49,77 @@ namespace InstallationsMonitor.Persistence
             this.Unlock();
         }
 
-        public IEnumerable<Installation> GetInstallations()
+        public int CreateInstallation(Installation installation)
         {
             this.Lock();
 
-            DbSet<Installation> installations = this.databaseContext.Installations;
+            this.databaseContext.Installations.Add(installation);
+            this.databaseContext.SaveChanges();
+
+            int id = this.databaseContext.Installations
+                .Single(i => i.ProgramName == installation.ProgramName
+                    && i.DateTime == installation.DateTime).Id;
 
             this.Unlock();
 
-            return installations;
+            return id;
         }
 
-        public Installation? GetInstallation(int installationId)
+        public void DeleteInstallation(int installationId)
         {
             this.Lock();
 
             Installation? installation = this.databaseContext.Installations
                 .SingleOrDefault(i => i.Id == installationId);
 
-            this.Unlock();
+            if (installation is not null)
+            {
+                this.databaseContext.Installations.Remove(installation);
+                this.databaseContext.SaveChanges();
+            }
 
-            return installation;
+            this.Unlock();
+        }
+
+        public void DeleteFileOperations(int installationId)
+        {
+            this.Lock();
+
+            IList<FileChange> fileChangesToDelete =
+                this.databaseContext.FileChanges.Where(fc => fc.InstallationId == installationId).ToList();
+
+            foreach (FileChange fileChange in fileChangesToDelete)
+            {
+                this.databaseContext.FileChanges.Remove(fileChange);
+            }
+
+            IList<FileCreation> fileCreationsToDelete =
+                this.databaseContext.FileCreations.Where(fc => fc.InstallationId == installationId).ToList();
+
+            foreach (FileCreation fileCreation in fileCreationsToDelete)
+            {
+                this.databaseContext.FileCreations.Remove(fileCreation);
+            }
+
+            IList<FileDeletion> fileDeletionsToDelete =
+                this.databaseContext.FileDeletions.Where(fc => fc.InstallationId == installationId).ToList();
+
+            foreach (FileDeletion fileDeletion in fileDeletionsToDelete)
+            {
+                this.databaseContext.FileDeletions.Remove(fileDeletion);
+            }
+
+            IList<FileRenaming> fileRenamingsToDelete =
+                this.databaseContext.FileRenamings.Where(fc => fc.InstallationId == installationId).ToList();
+
+            foreach (FileRenaming fileRenaming in fileRenamingsToDelete)
+            {
+                this.databaseContext.FileRenamings.Remove(fileRenaming);
+            }
+
+            this.databaseContext.SaveChanges();
+
+            this.Unlock();
         }
 
         public IEnumerable<FileChange> GetFileChanges()
@@ -132,61 +166,27 @@ namespace InstallationsMonitor.Persistence
             return fileRenamings;
         }
 
-        public void RemoveInstallation(int installationId)
+        public Installation? GetInstallation(int installationId)
         {
             this.Lock();
 
             Installation? installation = this.databaseContext.Installations
                 .SingleOrDefault(i => i.Id == installationId);
 
-            if (installation is not null)
-            {
-                this.databaseContext.Installations.Remove(installation);
-                this.databaseContext.SaveChanges();
-            }
-
             this.Unlock();
+
+            return installation;
         }
 
-        public void RemoveFileOperations(int installationId)
+        public IEnumerable<Installation> GetInstallations()
         {
             this.Lock();
 
-            IList<FileChange> fileChangesToRemove =
-                this.databaseContext.FileChanges.Where(fc => fc.InstallationId == installationId).ToList();
-
-            foreach (FileChange fileChange in fileChangesToRemove)
-            {
-                this.databaseContext.FileChanges.Remove(fileChange);
-            }
-
-            IList<FileCreation> fileCreationsToRemove =
-                this.databaseContext.FileCreations.Where(fc => fc.InstallationId == installationId).ToList();
-
-            foreach (FileCreation fileCreation in fileCreationsToRemove)
-            {
-                this.databaseContext.FileCreations.Remove(fileCreation);
-            }
-
-            IList<FileDeletion> fileDeletionsToRemove =
-                this.databaseContext.FileDeletions.Where(fc => fc.InstallationId == installationId).ToList();
-
-            foreach (FileDeletion fileDeletion in fileDeletionsToRemove)
-            {
-                this.databaseContext.FileDeletions.Remove(fileDeletion);
-            }
-
-            IList<FileRenaming> fileRenamingsToRemove =
-                this.databaseContext.FileRenamings.Where(fc => fc.InstallationId == installationId).ToList();
-
-            foreach (FileRenaming fileRenaming in fileRenamingsToRemove)
-            {
-                this.databaseContext.FileRenamings.Remove(fileRenaming);
-            }
-
-            this.databaseContext.SaveChanges();
+            DbSet<Installation> installations = this.databaseContext.Installations;
 
             this.Unlock();
+
+            return installations;
         }
     }
 }

@@ -24,20 +24,20 @@ namespace Persistence.Tests.UnitTests
             Installation installation2 = installations.ElementAt(1);
             Installation installation3 = installations.ElementAt(2);
 
-            this.databaseConnection.RemoveInstallation(installation1.Id);
+            this.databaseConnection.DeleteInstallation(installation1.Id);
             this.databaseContext.Installations.Should().BeEquivalentTo(new Installation[]
                 {
                     installation2,
                     installation3,
                 });
 
-            this.databaseConnection.RemoveInstallation(installation2.Id);
+            this.databaseConnection.DeleteInstallation(installation2.Id);
             this.databaseContext.Installations.Should().BeEquivalentTo(new Installation[]
                 {
                     installation3,
                 });
 
-            this.databaseConnection.RemoveInstallation(installation3.Id);
+            this.databaseConnection.DeleteInstallation(installation3.Id);
             this.databaseContext.Installations.Should().BeEmpty();
         }
 
@@ -68,7 +68,7 @@ namespace Persistence.Tests.UnitTests
             FileRenaming fileRenaming3 = fileRenamings.ElementAt(2);
             FileRenaming fileRenaming4 = fileRenamings.ElementAt(3);
 
-            this.databaseConnection.RemoveFileOperations(installation2.Id);
+            this.databaseConnection.DeleteFileOperations(installation2.Id);
             this.databaseContext.FileChanges.Should().BeEquivalentTo(new FileChange[]
                 {
                     fileChange1,
@@ -94,7 +94,7 @@ namespace Persistence.Tests.UnitTests
                     fileRenaming4,
                 });
 
-            this.databaseConnection.RemoveFileOperations(installation3.Id);
+            this.databaseConnection.DeleteFileOperations(installation3.Id);
             this.databaseContext.FileChanges.Should().BeEquivalentTo(new FileChange[]
                 {
                     fileChange1,
@@ -112,7 +112,7 @@ namespace Persistence.Tests.UnitTests
                     fileRenaming1,
                 });
 
-            this.databaseConnection.RemoveFileOperations(installation1.Id);
+            this.databaseConnection.DeleteFileOperations(installation1.Id);
             this.databaseContext.FileChanges.Should().BeEmpty();
             this.databaseContext.FileCreations.Should().BeEmpty();
             this.databaseContext.FileDeletions.Should().BeEmpty();

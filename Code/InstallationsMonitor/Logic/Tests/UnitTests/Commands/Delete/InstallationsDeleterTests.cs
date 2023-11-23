@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
 using InstallationsMonitor.Domain;
-using InstallationsMonitor.Logic.Commands.Remove.Utilities;
+using InstallationsMonitor.Logic.Commands.Delete.Utilities;
 using InstallationsMonitor.Logic.Tests.Utilities.ServiceProviders;
 using InstallationsMonitor.Persistence.Contracts;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,22 +9,22 @@ using System;
 using System.IO;
 using System.Threading;
 
-namespace InstallationsMonitor.Logic.Tests.UnitTests.Commands.Remove
+namespace InstallationsMonitor.Logic.Tests.UnitTests.Commands.Delete
 {
     [TestClass]
-    public class InstallationsRemoverTests
+    public class InstallationsDeleterTests
     {
         [TestMethod]
-        public void Remove_ExistentIdentifier_RemovesInstallation()
+        public void Delete_ExistentIdentifier_DeletesInstallation()
         {
             // Arrange.
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-            IServiceProvider serviceProvider = new RemoveCommandTestServiceProvider(
+            IServiceProvider serviceProvider = new DeleteCommandTestServiceProvider(
                 cancellationTokenSource.Token);
             IDatabaseConnection databaseConnection = serviceProvider
                 .GetRequiredService<IDatabaseConnection>();
-            InstallationsRemover installationsRemover = serviceProvider
-                .GetRequiredService<InstallationsRemover>();
+            InstallationsDeleter installationsDeleter = serviceProvider
+                .GetRequiredService<InstallationsDeleter>();
 
             Installation installation1 = new Installation("Program1", new DateTime(1, 1, 1, 1, 1, 1));
             Installation installation2 = new Installation("Program2", new DateTime(2, 2, 2, 2, 2, 2));
@@ -97,11 +97,11 @@ namespace InstallationsMonitor.Logic.Tests.UnitTests.Commands.Remove
             Console.SetOut(stringWriter);
 
             // Act.
-            installationsRemover.Remove(installation2.Id);
+            installationsDeleter.Delete(installation2.Id);
 
             // Assert.
             stringWriter.ToString().Should().Be(
-                $"Installation with id '{installation2.Id}' removed.{Environment.NewLine}");
+                $"Installation with id '{installation2.Id}' deleted.{Environment.NewLine}");
 
             databaseConnection.GetInstallations().Should().BeEquivalentTo(new Installation[]
                 {
@@ -132,16 +132,16 @@ namespace InstallationsMonitor.Logic.Tests.UnitTests.Commands.Remove
         }
 
         [TestMethod]
-        public void Remove_NotExistentIdentifier_PrintsAnyInstallationMessage()
+        public void Delete_NotExistentIdentifier_PrintsAnyInstallationMessage()
         {
             // Arrange.
             int installationId = 1;
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-            IServiceProvider serviceProvider = new RemoveCommandTestServiceProvider(
+            IServiceProvider serviceProvider = new DeleteCommandTestServiceProvider(
                 cancellationTokenSource.Token);
-            InstallationsRemover installationsRemover = serviceProvider
-                .GetRequiredService<InstallationsRemover>();
+            InstallationsDeleter installationsDeleter = serviceProvider
+                .GetRequiredService<InstallationsDeleter>();
 
             using StringWriter outStringWriter = new StringWriter();
             Console.SetOut(outStringWriter);
@@ -149,7 +149,7 @@ namespace InstallationsMonitor.Logic.Tests.UnitTests.Commands.Remove
             Console.SetError(errorStringWriter);
 
             // Act.
-            installationsRemover.Remove(installationId);
+            installationsDeleter.Delete(installationId);
 
             // Assert.
             outStringWriter.ToString().Should().BeEmpty();
