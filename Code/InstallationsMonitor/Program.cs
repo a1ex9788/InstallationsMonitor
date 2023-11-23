@@ -14,19 +14,28 @@ namespace InstallationsMonitor
     {
         public static int Main(string[] args)
         {
-            using CommandLineApplication commandLineApplication = new CommandLineApplication()
+            try
             {
-                Name = "installationsMonitor",
-            };
+                using CommandLineApplication commandLineApplication = new CommandLineApplication()
+                {
+                    Name = "installationsMonitor",
+                };
 
-            commandLineApplication.HelpOption();
+                commandLineApplication.HelpOption();
 
-            DefineDeleteCommand(commandLineApplication);
-            DefineInstallationCommand(commandLineApplication);
-            DefineInstallationsCommand(commandLineApplication);
-            DefineMonitorCommand(commandLineApplication);
+                DefineDeleteCommand(commandLineApplication);
+                DefineInstallationCommand(commandLineApplication);
+                DefineInstallationsCommand(commandLineApplication);
+                DefineMonitorCommand(commandLineApplication);
 
-            return commandLineApplication.Execute(args);
+                return commandLineApplication.Execute(args);
+            }
+            catch
+            {
+                Console.Error.WriteLine("An unexpected error was produced.");
+
+                return -1;
+            }
         }
 
         private static void DefineDeleteCommand(CommandLineApplication commandLineApplication)
